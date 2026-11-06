@@ -4,8 +4,8 @@ import { pageMetadata } from "@/lib/seo";
 import { NOT_AFFILIATED, SITE } from "@/lib/site";
 
 export const metadata = pageMetadata({
-  title: "About PaidTape",
-  description: "PaidTape is an independent tracker of Vest payouts. Who runs it, how it's funded, and what it is not.",
+  title: "About VestPayouts",
+  description: "VestPayouts is an independent tracker of Vest payouts. Who runs it, how it's funded, and what it is not.",
   path: "/about",
 });
 
@@ -13,10 +13,13 @@ export default function AboutPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 pt-8 sm:px-6">
       <Breadcrumbs items={[{ name: "About", path: "/about" }]} />
-      <h1 className="mt-5 text-3xl font-bold text-paper sm:text-5xl">About PaidTape</h1>
+      <h1 className="mt-5 text-3xl font-bold text-paper sm:text-5xl">About VestPayouts</h1>
+      <p className="mt-6 rounded-2xl border border-amber/40 bg-amber/10 px-5 py-4 text-sm leading-relaxed text-paper/90">
+        <strong className="text-amber">Independent. Not affiliated with or endorsed by Vest.</strong> {NOT_AFFILIATED}
+      </p>
       <article className="prose-tape">
         <p>
-          PaidTape tracks payouts from Vest and nothing else. The site exists because prop-firm payout claims are usually screenshots, and Vest&apos;s payouts happen to be public USDC transfers. We read those transfers and publish them with the transaction attached.
+          VestPayouts tracks payouts from Vest and nothing else. The site exists because prop-firm payout claims are usually screenshots, and Vest&apos;s payouts happen to be public USDC transfers. We read those transfers and publish them with the transaction attached.
         </p>
         <h2>How the site is funded</h2>
         <p>

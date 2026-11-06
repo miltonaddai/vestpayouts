@@ -84,7 +84,7 @@ export default function HowToGetPaidOnVest() {
       </table>
       <p>
         Source: <a href={VEST_SOURCES.withdrawals} rel="noopener nofollow" target="_blank">Vest docs, Withdrawals</a>.
-        On-chain, PaidTape measures the time between the withdrawal request and the USDC arriving. The{" "}
+        On-chain, VestPayouts measures the time between the withdrawal request and the USDC arriving. The{" "}
         <Link href="/">home page</Link> shows the current median.
       </p>
 
@@ -113,7 +113,7 @@ export default function HowToGetPaidOnVest() {
       <h2>How to confirm you got paid</h2>
       <p>
         Copy the transaction ID from Vest&apos;s Withdrawals tab and look it up on BaseScan or Arbiscan, or search your
-        wallet address on <Link href="/payouts">PaidTape&apos;s payout list</Link>. Every Vest payout we track has its
+        wallet address on <Link href="/payouts">VestPayouts&apos;s payout list</Link>. Every Vest payout we track has its
         own page with the amount, time and a link to the explorer. Our{" "}
         <Link href="/blog/vest-payout-proof">Vest payout proof guide</Link> walks through it.
       </p>

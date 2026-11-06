@@ -1,4 +1,4 @@
--- PaidTape core schema: payouts, wallet aliases, ingestion cursors, referral clicks.
+-- VestPayouts core schema: payouts, wallet aliases, ingestion cursors, referral clicks.
 -- Reads: anon/authenticated may SELECT published payouts and public metadata (RLS).
 -- Writes: no INSERT/UPDATE/DELETE policies exist, so only the service role (which
 -- bypasses RLS) can write — used by the ingester, the import script and /admin.

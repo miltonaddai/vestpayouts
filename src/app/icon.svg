@@ -1,7 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="256" height="256">
-  <title>PaidTape</title>
+  <title>VestPayouts</title>
   <rect width="32" height="32" rx="8" fill="#0d1112"/>
   <rect x="0.5" y="0.5" width="31" height="31" rx="7.5" fill="none" stroke="#263135"/>
-  <path d="M7 16.5l5.2 5.2L25 9" fill="none" stroke="#3ee0a1" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
-  <g fill="#0d1112"><circle cx="15.4" cy="18.4" r="0.95"/><circle cx="18.6" cy="15.2" r="0.95"/><circle cx="21.8" cy="12" r="0.95"/></g>
+  <path d="M10 7.5h8.2L23.5 13V24.5a1.5 1.5 0 0 1-1.5 1.5H10a1.5 1.5 0 0 1-1.5-1.5V9A1.5 1.5 0 0 1 10 7.5z" fill="none" stroke="#94a3a0" stroke-width="1.6" stroke-linejoin="round"/>
+  <path d="M18.2 7.5V13H23.5" fill="none" stroke="#94a3a0" stroke-width="1.6" stroke-linejoin="round"/>
+  <rect x="11.2" y="16.2" width="9.2" height="2" rx="1" fill="#3ee0a1"/>
+  <rect x="11.2" y="20.2" width="6" height="2" rx="1" fill="#3ee0a1" opacity="0.55"/>
 </svg>

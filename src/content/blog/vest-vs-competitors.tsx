@@ -77,7 +77,7 @@ export default function VestVsCompetitors() {
       <h3>1. Payouts you can audit</h3>
       <p>
         Most firms publish payout totals you have to take on trust. Vest&apos;s payouts leave public contracts, so
-        anyone can count them, and that&apos;s exactly what <Link href="/">PaidTape</Link> does. See our{" "}
+        anyone can count them, and that&apos;s exactly what <Link href="/">VestPayouts</Link> does. See our{" "}
         <Link href="/blog/vest-payout-proof">payout proof guide</Link>.
       </p>
       <h3>2. On-demand claims</h3>

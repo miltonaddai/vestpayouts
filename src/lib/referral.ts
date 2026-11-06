@@ -43,7 +43,7 @@ export function referralBaseUrl(): URL {
 export function buildReferralUrl(opts: { placement: string; page?: string }) {
   const url = referralBaseUrl();
   if (APPEND_UTM) {
-    url.searchParams.set("utm_source", "paidtape");
+    url.searchParams.set("utm_source", "vestpayouts");
     url.searchParams.set("utm_medium", "referral");
     url.searchParams.set("utm_campaign", opts.placement);
     if (opts.page) url.searchParams.set("utm_content", opts.page.slice(0, 100));

@@ -26,7 +26,7 @@ export default async function AdminPage() {
   if (!(await isAdmin())) {
     return (
       <div className="mx-auto max-w-xl px-4 py-16">
-        <h1 className="text-3xl font-bold text-paper">PaidTape admin</h1>
+        <h1 className="text-3xl font-bold text-paper">VestPayouts admin</h1>
         <p className="mt-3 mb-6 text-paper/70">Add payouts, import a CSV, or name a wallet. This page is not indexed.</p>
         <LoginForm />
       </div>

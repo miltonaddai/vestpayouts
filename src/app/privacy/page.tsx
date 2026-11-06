@@ -4,7 +4,7 @@ import { SITE } from "@/lib/site";
 
 export const metadata = pageMetadata({
   title: "Privacy Policy",
-  description: "What PaidTape stores: referral click logs, an admin cookie, and public blockchain data. No accounts.",
+  description: "What VestPayouts stores: referral click logs, an admin cookie, and public blockchain data. No accounts.",
   path: "/privacy",
 });
 
@@ -15,7 +15,7 @@ export default function PrivacyPage() {
       <h1 className="mt-5 text-3xl font-bold text-paper sm:text-5xl">Privacy</h1>
       <p className="mt-2 text-sm text-muted-foreground">Last updated 6 November 2026.</p>
       <article className="prose-tape">
-        <p>PaidTape does not have user accounts. You can read every page without telling us who you are.</p>
+        <p>VestPayouts does not have user accounts. You can read every page without telling us who you are.</p>
         <h2>What we collect</h2>
         <ul>
           <li>

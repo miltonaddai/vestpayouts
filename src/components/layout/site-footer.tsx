@@ -25,7 +25,7 @@ const COLUMNS = [
     ],
   },
   {
-    title: "PaidTape",
+    title: "VestPayouts",
     links: [
       { href: "/about", label: "About" },
       { href: "/disclosure", label: "Affiliate disclosure" },
@@ -42,7 +42,10 @@ export function SiteFooter() {
         <div className="grid gap-10 md:grid-cols-[1.4fr_repeat(3,1fr)]">
           <div>
             <Logo />
-            <p className="mt-4 max-w-sm text-sm text-muted-foreground">{SITE.tagline} Independent, public and verifiable.</p>
+            <p className="mt-4 max-w-sm rounded-xl border border-amber/35 bg-amber/10 px-3 py-2.5 text-sm leading-relaxed text-paper/90">
+              <strong className="text-amber">Independent. Not affiliated with or endorsed by Vest.</strong> {NOT_AFFILIATED}
+            </p>
+            <p className="mt-3 max-w-sm text-sm text-muted-foreground">{SITE.tagline}</p>
             <ReferralLink
               placement="footer"
               className="mt-5 inline-flex h-10 items-center rounded-lg border border-mint/40 px-4 text-sm font-semibold text-mint hover:bg-mint/10"
@@ -66,9 +69,6 @@ export function SiteFooter() {
           ))}
         </div>
         <div className="mt-12 space-y-3 border-t border-ink-800 pt-8 text-xs leading-relaxed text-muted-foreground">
-          <p>
-            <strong className="text-paper/80">Not affiliated with Vest.</strong> {NOT_AFFILIATED}
-          </p>
           <p>
             <strong className="text-paper/80">Affiliate disclosure.</strong> {AFFILIATE_DISCLOSURE}{" "}
             <Link href="/disclosure" className="underline underline-offset-2 hover:text-paper">

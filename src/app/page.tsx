@@ -175,7 +175,7 @@ export default async function HomePage() {
             {
               icon: Link2,
               title: "3. Withdraw USDC",
-              body: "Withdraw to any wallet on Base or Arbitrum One. That transfer is the on-chain payout you see on PaidTape.",
+              body: "Withdraw to any wallet on Base or Arbitrum One. That transfer is the on-chain payout you see on VestPayouts.",
             },
           ].map((s) => (
             <li key={s.title} className="rounded-2xl border border-ink-800 bg-ink-900/60 p-6">
@@ -198,7 +198,7 @@ export default async function HomePage() {
             </h2>
             <p className="mt-4 text-paper/75">
               Screenshots can be faked. Blockchain transfers can&apos;t. Every Vest payout leaves a public USDC transfer
-              from Vest&apos;s payout contract to the trader&apos;s wallet. PaidTape indexes those transfers and links
+              from Vest&apos;s payout contract to the trader&apos;s wallet. VestPayouts indexes those transfers and links
               each one to its block explorer page.
             </p>
             <Link href="/blog/vest-payout-proof" className="mt-5 inline-flex items-center gap-1.5 font-medium text-mint hover:text-mint-300">

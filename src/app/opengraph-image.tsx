@@ -2,7 +2,7 @@ import { OG_SIZE, ogCard } from "@/lib/og";
 
 export const size = OG_SIZE;
 export const contentType = "image/png";
-export const alt = "PaidTape — Vest payouts tracked on-chain";
+export const alt = "VestPayouts — Vest payouts tracked on-chain";
 
 export default function Image() {
   return ogCard({

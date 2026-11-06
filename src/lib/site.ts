@@ -1,12 +1,12 @@
 export const SITE = {
-  name: "PaidTape",
+  name: "VestPayouts",
   tagline: "Every Vest payout, straight off the chain.",
   description:
-    "PaidTape tracks Vest payouts in real time: every USDC payout Vest sends to traders on Base and Arbitrum, with on-chain proof, totals, a leaderboard and plain-English guides.",
-  url: (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4317").replace(/\/$/, ""),
+    "VestPayouts tracks Vest payouts in real time: every USDC payout Vest sends to traders on Base and Arbitrum, with on-chain proof, totals, a leaderboard and plain-English guides. Independent, and not affiliated with Vest.",
+  url: (process.env.NEXT_PUBLIC_SITE_URL || "https://vestpayouts.com").replace(/\/$/, ""),
   locale: "en_US",
   twitter: process.env.NEXT_PUBLIC_TWITTER_HANDLE || "",
-  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "hello@paidtape.com",
+  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "hello@vestpayouts.com",
   founded: "2026",
 } as const;
 
@@ -20,7 +20,7 @@ export const NAV = [
 ] as const;
 
 export const NOT_AFFILIATED =
-  "PaidTape is an independent tracker. It is not affiliated with, endorsed by, or operated by Vest, Vest Markets, Vest Labs or Vest Exchange. “Vest” is used only to describe the platform whose public payout data we track.";
+  "VestPayouts is an independent tracker. It is not affiliated with, endorsed by, or operated by Vest, Vest Markets, Vest Labs or Vest Exchange. “Vest” is used only to describe the platform whose public payout data we track.";
 
 export const AFFILIATE_DISCLOSURE =
   "Some links on this site are referral links. If you sign up to Vest through them, we may earn a commission at no extra cost to you. It never changes the payout data we show.";

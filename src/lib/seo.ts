@@ -53,8 +53,10 @@ export const organizationLd = (): Json => ({
   "@id": absoluteUrl("/#organization"),
   name: SITE.name,
   url: SITE.url,
-  logo: absoluteUrl("/brand/paidtape-mark.svg"),
+  logo: absoluteUrl("/brand/vestpayouts-mark.svg"),
   description: SITE.description,
+  disambiguatingDescription:
+    "Independent website that tracks public Vest payouts. Not affiliated with, endorsed by, or operated by Vest.",
   email: SITE.contactEmail,
   ...(SITE.twitter ? { sameAs: [`https://x.com/${SITE.twitter.replace("@", "")}`] } : {}),
 });

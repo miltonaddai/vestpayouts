@@ -47,7 +47,7 @@ export default function VestPayoutProof() {
 
       <h2>How to verify a Vest payout in 60 seconds</h2>
       <ol>
-        <li>Get the transaction hash. It&apos;s in Vest&apos;s Withdrawals tab, or on any PaidTape payout page.</li>
+        <li>Get the transaction hash. It&apos;s in Vest&apos;s Withdrawals tab, or on any VestPayouts payout page.</li>
         <li>
           Open it on <a href="https://basescan.org" target="_blank" rel="noopener nofollow">BaseScan</a> or{" "}
           <a href="https://arbiscan.io" target="_blank" rel="noopener nofollow">Arbiscan</a>, depending on the chain.

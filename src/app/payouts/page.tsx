@@ -29,7 +29,7 @@ export default async function PayoutsPage() {
       <JsonLd
         data={datasetLd({
           name: "Vest payouts",
-          description: "Every Vest payout PaidTape has recorded, with amount, chain, recipient wallet and transaction hash.",
+          description: "Every Vest payout VestPayouts has recorded, with amount, chain, recipient wallet and transaction hash.",
           path: "/payouts",
           dateModified: summary.syncedAt ? new Date(summary.syncedAt).toISOString() : undefined,
         })}
@@ -38,7 +38,7 @@ export default async function PayoutsPage() {
         <Breadcrumbs items={[{ name: "Vest payouts", path: "/payouts" }]} />
         <h1 className="mt-5 text-3xl font-bold text-paper sm:text-4xl">Every Vest payout, with proof</h1>
         <p className="mt-3 max-w-3xl text-paper/75">
-          This is the full list of Vest payouts PaidTape has recorded
+          This is the full list of Vest payouts VestPayouts has recorded
           {summary.firstPaidAt ? ` since ${formatDate(summary.firstPaidAt)}` : ""}. On-chain payouts link to their
           transaction, so you can confirm each one on a block explorer. New payouts are added automatically.{" "}
           <Link href="/methodology" className="text-mint underline underline-offset-4">

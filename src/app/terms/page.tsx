@@ -5,7 +5,7 @@ import { NOT_AFFILIATED, SITE } from "@/lib/site";
 
 export const metadata = pageMetadata({
   title: "Terms of Use",
-  description: "Terms for using PaidTape. Informational only, no financial advice, data provided as-is.",
+  description: "Terms for using VestPayouts. Informational only, no financial advice, data provided as-is.",
   path: "/terms",
 });
 
@@ -16,10 +16,10 @@ export default function TermsPage() {
       <h1 className="mt-5 text-3xl font-bold text-paper sm:text-5xl">Terms of use</h1>
       <p className="mt-2 text-sm text-muted-foreground">Last updated 6 November 2026.</p>
       <article className="prose-tape">
-        <p>By using PaidTape you agree to these terms. If you don&apos;t, don&apos;t use the site.</p>
+        <p>By using VestPayouts you agree to these terms. If you don&apos;t, don&apos;t use the site.</p>
         <h2>What the site is</h2>
         <p>
-          PaidTape publishes information about payouts sent by Vest, plus guides about how that program works. {NOT_AFFILIATED} &ldquo;Vest&rdquo; is their trademark, used here to identify the platform we track.
+          VestPayouts publishes information about payouts sent by Vest, plus guides about how that program works. {NOT_AFFILIATED} &ldquo;Vest&rdquo; is their trademark, used here to identify the platform we track.
         </p>
         <h2>Not advice</h2>
         <p>
@@ -40,7 +40,7 @@ export default function TermsPage() {
         </p>
         <h2>Liability</h2>
         <p>
-          To the extent the law allows, PaidTape and its operator are not liable for lost profits, lost fees, or decisions you make after reading the site. The site is provided &ldquo;as is&rdquo;.
+          To the extent the law allows, VestPayouts and its operator are not liable for lost profits, lost fees, or decisions you make after reading the site. The site is provided &ldquo;as is&rdquo;.
         </p>
         <h2>Changes</h2>
         <p>

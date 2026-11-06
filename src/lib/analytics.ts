@@ -14,7 +14,7 @@ declare global {
 /**
  * Client-side click hook for referral CTAs. Forwards to whichever analytics tool is
  * installed (GTM/GA4, Plausible, PostHog) and emits a DOM event for custom listeners:
- *   window.addEventListener("paidtape:referral-click", (e) => console.log(e.detail))
+ *   window.addEventListener("vestpayouts:referral-click", (e) => console.log(e.detail))
  * The /go redirect also logs every click server-side, so this is best-effort only.
  */
 export function trackReferralClick(placement: string, extra: Props = {}) {
@@ -25,7 +25,7 @@ export function trackReferralClick(placement: string, extra: Props = {}) {
     window.gtag?.("event", "referral_click", props);
     window.plausible?.("Referral Click", { props });
     window.posthog?.capture("referral_click", props);
-    window.dispatchEvent(new CustomEvent("paidtape:referral-click", { detail: props }));
+    window.dispatchEvent(new CustomEvent("vestpayouts:referral-click", { detail: props }));
   } catch {
     // analytics must never block navigation
   }

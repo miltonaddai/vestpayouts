@@ -6,11 +6,11 @@ export interface Faq {
 export const PAYOUT_FAQS: Faq[] = [
   {
     q: "Does Vest actually pay out?",
-    a: "Yes. Vest sends payouts as USDC from public payout contracts on Base and Arbitrum One, so anyone can check them on a block explorer. PaidTape reads those contracts directly and lists every transfer with its transaction hash, so you can verify each payout yourself instead of trusting screenshots.",
+    a: "Yes. Vest sends payouts as USDC from public payout contracts on Base and Arbitrum One, so anyone can check them on a block explorer. VestPayouts reads those contracts directly and lists every transfer with its transaction hash, so you can verify each payout yourself instead of trusting screenshots.",
   },
   {
     q: "How long do Vest payouts take?",
-    a: "Getting paid is two steps. A Claim Profit request moves your profit split from the Funded Account to your Primary Account; Vest's docs say that takes up to 24 hours. A withdrawal then sends USDC from the Primary Account to your wallet; the docs currently list a 24-hour processing period too. PaidTape measures how long the on-chain step really takes, from request to settlement, and shows the median on the home page.",
+    a: "Getting paid is two steps. A Claim Profit request moves your profit split from the Funded Account to your Primary Account; Vest's docs say that takes up to 24 hours. A withdrawal then sends USDC from the Primary Account to your wallet; the docs currently list a 24-hour processing period too. VestPayouts measures how long the on-chain step really takes, from request to settlement, and shows the median on the home page.",
   },
   {
     q: "What profit split does Vest pay?",
@@ -26,11 +26,11 @@ export const PAYOUT_FAQS: Faq[] = [
   },
   {
     q: "How do I verify a Vest payout is real?",
-    a: "Open the payout's transaction on BaseScan or Arbiscan. A genuine Vest payout is a USDC transfer sent from Vest's payout contract (0x5513…07af on Base, 0xb2f8…d1ea on Arbitrum) to the trader's wallet. Every payout page on PaidTape links straight to that transaction.",
+    a: "Open the payout's transaction on BaseScan or Arbiscan. A genuine Vest payout is a USDC transfer sent from Vest's payout contract (0x5513…07af on Base, 0xb2f8…d1ea on Arbitrum) to the trader's wallet. Every payout page on VestPayouts links straight to that transaction.",
   },
   {
-    q: "Is PaidTape run by Vest?",
-    a: "No. PaidTape is independent and not affiliated with or endorsed by Vest. We read public blockchain data and publish it. Some links are referral links, which is how the site is funded. That never changes the data we show.",
+    q: "Is VestPayouts run by Vest?",
+    a: "No. VestPayouts is independent and not affiliated with or endorsed by Vest. We read public blockchain data and publish it. Some links are referral links, which is how the site is funded. That never changes the data we show.",
   },
   {
     q: "Are all the payouts listed here prop-firm profits?",

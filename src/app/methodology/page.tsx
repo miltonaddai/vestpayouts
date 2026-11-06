@@ -8,11 +8,11 @@ import { formatDate } from "@/lib/format";
 export const revalidate = 3600;
 
 export const metadata = pageMetadata({
-  title: "Methodology — How PaidTape Tracks Vest Payouts",
+  title: "Methodology — How VestPayouts Tracks Vest Payouts",
   description:
-    "How PaidTape collects Vest payouts: the Base and Arbitrum contracts we read, what a row does and does not prove, sample data, and manual imports.",
+    "How VestPayouts collects Vest payouts: the Base and Arbitrum contracts we read, what a row does and does not prove, sample data, and manual imports.",
   path: "/methodology",
-  keywords: ["Vest payout data", "Vest payout contract", "how PaidTape works"],
+  keywords: ["Vest payout data", "Vest payout contract", "how VestPayouts works"],
 });
 
 export default async function MethodologyPage() {
@@ -23,7 +23,7 @@ export default async function MethodologyPage() {
       <h1 className="mt-5 text-3xl font-bold text-paper sm:text-5xl">How the numbers are made</h1>
       <article className="prose-tape">
         <p>
-          PaidTape does not scrape Vest&apos;s website and does not take payout screenshots as evidence. A row marked on-chain is a USDC transfer we read from a public blockchain.
+          VestPayouts does not scrape Vest&apos;s website and does not take payout screenshots as evidence. A row marked on-chain is a USDC transfer we read from a public blockchain.
         </p>
         <h2>Where the data comes from</h2>
         <p>

@@ -1,16 +1,18 @@
-# PaidTape
+# VestPayouts
 
-PaidTape is an independent record of payouts from [Vest](https://www.vestmarkets.com/). The name is a tape, as in ticker tape: a running strip of amounts, wallets and proof. It is deliberately not "Vest Official", "Vest Payouts" or anything that could be mistaken for the company.
+VestPayouts is an independent record of payouts from [Vest](https://www.vestmarkets.com/), published at [vestpayouts.com](https://vestpayouts.com). The name is the topic the site ranks for: Vest payouts. It is not "Vest Official", and it does not use Vest's logo, wordmark, or a lone V.
+
+Because the name contains "Vest", the independence line is part of the brand, not a footnote. The header of every page says "Independent tracker. Not affiliated with or endorsed by Vest." The same sentence leads the footer and the about page.
 
 ## Mark
 
-The mark is a mint check drawn like a torn piece of ticker tape, with the perforations still visible. It sits on an ink square.
+The mark is a receipt with a folded corner and two mint amount lines, on an ink square. It reads as a payout record, not as Vest's logo and not as a menu icon.
 
-- Icon: [`public/brand/paidtape-mark.svg`](public/brand/paidtape-mark.svg) (also `src/app/icon.svg`)
-- Lockup: [`public/brand/paidtape-logo.svg`](public/brand/paidtape-logo.svg)
-- Wordmark: **Paid** in paper white, **Tape** in mint. Space Grotesk, semibold, tight tracking.
+- Icon: [`public/brand/vestpayouts-mark.svg`](public/brand/vestpayouts-mark.svg) (also `src/app/icon.svg`)
+- Lockup: [`public/brand/vestpayouts-logo.svg`](public/brand/vestpayouts-logo.svg)
+- Wordmark: **Vest** in paper white, **Payouts** in mint. Space Grotesk, semibold, tight tracking. One word, VestPayouts.
 
-Don't redraw the check as a dollar sign, a shield, or Vest's own logo. Don't set the wordmark in all caps.
+Don't redraw the mark as Vest's logo, a shield, a checkmark, or a dollar sign. Don't set the wordmark in all caps. Don't put the word "official" next to it.
 
 ## Color
 
@@ -28,7 +30,7 @@ The site is dark. Mint is reserved for money, proof and the primary action. Ambe
 | Mint | `#3ee0a1` | Payout amounts, primary buttons, links |
 | Mint 300 | `#8ff0c6` | Mint on code |
 | Mint 600 | `#1fae78` | Pressed mint |
-| Amber | `#f6bd4f` | Sample data, reported (unverified) payouts |
+| Amber | `#f6bd4f` | Independence notice, sample data, reported (unverified) payouts |
 | Coral | `#ff7a6b` | Errors, destructive actions |
 | Base blue | `#9bbcff` | The Base chain badge |
 | Arbitrum blue | `#8fd0ff` | The Arbitrum chain badge |
@@ -58,9 +60,9 @@ Words we don't use: "official", "guaranteed", "risk-free", "the #1 prop firm", "
 
 ## Disclaimers
 
-These two lines appear in the footer of every page, and the first one also on About.
+The independence line is in the sticky header, in an amber panel in the footer, and at the top of About. The affiliate line sits in the footer legal block and on `/disclosure`.
 
-**Not affiliated.** PaidTape is an independent tracker. It is not affiliated with, endorsed by, or operated by Vest, Vest Markets, Vest Labs or Vest Exchange. "Vest" is used only to describe the platform whose public payout data we track.
+**Not affiliated.** VestPayouts is an independent tracker. It is not affiliated with, endorsed by, or operated by Vest, Vest Markets, Vest Labs or Vest Exchange. "Vest" is used only to describe the platform whose public payout data we track.
 
 **Affiliate disclosure.** Some links on this site are referral links. If you sign up to Vest through them, we may earn a commission at no extra cost to you. It never changes the payout data we show.
 

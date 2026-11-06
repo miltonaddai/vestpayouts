@@ -43,7 +43,7 @@ export default function HowPayoutsWorkPage() {
             <strong>Claim Profit.</strong> From the funded account you submit a claim. Vest credits your profit split to your Primary Account. The docs say this takes up to 24 hours, the request can&apos;t be reversed, and you may need to close positions first.
           </li>
           <li>
-            <strong>Withdraw.</strong> From the Primary Account you send USDC to a wallet address you type in. Email and Google accounts withdraw on Base or Arbitrum One. That on-chain transfer is the payout PaidTape records.
+            <strong>Withdraw.</strong> From the Primary Account you send USDC to a wallet address you type in. Email and Google accounts withdraw on Base or Arbitrum One. That on-chain transfer is the payout VestPayouts records.
           </li>
         </ol>
         <p>
@@ -89,9 +89,9 @@ export default function HowPayoutsWorkPage() {
           <li>Vest currently lists a 24-hour processing period for platform withdrawals, with an email when they complete.</li>
         </ul>
         <p>
-          PaidTape measures the on-chain half: the time from the withdrawal request recorded in the payout event to the block where the USDC moves. The median is on the <Link href="/">home page</Link>.
+          VestPayouts measures the on-chain half: the time from the withdrawal request recorded in the payout event to the block where the USDC moves. The median is on the <Link href="/">home page</Link>.
         </p>
-        <h2>What shows up on PaidTape</h2>
+        <h2>What shows up on VestPayouts</h2>
         <p>
           We index USDC leaving Vest&apos;s payout contracts. A claim that is still inside Vest is not on the feed yet. A withdrawal is, whether it came from funded-account profit or from an ordinary exchange balance, because both exit through the same contract. That distinction is covered in the <Link href="/methodology">methodology</Link>.
         </p>

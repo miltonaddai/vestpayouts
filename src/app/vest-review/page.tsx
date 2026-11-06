@@ -48,11 +48,11 @@ export default function VestReviewPage() {
         <h2>What Vest is</h2>
         <p>
           Vest lists perpetual futures on crypto, equities, commodities and FX, and sells funded accounts under the Vest Capital name. You pay a one-time fee, trade under loss limits, and keep a fixed share of profits. The firm is not a brokerage account in your name. Vest&apos;s own terms describe funded balances as virtual and payouts as compensation under the program rules, not a share of a live trade booked for you. Read the{" "}
-          <a href={VEST_SOURCES.terms} target="_blank" rel="noopener nofollow">prop terms</a> before you buy. PaidTape is not affiliated with Vest.
+          <a href={VEST_SOURCES.terms} target="_blank" rel="noopener nofollow">prop terms</a> before you buy. VestPayouts is not affiliated with Vest.
         </p>
         <h2>Do they pay?</h2>
         <p>
-          Yes, and you don&apos;t have to take their word for it. Withdrawals leave public payout contracts on Base and Arbitrum as USDC. PaidTape reads those contracts and links every payout to its transaction. See the <Link href="/payouts">payout list</Link> and the <Link href="/blog/vest-payout-proof">proof guide</Link>. One caveat, explained in the <Link href="/methodology">methodology</Link>: the same contracts also pay ordinary exchange withdrawals, so a row is proof Vest sent USDC, not proof it came from a funded-account profit.
+          Yes, and you don&apos;t have to take their word for it. Withdrawals leave public payout contracts on Base and Arbitrum as USDC. VestPayouts reads those contracts and links every payout to its transaction. See the <Link href="/payouts">payout list</Link> and the <Link href="/blog/vest-payout-proof">proof guide</Link>. One caveat, explained in the <Link href="/methodology">methodology</Link>: the same contracts also pay ordinary exchange withdrawals, so a row is proof Vest sent USDC, not proof it came from a funded-account profit.
         </p>
         <h2>How the payout works</h2>
         <p>

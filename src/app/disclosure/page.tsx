@@ -5,7 +5,7 @@ import { AFFILIATE_DISCLOSURE, NOT_AFFILIATED, SITE } from "@/lib/site";
 
 export const metadata = pageMetadata({
   title: "Affiliate Disclosure",
-  description: "PaidTape earns commissions from Vest referral links. How that works, and what it does not change.",
+  description: "VestPayouts earns commissions from Vest referral links. How that works, and what it does not change.",
   path: "/disclosure",
 });
 

@@ -1,8 +1,8 @@
-# PaidTape
+# VestPayouts
 
 Independent tracker of [Vest](https://www.vestmarkets.com/) payouts. Every USDC transfer Vest's payout contracts send on Base and Arbitrum is listed with its transaction, plus totals, a leaderboard and guides. The site exists to rank for "Vest payouts", "Vest payout proof" and "Vest review", and to send traders to Vest through one referral link.
 
-PaidTape is not affiliated with Vest. See [BRAND.md](BRAND.md) for the name, mark, colors and the disclaimers.
+VestPayouts is independent. It is not affiliated with or endorsed by Vest. See [BRAND.md](BRAND.md) for the name, mark, colors and the disclaimers. The public site is [https://vestpayouts.com](https://vestpayouts.com).
 
 ## Stack
 
@@ -52,7 +52,7 @@ Those demo keys are public and only work against a local stack. On a hosted proj
 
 | Variable | Required | What it does |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | Production | Canonical URLs, sitemap, Open Graph. No trailing slash. |
+| `NEXT_PUBLIC_SITE_URL` | Production | Canonical URLs, sitemap, Open Graph. No trailing slash. Defaults to `https://vestpayouts.com` when unset. Locally, set `http://127.0.0.1:4317`. |
 | `NEXT_PUBLIC_SUPABASE_URL` | To show real data | Supabase project URL. |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | To show real data | Public key. Reads published payouts only (RLS). |
 | `SUPABASE_SERVICE_ROLE_KEY` | To write data | Bypasses RLS. Ingest, admin, referral-click log. Never expose it to the browser. |
@@ -67,7 +67,7 @@ Those demo keys are public and only work against a local stack. On a hosted proj
 | `NEXT_PUBLIC_CONTACT_EMAIL` | No | Shown on about, privacy and terms. |
 | `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | No | Google Search Console token. |
 
-Every Vest button goes to `/go?p=<placement>&from=<path>`, which logs the click (server log, `referral_clicks`, optional webhook) and 302s to the referral URL with `utm_source=paidtape`, `utm_medium=referral` and `utm_campaign=<placement>`.
+Every Vest button goes to `/go?p=<placement>&from=<path>`, which logs the click (server log, `referral_clicks`, optional webhook) and 302s to the referral URL with `utm_source=vestpayouts`, `utm_medium=referral` and `utm_campaign=<placement>`.
 
 ## Add payouts
 
@@ -127,7 +127,7 @@ yarn db:types
 ## Deploy to Vercel
 
 1. Push the repository and import it in Vercel. Framework preset is Next.js. Install command `yarn install`, build `yarn build`.
-2. Add the environment variables from the table above. `NEXT_PUBLIC_SITE_URL` must be the production origin, for example `https://paidtape.com`.
+2. Add the environment variables from the table above. `NEXT_PUBLIC_SITE_URL` must be the production origin, for example `https://vestpayouts.com`.
 3. Deploy. The build prerenders pages and, when the Supabase env vars are present, the largest on-chain payout pages.
 4. Point a daily or hourly job at `yarn ingest` (the GitHub Action, a VPS cron, or similar). Vercel's serverless functions are a poor place to scan millions of blocks.
 5. In Search Console, submit `https://<your domain>/sitemap.xml`.

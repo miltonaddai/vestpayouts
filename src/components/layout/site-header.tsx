@@ -6,9 +6,18 @@ import { MobileNav } from "./mobile-nav";
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-ink-800/80 bg-ink-950/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-ink-800/80 bg-ink-950/90 backdrop-blur-md">
+      <div className="border-b border-amber/30 bg-amber/10">
+        <p className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-2 px-4 py-1.5 text-center text-xs leading-5 text-paper/90 sm:px-6">
+          <span className="font-semibold text-amber">Independent tracker.</span>
+          <span>Not affiliated with or endorsed by Vest.</span>
+          <Link href="/about" className="underline underline-offset-2 hover:text-paper">
+            About VestPayouts
+          </Link>
+        </p>
+      </div>
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link href="/" aria-label="PaidTape home" className="shrink-0">
+        <Link href="/" aria-label="VestPayouts home" className="shrink-0">
           <Logo />
         </Link>
         <nav aria-label="Main" className="hidden lg:block">

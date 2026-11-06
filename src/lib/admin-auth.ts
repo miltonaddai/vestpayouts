@@ -2,10 +2,10 @@ import "server-only";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 
-const COOKIE = "pt_admin";
+const COOKIE = "vp_admin";
 
 function token(password: string) {
-  return createHmac("sha256", password).update("paidtape-admin-v1").digest("hex");
+  return createHmac("sha256", password).update("vestpayouts-admin-v1").digest("hex");
 }
 
 function safeEqual(a: string, b: string) {

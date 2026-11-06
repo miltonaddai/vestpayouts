@@ -1,5 +1,5 @@
 /**
- * Types for the PaidTape Supabase schema (supabase/migrations). Kept in the same shape as
+ * Types for the VestPayouts Supabase schema (supabase/migrations). Kept in the same shape as
  * `supabase gen types typescript`; regenerate with `yarn db:types` after schema changes.
  */
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];

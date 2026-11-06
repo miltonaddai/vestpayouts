@@ -22,10 +22,13 @@ export function ogCard({ eyebrow, title, value, footer }: { eyebrow: string; tit
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
           <svg width="56" height="56" viewBox="0 0 32 32">
             <rect width="32" height="32" rx="8" fill="#0d1112" />
-            <path d="M7 16.5l5.2 5.2L25 9" fill="none" stroke="#3ee0a1" strokeWidth="4.2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M10 7.5h8.2L23.5 13V24.5a1.5 1.5 0 0 1-1.5 1.5H10a1.5 1.5 0 0 1-1.5-1.5V9A1.5 1.5 0 0 1 10 7.5z" fill="none" stroke="#94a3a0" strokeWidth="1.6" />
+            <path d="M18.2 7.5V13H23.5" fill="none" stroke="#94a3a0" strokeWidth="1.6" />
+            <rect x="11.2" y="16.2" width="9.2" height="2" rx="1" fill="#3ee0a1" />
+            <rect x="11.2" y="20.2" width="6" height="2" rx="1" fill="#8ff0c6" />
           </svg>
           <div style={{ display: "flex", fontSize: 36, fontWeight: 700 }}>
-            Paid<span style={{ color: "#3ee0a1" }}>Tape</span>
+            Vest<span style={{ color: "#3ee0a1" }}>Payouts</span>
           </div>
           <div style={{ display: "flex", marginLeft: "auto", fontSize: 22, color: "#9aaaa6" }}>{eyebrow}</div>
         </div>

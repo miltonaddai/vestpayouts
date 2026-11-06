@@ -5,7 +5,7 @@ export class ArchiveRequiredError extends Error {}
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 export const hex = (n: number) => `0x${n.toString(16)}`;
 
-const HEADERS = { "content-type": "application/json", "user-agent": "paidtape-ingest/1.0" };
+const HEADERS = { "content-type": "application/json", "user-agent": "vestpayouts-ingest/1.0" };
 
 /** Minimal JSON-RPC client with retries, range-limit detection and batched calls. */
 export class Rpc {
