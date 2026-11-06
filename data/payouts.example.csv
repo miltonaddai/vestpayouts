@@ -1,0 +1,4 @@
+paid_at,amount_usd,chain,tx_hash,wallet,trader,proof_url,note
+# Lines starting with # are ignored. Only paid_at and amount_usd are required.
+# A row whose tx_hash matches an ingested on-chain payout just adds the trader name / proof link to it.
+2026-11-03T14:20:00Z,1250.00,base,,,@example_trader,https://x.com/example_trader/status/1,"Example only, replace with a real, verified payout"

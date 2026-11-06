@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 32" width="672" height="128">
+  <title>PaidTape</title>
+  <rect width="32" height="32" rx="8" fill="#0d1112"/>
+  <rect x="0.5" y="0.5" width="31" height="31" rx="7.5" fill="none" stroke="#263135"/>
+  <path d="M7 16.5l5.2 5.2L25 9" fill="none" stroke="#3ee0a1" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <g fill="#0d1112"><circle cx="15.4" cy="18.4" r="0.95"/><circle cx="18.6" cy="15.2" r="0.95"/><circle cx="21.8" cy="12" r="0.95"/></g>
+  <text x="42" y="23" font-family="'Space Grotesk', 'Inter', system-ui, sans-serif" font-size="21" font-weight="600" letter-spacing="-0.4" fill="#eef3f1">Paid<tspan fill="#3ee0a1">Tape</tspan></text>
+</svg>

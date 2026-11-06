@@ -1,0 +1,158 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --font-heading: var(--font-grotesk);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+
+  /* PaidTape brand tokens (see BRAND.md) */
+  --color-ink-950: #07090a;
+  --color-ink-900: #0d1112;
+  --color-ink-850: #12181a;
+  --color-ink-800: #1a2225;
+  --color-ink-700: #263135;
+  --color-paper: #eef3f1;
+  --color-fog: #94a3a0;
+  --color-mint: #3ee0a1;
+  --color-mint-300: #8ff0c6;
+  --color-mint-600: #1fae78;
+  --color-amber: #f6bd4f;
+  --color-coral: #ff7a6b;
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+
+  --animate-tape: tape 60s linear infinite;
+  --animate-feed-in: feed-in 0.5s ease-out both;
+  @keyframes tape {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes feed-in {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+:root {
+  --radius: 0.75rem;
+  --background: #07090a;
+  --foreground: #eef3f1;
+  --card: #0d1112;
+  --card-foreground: #eef3f1;
+  --popover: #12181a;
+  --popover-foreground: #eef3f1;
+  --primary: #3ee0a1;
+  --primary-foreground: #04140d;
+  --secondary: #1a2225;
+  --secondary-foreground: #eef3f1;
+  --muted: #12181a;
+  --muted-foreground: #9aaaa6;
+  --accent: #1a2225;
+  --accent-foreground: #eef3f1;
+  --destructive: #ff7a6b;
+  --border: #1f292c;
+  --input: #263135;
+  --ring: #3ee0a1;
+  --chart-1: #3ee0a1;
+  --chart-2: #5aa9ff;
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv11", "ss01";
+  }
+  h1, h2, h3, h4 {
+    @apply font-heading tracking-tight;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  .prose-tape {
+    @apply max-w-none text-[1.0625rem] leading-relaxed text-paper/85;
+  }
+  .prose-tape h2 {
+    @apply mt-12 mb-4 text-2xl font-semibold text-paper sm:text-3xl;
+  }
+  .prose-tape h3 {
+    @apply mt-8 mb-3 text-xl font-semibold text-paper;
+  }
+  .prose-tape p {
+    @apply my-4;
+  }
+  .prose-tape ul {
+    @apply my-4 list-disc space-y-2 pl-6 marker:text-mint;
+  }
+  .prose-tape ol {
+    @apply my-4 list-decimal space-y-2 pl-6 marker:text-mint;
+  }
+  .prose-tape a {
+    @apply font-medium text-mint underline decoration-mint/40 underline-offset-4 hover:decoration-mint;
+  }
+  .prose-tape strong {
+    @apply font-semibold text-paper;
+  }
+  .prose-tape table {
+    @apply my-6 w-full border-collapse text-left text-sm;
+  }
+  .prose-tape th {
+    @apply border-b border-ink-700 py-2 pr-4 font-semibold text-paper;
+  }
+  .prose-tape td {
+    @apply border-b border-ink-800 py-2 pr-4 align-top;
+  }
+  .prose-tape code {
+    @apply rounded bg-ink-800 px-1.5 py-0.5 font-mono text-[0.85em] text-mint-300;
+  }
+  .prose-tape blockquote {
+    @apply my-6 border-l-2 border-mint pl-4 text-paper/75 italic;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
