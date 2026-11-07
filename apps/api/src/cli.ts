@@ -4,6 +4,7 @@ import path from "node:path";
 import { argValue, hasFlag, repoRoot, serviceClient, triggerRevalidate } from "./env";
 import { importManualPayouts, validateCsv } from "./import-payouts";
 import { runIngest } from "./ingest";
+import { importLocalStoreToSupabase } from "./import-local-store";
 import { writeSeedSql } from "./seed-sql";
 
 const [command, ...rest] = process.argv.slice(2);
@@ -43,11 +44,16 @@ async function importCsv() {
   await triggerRevalidate();
 }
 
+async function importLocal() {
+  await importLocalStoreToSupabase();
+}
+
 async function main() {
   if (command === "ingest") return ingest();
   if (command === "import") return importCsv();
+  if (command === "import-local") return importLocal();
   if (command === "seed-sql") return writeSeedSql();
-  console.error("usage: tsx src/cli.ts <ingest|import|seed-sql>");
+  console.error("usage: tsx src/cli.ts <ingest|import|import-local|seed-sql>");
   process.exit(1);
 }
 

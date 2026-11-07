@@ -325,6 +325,7 @@ async function ingestChain(
     historyFrom = Number(state.from_block);
     lastBlock = Number(state.last_block);
     fromBlock = lastBlock + 1;
+    console.log(`[${id}] resume from block ${fromBlock} (cursor last_block=${lastBlock})`);
   } else if (method === "logs") {
     const sinceTs = Math.floor(new Date(opts.since ?? DEFAULT_SINCE).getTime() / 1000);
     console.log(`[${id}] first getLogs run, locating start block for ${new Date(sinceTs * 1000).toISOString()}`);

@@ -9,7 +9,8 @@
     "ingest": "tsx src/cli.ts ingest",
     "import": "tsx src/cli.ts import",
     "seed-sql": "tsx src/cli.ts seed-sql",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "import-local": "tsx src/cli.ts import-local"
   },
   "dependencies": {
     "@hono/node-server": "^1.19.6",

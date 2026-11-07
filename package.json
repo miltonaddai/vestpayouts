@@ -19,7 +19,8 @@
     "db:seed-sql": "yarn workspace @vestpayouts/api seed-sql",
     "db:types": "supabase gen types typescript --local > packages/shared/src/database.types.ts",
     "db:start": "supabase start",
-    "db:reset": "supabase db reset"
+    "db:reset": "supabase db reset",
+    "payouts:import-local": "yarn workspace @vestpayouts/api import-local"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",

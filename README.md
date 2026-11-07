@@ -55,7 +55,7 @@ yarn dev
 
 `yarn dev:web` and `yarn dev:api` start one of them. With no Supabase keys on the website, pages read real on-chain rows from `data/onchain-store.json` after you run `yarn ingest`. If that file is missing, every figure is an in-memory **sample**. The website never calls Alchemy; ingest runs only in `apps/api`.
 
-`CLICK_LOG_SECRET` and `REVALIDATE_SECRET` must match in the two env files. Recommended ingest cadence is every 12 minutes (`INGEST_CRON=*/12 * * * *`). Leave `INGEST_CRON` empty if you do not want `yarn dev` to scan the chains on its own.
+`CLICK_LOG_SECRET` and `REVALIDATE_SECRET` must match in the two env files. Recommended ingest cadence is every 10 minutes (`INGEST_CRON=*/10 * * * *`). Leave `INGEST_CRON` empty if you do not want `yarn dev` to scan the chains on its own.
 
 ### Local Supabase
 
@@ -103,7 +103,7 @@ yarn ingest -- --max-blocks 4000
 yarn ingest -- --method logs
 ```
 
-The extra `--` lets Yarn forward the flags. On a long-running API, set `INGEST_CRON` to `*/12 * * * *` (every 12 minutes, UTC) or call `POST /internal/ingest` with `Authorization: Bearer $CRON_SECRET`. `.github/workflows/ingest.yml` runs the CLI hourly when the repository secrets are set. Incremental Alchemy runs are typically one request per chain.
+The extra `--` lets Yarn forward the flags. On a long-running API, set `INGEST_CRON` to `*/10 * * * *` (every 10 minutes, UTC) or call `POST /internal/ingest` with `Authorization: Bearer $CRON_SECRET`. `.github/workflows/ingest.yml` runs the CLI hourly when the repository secrets are set. Incremental Alchemy runs are typically one request per chain.
 
 A row proves Vest's contract sent that much USDC to that wallet. It does not, by itself, prove the money was funded-account profit, because ordinary exchange withdrawals leave through the same contract. That limit is written up at `/methodology`.
 
@@ -121,6 +121,16 @@ yarn payouts:import -- data/payouts.example.csv
 ```
 
 Columns: `paid_at,amount_usd,chain,tx_hash,wallet,trader,proof_url,note`. Only `paid_at` and `amount_usd` are required. A row whose `tx_hash` matches an ingested payout adds the trader name and proof link to that payout instead of inserting a duplicate.
+
+### 4. Import the local JSON store into Supabase
+
+If payouts were ingested into `data/onchain-store.json` before Supabase was connected:
+
+```bash
+yarn payouts:import-local
+```
+
+The command upserts payouts on `(chain, tx_hash, log_index)`, writes `ingest_state` cursors, and copies any wallet aliases into `wallets`. It does not call Alchemy. After it finishes, `yarn ingest` resumes from `last_block + 1`. Leave `INGEST_STORE` unset (or set it to `supabase`) so later ingest writes go to Postgres instead of the JSON file.
 
 ## How the database is locked down
 
