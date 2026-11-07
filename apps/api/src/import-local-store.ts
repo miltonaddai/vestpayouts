@@ -5,6 +5,7 @@
  */
 import type { ChainId, PayoutInsert } from "@vestpayouts/shared";
 import { serviceClient, triggerRevalidate } from "./env";
+import { refreshPayoutStats } from "./refresh-stats";
 import { LOCAL_STORE_REL, readLocalStore, type LocalPayout } from "./local-store";
 
 const BATCH = 500;
@@ -111,8 +112,11 @@ export async function importLocalStoreToSupabase() {
     .order("chain");
   if (stateError) throw new Error(`ingest_state read failed: ${stateError.message}`);
 
+  await refreshPayoutStats();
   const { data: summary, error: summaryError } = await db.rpc("payout_summary");
-  if (summaryError) throw new Error(`payout_summary failed: ${summaryError.message}`);
+  if (summaryError) {
+    console.warn(`import-local: payout_summary failed: ${summaryError.message}`);
+  }
 
   console.log(`import-local: supabase payouts count=${count}`);
   console.log(`import-local: supabase ingest_state=${JSON.stringify(stateRows)}`);

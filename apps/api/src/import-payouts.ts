@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { refreshPayoutStats } from "./refresh-stats";
 import { manualPayoutSchema, parseCsv, type Database, type ManualPayoutInput, type PayoutInsert } from "@vestpayouts/shared";
 
 type Db = SupabaseClient<Database>;
@@ -65,5 +66,6 @@ export async function importManualPayouts(db: Db, rows: ManualPayoutInput[]): Pr
     if (error) throw new Error(error.message);
     report.inserted = inserts.length;
   }
+  await refreshPayoutStats();
   return report;
 }

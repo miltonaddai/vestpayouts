@@ -35,6 +35,7 @@ import {
   useLocalPayoutStore,
 } from "./env";
 import { getLocalCursor, saveLocalCursor, upsertLocalPayouts } from "./local-store";
+import { refreshPayoutStats } from "./refresh-stats";
 import { hex, RangeTooLargeError, RequestCapError, RequestMeter, Rpc } from "./rpc";
 
 const DEFAULT_SINCE = "2026-10-01T00:00:00Z";
@@ -468,6 +469,7 @@ export async function runIngest(opts: IngestOpts = {}) {
     }
   }
   console.log(`ingest finish ${meter.summary()}`);
+  await refreshPayoutStats();
   await triggerRevalidate();
   return !failed;
 }

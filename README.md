@@ -73,7 +73,8 @@ CLI 3's `supabase status` does not print API keys. The local demo JWTs in the en
 1. Create a project at [supabase.com](https://supabase.com).
 2. Run `supabase/migrations/` (SQL editor, or `supabase link` then `supabase db push`).
 3. Optionally run `supabase/seed.sql`. Every seed row is `source = 'sample'` and is hidden once a real payout exists.
-4. Put the project URL and publishable key in `apps/web/.env.local` (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`), and the URL plus secret key in `apps/api/.env.local` (`SUPABASE_URL`, `SUPABASE_SECRET_KEY`). `NEXT_PUBLIC_SUPABASE_ANON_KEY` and `SUPABASE_SERVICE_ROLE_KEY` still work if you already use them.
+4. If public pages time out after importing a large local store, run `supabase/migrations/20261107203851_precomputed_payout_stats.sql` in the SQL Editor (idempotent; safe to re-run). Ingest and import then refresh cached totals.
+5. Put the project URL and publishable key in `apps/web/.env.local` (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`), and the URL plus secret key in `apps/api/.env.local` (`SUPABASE_URL`, `SUPABASE_SECRET_KEY`). `NEXT_PUBLIC_SUPABASE_ANON_KEY` and `SUPABASE_SERVICE_ROLE_KEY` still work if you already use them.
 
 ## Environment
 

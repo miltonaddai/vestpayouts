@@ -74,6 +74,43 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["ingest_state"]["Insert"]>;
         Relationships: [];
       };
+
+      payout_stats: {
+        Row: { id: number; summary: Json; refreshed_at: string };
+        Insert: { id?: number; summary?: Json; refreshed_at?: string };
+        Update: Partial<Database["public"]["Tables"]["payout_stats"]["Insert"]>;
+        Relationships: [];
+      };
+      payout_daily_stats: {
+        Row: { day: string; amount: number; payouts: number };
+        Insert: { day: string; amount?: number; payouts?: number };
+        Update: Partial<Database["public"]["Tables"]["payout_daily_stats"]["Insert"]>;
+        Relationships: [];
+      };
+      payout_leaderboard_stats: {
+        Row: {
+          period: string;
+          wallet: string | null;
+          label: string | null;
+          total: number;
+          payouts: number;
+          largest: number;
+          last_paid_at: string;
+          rank: number;
+        };
+        Insert: {
+          period: string;
+          wallet?: string | null;
+          label?: string | null;
+          total: number;
+          payouts: number;
+          largest: number;
+          last_paid_at: string;
+          rank: number;
+        };
+        Update: Partial<Database["public"]["Tables"]["payout_leaderboard_stats"]["Insert"]>;
+        Relationships: [];
+      };
       referral_clicks: {
         Row: {
           id: number;
@@ -118,6 +155,7 @@ export interface Database {
     };
     Functions: {
       payout_summary: { Args: Record<PropertyKey, never>; Returns: Json };
+      refresh_payout_stats: { Args: Record<PropertyKey, never>; Returns: Json };
       payout_daily: { Args: { days?: number }; Returns: { day: string; amount: number; payouts: number }[] };
       payout_leaderboard: {
         Args: { period?: string; max_rows?: number };

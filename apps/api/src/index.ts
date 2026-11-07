@@ -6,6 +6,7 @@ import { adminConfigured, bearer, issueAdminToken, passwordOk, secretOk, tokenOk
 import { hasSupabaseWrite, serviceClient, triggerRevalidate } from "./env";
 import { importManualPayouts, validateCsv } from "./import-payouts";
 import { runIngest } from "./ingest";
+import { refreshPayoutStats } from "./refresh-stats";
 
 const app = new Hono();
 let ingesting = false;
@@ -79,6 +80,7 @@ app.post("/admin/wallets", async (c) => {
   if (!display_name || display_name.length > 60) return c.json({ error: "Display name is required (60 characters max)." }, 400);
   const { error } = await serviceClient().from("wallets").upsert({ address, display_name, x_handle: x_handle || null });
   if (error) return c.json({ error: error.message }, 500);
+  await refreshPayoutStats();
   await triggerRevalidate();
   return c.json({ ok: true });
 });
@@ -87,6 +89,7 @@ app.delete("/admin/samples", async (c) => {
   if (!requireAdmin(c.req.header("authorization"))) return c.json({ error: "Unauthorized" }, 401);
   const { error, count } = await serviceClient().from("payouts").delete({ count: "exact" }).eq("source", "sample");
   if (error) return c.json({ error: error.message }, 500);
+  await refreshPayoutStats();
   await triggerRevalidate();
   return c.json({ removed: count ?? 0 });
 });
