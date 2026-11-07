@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { VEST_BLOCK_PATH } from "@/components/brand/vest-block";
 
 export const OG_SIZE = { width: 1200, height: 630 };
 
@@ -22,12 +23,8 @@ export function ogCard({ eyebrow, title, value, footer }: { eyebrow: string; tit
       >
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
           <svg width="56" height="56" viewBox="0 0 32 32">
-            <rect width="32" height="32" fill="#ffffff" />
-            <rect x="0.5" y="0.5" width="31" height="31" fill="none" stroke="#d9dadd" />
-            <path d="M10 7.5h8.2L23.5 13V24.5a1.5 1.5 0 0 1-1.5 1.5H10a1.5 1.5 0 0 1-1.5-1.5V9A1.5 1.5 0 0 1 10 7.5z" fill="none" stroke="#0e1012" strokeWidth="1.6" />
-            <path d="M18.2 7.5V13H23.5" fill="none" stroke="#0e1012" strokeWidth="1.6" />
-            <rect x="11.2" y="16.2" width="9.2" height="2" fill="#2f4cff" />
-            <rect x="11.2" y="20.2" width="6" height="2" fill="#2f4cff" />
+            <rect width="32" height="32" fill="#0e1012" />
+            <path fill="#ffffff" d={VEST_BLOCK_PATH} />
           </svg>
           <div style={{ display: "flex", fontSize: 32, fontWeight: 500, letterSpacing: -0.5 }}>VestPayouts</div>
           <div style={{ display: "flex", marginLeft: "auto", fontSize: 18, color: "#60636a", letterSpacing: 1, textTransform: "uppercase" }}>{eyebrow}</div>
