@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
+import { HeaderNav } from "@/components/layout/header-nav";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
-import { NAV } from "@/lib/site";
 
 export function SiteHeader() {
   return (
@@ -25,17 +25,7 @@ export function SiteHeader() {
           <Logo />
         </Link>
         <div className="hidden min-w-0 lg:flex lg:flex-1">
-          <nav id="nav-scroll" aria-label="Main" className="flex min-w-0 flex-1 items-stretch">
-            {NAV.map((n) => (
-              <Link
-                key={n.href}
-                href={n.href}
-                className="flex h-full items-center justify-center border-r border-line px-4 py-3 leading-none whitespace-nowrap text-sub uppercase hover:text-ink lg:px-5 lg:py-4"
-              >
-                {n.label}
-              </Link>
-            ))}
-          </nav>
+          <HeaderNav />
           <ThemeToggle />
         </div>
         <div className="ml-auto flex items-center justify-end px-3 py-3.5 text-[11px] lg:ml-0 lg:border-l lg:border-line lg:px-6 lg:text-[12px]">

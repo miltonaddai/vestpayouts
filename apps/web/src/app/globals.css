@@ -336,6 +336,18 @@
     left: calc(100% - var(--split-arrow-pad-x) - var(--split-arrow-glyph));
   }
 
+  .header-nav-link {
+    color: var(--color-sub);
+    transition: background-color 180ms ease, color 180ms ease;
+  }
+  .header-nav-link[aria-current="page"] {
+    color: var(--color-ink);
+  }
+  .header-nav-link:is(:hover, :focus-visible) {
+    background-color: var(--color-signal);
+    color: var(--background);
+  }
+
   /* Shared hover/focus for any control whose arrow uses .arrow-cta-icon */
   .arrow-cta-icon {
     display: inline-block;
@@ -422,7 +434,8 @@
   .split-cta-arrow,
   .split-cta-label,
   .split-cta::before,
-  .split-cta .split-cta-arrow .arrow-cta-icon {
+  .split-cta .split-cta-arrow .arrow-cta-icon,
+  .header-nav-link {
     transition: none;
   }
   .arrow-cta:is(:hover, :focus-visible) .arrow-cta-icon,
