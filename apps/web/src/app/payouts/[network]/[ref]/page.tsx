@@ -97,7 +97,7 @@ export default async function PayoutPage({ params }: { params: Promise<{ network
           )}
           {main.source === "manual" && <span className="text-xs text-amber">Reported payout, not yet matched on-chain</span>}
         </div>
-        <h1 className="mt-3 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">
+        <h1 className="mt-3 max-w-full text-[clamp(1.75rem,8vw,2.25rem)] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">
           <span className="tabular font-mono text-green">{formatUsd(total, true)}</span> Vest payout
         </h1>
         <p className="mt-3 text-lg text-sub">

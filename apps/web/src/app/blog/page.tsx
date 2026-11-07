@@ -16,7 +16,7 @@ export default function BlogIndexPage() {
     <div className="mx-auto max-w-3xl px-6 pt-8 md:px-14">
       <Breadcrumbs items={[{ name: "Guides", path: "/blog" }]} />
       <p className="meta mt-6">§ Writing</p>
-      <h1 className="mt-3 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">Guides</h1>
+      <h1 className="mt-3 max-w-full text-[clamp(1.75rem,8vw,2.25rem)] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">Guides</h1>
       <p className="mt-4 text-lg text-sub">
         Practical writing about getting paid on Vest. Numbers inside the articles update from the live payout database.
       </p>

@@ -133,7 +133,7 @@ export function PayoutExplorer({ initial, isSample }: { initial: PayoutPage; isS
               value={qDraft}
               onChange={(e) => setQDraft(e.target.value)}
               placeholder="0x…"
-              className="h-8 font-mono"
+              className="font-mono"
               spellCheck={false}
             />
             <Button type="submit" variant="secondary" aria-label="Search payouts">

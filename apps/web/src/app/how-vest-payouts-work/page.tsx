@@ -27,7 +27,7 @@ export default function HowPayoutsWorkPage() {
       <div className="mx-auto max-w-3xl px-6 pt-8 md:px-14">
         <Breadcrumbs items={[{ name: "How Vest payouts work", path: "/how-vest-payouts-work" }]} />
         <p className="meta mt-6">Guide</p>
-        <h1 className="mt-3 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">How Vest payouts work</h1>
+        <h1 className="mt-3 max-w-full text-[clamp(1.75rem,8vw,2.25rem)] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">How Vest payouts work</h1>
         <p className="mt-4 text-lg text-sub">
           Vest pays traders in USDC, in two distinct steps. Neither one is a bank transfer, and both leave a trail you can check.
         </p>

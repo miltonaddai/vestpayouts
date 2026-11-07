@@ -20,7 +20,7 @@ export default function FaqPage() {
       <div className="mx-auto max-w-3xl px-6 pt-8 md:px-14">
         <Breadcrumbs items={[{ name: "FAQ", path: "/faq" }]} />
         <p className="meta mt-6">§ Questions</p>
-        <h1 className="mt-3 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">Vest payout FAQ</h1>
+        <h1 className="mt-3 max-w-full text-[clamp(1.75rem,8vw,2.25rem)] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">Vest payout FAQ</h1>
         <p className="mt-4 text-lg text-sub">
           Short answers. The longer versions live in the <a className="text-ink underline decoration-line underline-offset-4 hover:decoration-signal" href="/how-vest-payouts-work">payout guide</a> and the <a className="text-ink underline decoration-line underline-offset-4 hover:decoration-signal" href="/methodology">methodology</a>.
         </p>

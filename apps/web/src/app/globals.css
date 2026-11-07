@@ -245,6 +245,7 @@
     isolation: isolate;
     overflow: hidden;
     width: 100%;
+    min-height: 44px;
     align-items: stretch;
     font-family: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
     font-size: 12px;
@@ -373,7 +374,9 @@
     @apply font-semibold text-ink;
   }
   .prose-tape table {
-    @apply my-6 w-full border-collapse border border-line text-left text-sm;
+    @apply my-6 w-full max-w-full border-collapse border border-line text-left text-sm;
+    display: block;
+    overflow-x: auto;
   }
   .prose-tape th {
     @apply border-b border-line bg-paper py-2.5 px-3 font-mono text-[11px] font-medium tracking-[0.04em] text-sub uppercase;
@@ -382,7 +385,7 @@
     @apply border-b border-line px-3 py-2.5 align-top;
   }
   .prose-tape code {
-    @apply bg-paper px-1.5 py-0.5 font-mono text-[0.85em] text-ink;
+    @apply break-all bg-paper px-1.5 py-0.5 font-mono text-[0.85em] text-ink;
   }
   .prose-tape blockquote {
     @apply my-6 border-l-2 border-signal pl-4 text-sub;

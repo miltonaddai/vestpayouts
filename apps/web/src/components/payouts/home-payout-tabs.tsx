@@ -147,7 +147,7 @@ export function HomePayoutTabs({
               aria-controls={panelId}
               tabIndex={selected ? 0 : -1}
               className={cn(
-                "inline-flex items-center gap-2 border-r border-line px-4 py-2.5 font-mono text-[12px] tracking-[0.02em] last:border-r-0",
+                "inline-flex min-h-11 items-center gap-2 border-r border-line px-4 py-2.5 font-mono text-[12px] tracking-[0.02em] last:border-r-0",
                 selected ? "bg-ink text-background" : "bg-background text-sub hover:text-ink",
               )}
             >

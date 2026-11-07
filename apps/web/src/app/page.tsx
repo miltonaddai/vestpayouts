@@ -60,11 +60,11 @@ export default async function HomePage() {
         <div className="relative z-10 px-6 py-10 md:px-14 md:py-20">
           <div className="meta mb-8">§ 00 — Payout specification</div>
           <div className="grid gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(16rem,1fr)] lg:gap-16">
-            <h1 className="m-0 text-[44px] leading-[0.94] font-medium tracking-[-0.04em] text-ink md:text-[80px] lg:text-[96px]">
+            <h1 className="m-0 max-w-full text-[clamp(1.875rem,9.2vw,2.75rem)] leading-[0.94] font-medium tracking-[-0.04em] text-ink md:text-[80px] lg:text-[96px]">
               <VestHeroHeading>Vest payouts,</VestHeroHeading>
               <br />
               tracked live
-              <span className="mt-3 block text-[22px] tracking-[-0.03em] md:text-[40px] lg:text-[48px]">
+              <span className="mt-3 block text-[clamp(1.125rem,4.8vw,1.375rem)] tracking-[-0.03em] md:text-[40px] lg:text-[48px]">
                 on-chain, with proof
               </span>
             </h1>

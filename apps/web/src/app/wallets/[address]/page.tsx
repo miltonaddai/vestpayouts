@@ -50,7 +50,7 @@ export default async function WalletPage({ params }: { params: Promise<{ address
           { name, path: `/wallets/${wallet.address}` },
         ]}
       />
-      <h1 className="mt-5 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[48px]">{name}</h1>
+      <h1 className="mt-5 max-w-full break-words text-[clamp(1.75rem,8vw,2.25rem)] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[48px]">{name}</h1>
       <p className="mt-2 font-mono text-sm break-all text-muted-foreground">{wallet.address}</p>
       {wallet.xHandle && (
         <p className="mt-2 text-sm">

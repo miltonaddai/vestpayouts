@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { ThemeInit } from "@/components/layout/theme-toggle";
 import { StickyMobileCta } from "@/components/referral/sticky-mobile-cta";
 import { JsonLd } from "@/components/seo/json-ld";
 import { THEME_INIT_SCRIPT } from "@/lib/theme";
@@ -45,13 +46,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
-  colorScheme: "light dark",
+  themeColor: "#0e1012",
+  colorScheme: "dark light",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
@@ -62,6 +63,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         >
           Skip to content
         </a>
+        <ThemeInit />
         <JsonLd data={[organizationLd(), websiteLd()]} />
         <SiteHeader />
         <main id="main" className="min-w-0 max-w-full flex-1">

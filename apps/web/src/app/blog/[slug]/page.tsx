@@ -56,7 +56,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           {post.readingMinutes} min read
           {post.updated !== post.published && ` · updated ${post.updated}`}
         </p>
-        <h1 className="mt-3 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">{post.title}</h1>
+        <h1 className="mt-3 max-w-full text-[clamp(1.75rem,8vw,2.25rem)] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">{post.title}</h1>
         <p className="mt-4 text-lg text-sub">{post.description}</p>
       </div>
       <article className="prose-tape mx-auto max-w-3xl px-4 pt-2 sm:px-6">

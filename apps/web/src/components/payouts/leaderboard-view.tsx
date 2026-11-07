@@ -42,7 +42,7 @@ export async function LeaderboardView({ period }: { period: Period }) {
       <div className="px-6 pt-8 md:px-14">
         <Breadcrumbs items={[{ name: "Leaderboard", path: "/leaderboard" }]} />
         <p className="meta mt-6">§ 00 — Rankings</p>
-        <h1 className="mt-3 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">
+        <h1 className="mt-3 max-w-full text-[clamp(1.75rem,8vw,2.25rem)] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">
           <VestHeroHeading>Vest payout leaderboard</VestHeroHeading>
         </h1>
         <p className="mt-4 max-w-2xl text-[16px] leading-[1.6] text-sub">
@@ -64,7 +64,7 @@ export async function LeaderboardView({ period }: { period: Period }) {
               href={t.href}
               aria-current={t.period === period ? "page" : undefined}
               className={cn(
-                "border-r border-line px-4 py-2.5 font-mono text-[12px] tracking-[0.04em] uppercase last:border-r-0",
+                "inline-flex min-h-11 items-center border-r border-line px-4 py-2.5 font-mono text-[12px] tracking-[0.04em] uppercase last:border-r-0",
                 t.period === period ? "bg-ink text-background" : "bg-background text-sub hover:text-ink",
               )}
             >

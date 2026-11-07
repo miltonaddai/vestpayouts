@@ -42,8 +42,8 @@ export function VestHeroHeading({
   className?: string;
 }) {
   return (
-    <span className={cn("inline-flex items-baseline gap-[0.16em]", className)}>
-      <VestHeroIcon />
+    <span className={cn(className)}>
+      <VestHeroIcon className="mr-[0.16em] inline-block align-baseline" />
       {children}
     </span>
   );

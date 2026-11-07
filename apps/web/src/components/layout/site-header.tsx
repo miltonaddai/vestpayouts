@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
+import { MobileNav } from "@/components/layout/mobile-nav";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { NAV } from "@/lib/site";
 
@@ -15,16 +16,16 @@ export function SiteHeader() {
           </Link>
         </p>
       </div>
-      <div className="flex min-w-0 flex-wrap items-stretch">
+      <div className="flex min-w-0 items-stretch">
         <Link
           href="/"
           aria-label="VestPayouts home"
-          className="order-1 flex shrink-0 items-center px-5 py-3.5 lg:border-r lg:border-line lg:px-6"
+          className="flex shrink-0 items-center px-4 py-3.5 lg:border-r lg:border-line lg:px-6"
         >
           <Logo />
         </Link>
-        <div className="order-3 flex w-full min-w-0 border-t border-line lg:order-2 lg:w-auto lg:flex-1 lg:border-t-0">
-          <nav id="nav-scroll" aria-label="Main" className="nav-scroll flex min-w-0 flex-1 overflow-x-auto lg:overflow-x-visible">
+        <div className="hidden min-w-0 lg:flex lg:flex-1">
+          <nav id="nav-scroll" aria-label="Main" className="flex min-w-0 flex-1">
             {NAV.map((n) => (
               <Link
                 key={n.href}
@@ -37,12 +38,16 @@ export function SiteHeader() {
           </nav>
           <ThemeToggle />
         </div>
-        <div className="order-2 ml-auto flex items-center justify-end border-line px-4 py-3.5 text-[11px] lg:order-3 lg:ml-0 lg:border-l lg:px-6 lg:text-[12px]">
+        <div className="ml-auto flex items-center justify-end px-3 py-3.5 text-[11px] lg:ml-0 lg:border-l lg:border-line lg:px-6 lg:text-[12px]">
           <span className="text-green" aria-hidden="true">
             ●
           </span>
-          <span className="ml-2 font-bold tracking-[0.04em] text-green uppercase"><span className="sm:hidden">Live</span><span className="hidden sm:inline">Tracking payouts</span></span>
+          <span className="ml-2 font-bold tracking-[0.04em] text-green uppercase">
+            <span className="sm:hidden">Live</span>
+            <span className="hidden sm:inline">Tracking payouts</span>
+          </span>
         </div>
+        <MobileNav />
       </div>
     </header>
   );

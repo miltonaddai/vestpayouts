@@ -38,7 +38,7 @@ export default async function PayoutsPage() {
       <div className="px-6 pt-8 md:px-14">
         <Breadcrumbs items={[{ name: "Vest payouts", path: "/payouts" }]} />
         <p className="meta mt-6">§ 00 — Ledger</p>
-        <h1 className="mt-3 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">
+        <h1 className="mt-3 max-w-full text-[clamp(1.75rem,8vw,2.25rem)] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">
           Every <VestHeroHeading>Vest</VestHeroHeading> payout, with proof
         </h1>
         <p className="mt-4 max-w-3xl text-[16px] leading-[1.6] text-sub">

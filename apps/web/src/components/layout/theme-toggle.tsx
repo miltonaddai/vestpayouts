@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { applyTheme } from "@/lib/theme";
+import { applyTheme, readStoredTheme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 function SunIcon({ className }: { className?: string }) {
@@ -26,8 +26,16 @@ function MoonIcon({ className }: { className?: string }) {
   );
 }
 
+export function ThemeInit() {
+  useEffect(() => {
+    const stored = readStoredTheme();
+    applyTheme(stored ?? "dark");
+  }, []);
+  return null;
+}
+
 export function ThemeToggle({ className }: { className?: string }) {
-  const [dark, setDark] = useState(false);
+  const [dark, setDark] = useState(true);
 
   useEffect(() => {
     setDark(document.documentElement.classList.contains("dark"));

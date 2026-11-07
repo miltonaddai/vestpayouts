@@ -14,7 +14,7 @@ export default function AboutPage() {
     <div className="mx-auto max-w-3xl px-6 pt-8 md:px-14">
       <Breadcrumbs items={[{ name: "About", path: "/about" }]} />
       <p className="meta mt-6">§ Company</p>
-      <h1 className="mt-3 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">About VestPayouts</h1>
+      <h1 className="mt-3 max-w-full text-[clamp(1.75rem,8vw,2.25rem)] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">About VestPayouts</h1>
       <p className="mt-6 border border-line bg-orange-soft px-5 py-4 text-sm leading-relaxed text-ink">
         <strong className="text-orange">Independent. Not affiliated with or endorsed by Vest.</strong> {NOT_AFFILIATED}
       </p>
