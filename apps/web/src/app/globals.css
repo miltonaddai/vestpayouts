@@ -240,11 +240,16 @@
   }
 
   .split-cta {
+    --split-arrow-pad-x: 0.875rem;
+    --split-arrow-glyph: 1em;
+    --split-arrow-lane: calc((var(--split-arrow-pad-x) * 2) + var(--split-arrow-glyph));
+    --split-label-pad-x: 1.125rem;
     display: inline-flex;
     position: relative;
     isolation: isolate;
     overflow: hidden;
     width: 100%;
+    max-width: 100%;
     min-height: 44px;
     align-items: stretch;
     font-family: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
@@ -258,8 +263,12 @@
   }
   @media (min-width: 768px) {
     .split-cta {
-      width: auto;
+      width: max-content;
     }
+  }
+  /* Full-width variants (drawer, sticky bar, explicit w-full) keep stretching. */
+  .split-cta.w-full {
+    width: 100%;
   }
   /* Purple sweep: grows from the left arrow slab across the whole button. */
   .split-cta::before {
@@ -276,12 +285,21 @@
   .split-cta:is(:hover, :focus-visible)::before {
     transform: scaleX(1);
   }
+  /* Invisible matching lane on the right so the traveling glyph never sits on the label. */
+  .split-cta::after {
+    content: "\2192";
+    visibility: hidden;
+    pointer-events: none;
+    flex: 0 0 auto;
+    padding: 0.75rem var(--split-arrow-pad-x);
+  }
   .split-cta-arrow {
     display: grid;
     place-items: center;
+    flex: 0 0 auto;
     /* Keep static so the traveling glyph positions against `.split-cta`. */
     background: var(--color-signal);
-    padding: 0.75rem 0.875rem;
+    padding: 0.75rem var(--split-arrow-pad-x);
     color: var(--background);
   }
   /* Reserve the rest-state arrow width after the glyph is positioned against the full button. */
@@ -293,19 +311,20 @@
     display: flex;
     position: relative;
     z-index: 2;
-    flex: 1;
+    flex: 1 1 auto;
     align-items: center;
     justify-content: center;
     background: transparent;
-    padding: 0.75rem 1.125rem;
+    padding: 0.75rem var(--split-label-pad-x);
     color: var(--background);
     white-space: nowrap;
+    overflow: hidden;
     transition: color 360ms ease;
   }
   .split-cta .split-cta-arrow .arrow-cta-icon {
     position: absolute;
     top: 50%;
-    left: 0.875rem;
+    left: var(--split-arrow-pad-x);
     z-index: 3;
     transform: translateY(-50%);
     transition: left 360ms ease;
@@ -314,7 +333,7 @@
     color: var(--background);
   }
   .split-cta:is(:hover, :focus-visible) .split-cta-arrow .arrow-cta-icon {
-    left: calc(100% - 0.875rem - 1em);
+    left: calc(100% - var(--split-arrow-pad-x) - var(--split-arrow-glyph));
   }
 
   /* Shared hover/focus for any control whose arrow uses .arrow-cta-icon */
