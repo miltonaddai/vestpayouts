@@ -13,7 +13,7 @@ export function LiveDot({ className }: { className?: string }) {
 
 export function PayoutFeed({ payouts, title = "Live Vest payout feed", syncedAt }: { payouts: Payout[]; title?: string; syncedAt: number | null }) {
   return (
-    <section aria-labelledby="feed-title" className="border border-line bg-white">
+    <section aria-labelledby="feed-title" className="border border-line bg-background">
       <div className="flex items-center justify-between gap-3 border-b border-line bg-paper px-5 py-3">
         <div className="flex items-center gap-2.5">
           <LiveDot />

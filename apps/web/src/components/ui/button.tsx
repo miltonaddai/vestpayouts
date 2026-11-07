@@ -8,9 +8,9 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-ink text-white hover:bg-ink/90",
+        default: "bg-ink text-background hover:bg-ink/90",
         outline:
-          "border-line bg-white text-ink hover:bg-paper aria-expanded:bg-paper",
+          "border-line bg-background text-ink hover:bg-paper aria-expanded:bg-paper",
         secondary:
           "bg-paper text-ink hover:bg-ink-soft aria-expanded:bg-paper",
         ghost:

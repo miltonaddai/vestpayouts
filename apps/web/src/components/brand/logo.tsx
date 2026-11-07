@@ -4,18 +4,18 @@ import { cn } from "@/lib/utils";
 export function LogoMark({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 32 32" aria-hidden="true" className={cn("size-8", className)}>
-      <rect width="32" height="32" fill="#ffffff" />
-      <rect x="0.5" y="0.5" width="31" height="31" fill="none" stroke="#d9dadd" />
+      <rect width="32" height="32" className="fill-background" />
+      <rect x="0.5" y="0.5" width="31" height="31" fill="none" className="stroke-line" />
       <path
         d="M10 7.5h8.2L23.5 13V24.5a1.5 1.5 0 0 1-1.5 1.5H10a1.5 1.5 0 0 1-1.5-1.5V9A1.5 1.5 0 0 1 10 7.5z"
         fill="none"
-        stroke="#0e1012"
+        className="stroke-ink"
         strokeWidth="1.6"
         strokeLinejoin="miter"
       />
-      <path d="M18.2 7.5V13H23.5" fill="none" stroke="#0e1012" strokeWidth="1.6" strokeLinejoin="miter" />
-      <rect x="11.2" y="16.2" width="9.2" height="2" fill="#2f4cff" />
-      <rect x="11.2" y="20.2" width="6" height="2" fill="#2f4cff" opacity="0.45" />
+      <path d="M18.2 7.5V13H23.5" fill="none" className="stroke-ink" strokeWidth="1.6" strokeLinejoin="miter" />
+      <rect x="11.2" y="16.2" width="9.2" height="2" className="fill-signal" />
+      <rect x="11.2" y="20.2" width="6" height="2" className="fill-signal" opacity="0.45" />
     </svg>
   );
 }

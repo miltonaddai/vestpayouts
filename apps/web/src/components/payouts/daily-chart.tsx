@@ -9,7 +9,7 @@ export function DailyChart({ series, title }: { series: { date: number; amount: 
   const total = series.reduce((s, d) => s + d.amount, 0);
   const first = series[0];
   return (
-    <figure className="min-w-0 max-w-full overflow-hidden border border-line bg-white p-5">
+    <figure className="min-w-0 max-w-full overflow-hidden border border-line bg-background p-5">
       <figcaption className="flex items-baseline justify-between gap-3">
         <span className="font-mono text-[12px] font-medium tracking-[0.04em] text-ink uppercase">{title}</span>
         <span className="tabular font-mono text-sm text-sub">{formatUsdCompact(total)}</span>

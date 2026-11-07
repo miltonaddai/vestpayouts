@@ -16,7 +16,7 @@ export function Stat({
   const color =
     tone === "signal" ? "text-signal" : tone === "green" ? "text-green" : tone === "orange" ? "text-orange" : highlight ? "text-signal" : "text-ink";
   return (
-    <div className="border border-line bg-white px-4 py-5 md:px-5 md:py-6">
+    <div className="border border-line bg-background px-4 py-5 md:px-5 md:py-6">
       <dt className={cn("meta", color)}>{label}</dt>
       <dd className={cn("tabular mt-3 font-heading text-[28px] leading-none font-medium tracking-[-0.03em] sm:text-[34px]", color)}>
         {value}

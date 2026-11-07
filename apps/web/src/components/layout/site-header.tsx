@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { NAV } from "@/lib/site";
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 min-w-0 border-b border-line bg-white/95 font-mono text-[12px] backdrop-blur">
+    <header className="sticky top-0 z-50 min-w-0 border-b border-line bg-background/95 font-mono text-[12px] backdrop-blur">
       <div className="border-b border-line bg-orange-soft">
         <p className="flex flex-wrap items-center justify-center gap-x-2 px-4 py-2 text-center text-[11px] leading-5 tracking-[0.02em] text-sub sm:px-6">
           <span className="font-semibold text-orange">Independent tracker.</span>
@@ -22,8 +23,8 @@ export function SiteHeader() {
         >
           <Logo />
         </Link>
-        <div className="order-3 w-full min-w-0 border-t border-line lg:order-2 lg:w-auto lg:flex-1 lg:border-t-0">
-          <nav id="nav-scroll" aria-label="Main" className="nav-scroll flex max-w-full overflow-x-auto lg:overflow-x-visible">
+        <div className="order-3 flex w-full min-w-0 border-t border-line lg:order-2 lg:w-auto lg:flex-1 lg:border-t-0">
+          <nav id="nav-scroll" aria-label="Main" className="nav-scroll flex min-w-0 flex-1 overflow-x-auto lg:overflow-x-visible">
             {NAV.map((n, i) => (
               <Link
                 key={n.href}
@@ -35,8 +36,9 @@ export function SiteHeader() {
               </Link>
             ))}
           </nav>
+          <ThemeToggle />
         </div>
-        <div className="order-2 ml-auto flex items-center justify-end px-4 py-3.5 text-[11px] lg:order-3 lg:ml-0 lg:px-6 lg:text-[12px]">
+        <div className="order-2 ml-auto flex items-center justify-end border-line px-4 py-3.5 text-[11px] lg:order-3 lg:ml-0 lg:border-l lg:px-6 lg:text-[12px]">
           <span className="text-green" aria-hidden="true">
             ●
           </span>

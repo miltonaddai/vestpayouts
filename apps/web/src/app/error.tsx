@@ -11,7 +11,7 @@ export default function Error({ reset }: { error: Error & { digest?: string }; r
       <button
         type="button"
         onClick={() => reset()}
-        className="mt-6 bg-ink px-5 py-3 font-mono text-[12px] tracking-[0.04em] text-white uppercase"
+        className="mt-6 bg-ink px-5 py-3 font-mono text-[12px] tracking-[0.04em] text-background uppercase"
       >
         Try again
       </button>

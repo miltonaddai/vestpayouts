@@ -17,7 +17,7 @@ export function PayoutTable({ payouts, caption, showWallet = true }: { payouts: 
     );
   }
   return (
-    <div className="min-w-0 max-w-full overflow-x-auto border border-line bg-white">
+    <div className="min-w-0 max-w-full overflow-x-auto border border-line bg-background">
       <table className="w-full min-w-[640px] text-left text-sm">
         <caption className="sr-only">{caption}</caption>
         <thead className="border-b border-line bg-paper font-mono text-[11px] tracking-[0.04em] text-sub uppercase">

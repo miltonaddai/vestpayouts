@@ -87,7 +87,7 @@ export default async function AdminPage() {
       </p>
       {loadError && <p className="mt-4 text-sm text-coral">{loadError}</p>}
 
-      <section className="mt-8 border border-line bg-white p-5">
+      <section className="mt-8 border border-line bg-background p-5">
         <h2 className="text-lg font-medium text-ink">Add one payout</h2>
         <p className="mt-1 mb-4 text-sm text-muted-foreground">
           If the transaction hash matches a payout already ingested from the chain, the name and proof link are attached to that row instead of creating a duplicate.
@@ -95,7 +95,7 @@ export default async function AdminPage() {
         <AddPayoutForm />
       </section>
 
-      <section className="mt-6 border border-line bg-white p-5">
+      <section className="mt-6 border border-line bg-background p-5">
         <h2 className="text-lg font-medium text-ink">Import CSV</h2>
         <p className="mt-1 mb-4 text-sm text-muted-foreground">
           Header: <code className="text-green">paid_at,amount_usd,chain,tx_hash,wallet,trader,proof_url,note</code>. Only the first two columns are required. Lines starting with # are ignored.
@@ -103,7 +103,7 @@ export default async function AdminPage() {
         <ImportForm />
       </section>
 
-      <section className="mt-6 border border-line bg-white p-5">
+      <section className="mt-6 border border-line bg-background p-5">
         <h2 className="text-lg font-medium text-ink">Name a wallet</h2>
         <div className="mt-4">
           <AliasForm />

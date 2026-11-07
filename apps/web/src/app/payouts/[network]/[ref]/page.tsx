@@ -113,7 +113,7 @@ export default async function PayoutPage({ params }: { params: Promise<{ network
         <Stat label="Wallet total" value={wallet ? formatUsd(wallet.amount) : "—"} sub={wallet ? `${wallet.count} Vest payouts` : undefined} />
       </StatGrid>
 
-      <section aria-labelledby="proof" className="mt-10 border border-line bg-white p-6">
+      <section aria-labelledby="proof" className="mt-10 border border-line bg-background p-6">
         <h2 id="proof" className="text-xl font-medium tracking-[-0.02em] text-ink">
           Payout proof
         </h2>

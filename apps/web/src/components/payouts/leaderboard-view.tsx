@@ -63,7 +63,7 @@ export async function LeaderboardView({ period }: { period: Period }) {
               aria-current={t.period === period ? "page" : undefined}
               className={cn(
                 "border-r border-line px-4 py-2.5 font-mono text-[12px] tracking-[0.04em] uppercase last:border-r-0",
-                t.period === period ? "bg-ink text-white" : "bg-white text-sub hover:text-ink",
+                t.period === period ? "bg-ink text-background" : "bg-background text-sub hover:text-ink",
               )}
             >
               {PERIOD_LABEL[t.period]}
@@ -74,7 +74,7 @@ export async function LeaderboardView({ period }: { period: Period }) {
         {rows.length === 0 ? (
           <p className="mt-8 border border-dashed border-line px-6 py-14 text-center text-sub">No payouts in this window yet.</p>
         ) : (
-          <div className="mt-0 min-w-0 max-w-full overflow-x-auto border border-t-0 border-line bg-white">
+          <div className="mt-0 min-w-0 max-w-full overflow-x-auto border border-t-0 border-line bg-background">
             <table className="w-full min-w-[640px] text-left text-sm">
               <caption className="sr-only">Top Vest payout recipients, {PERIOD_LABEL[period].toLowerCase()}</caption>
               <thead className="border-b border-line bg-paper font-mono text-[11px] tracking-[0.04em] text-sub uppercase">

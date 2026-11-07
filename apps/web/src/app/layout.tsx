@@ -5,6 +5,7 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { StickyMobileCta } from "@/components/referral/sticky-mobile-cta";
 import { JsonLd } from "@/components/seo/json-ld";
+import { THEME_INIT_SCRIPT } from "@/lib/theme";
 import { organizationLd, websiteLd } from "@/lib/seo";
 import { SITE } from "@/lib/site";
 import "./globals.css";
@@ -45,16 +46,19 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: "#ffffff",
-  colorScheme: "light",
+  colorScheme: "light dark",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${grotesk.variable} ${mono.variable} antialiased`}>
-      <body className="flex min-h-dvh flex-col overflow-x-clip bg-white text-ink">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
+      <body className={`${grotesk.variable} ${mono.variable} antialiased flex min-h-dvh flex-col overflow-x-clip bg-background text-ink`}>
         <a
           href="#main"
-          className="sr-only z-50 bg-signal px-4 py-2 font-mono text-sm font-medium text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+          className="sr-only z-50 bg-signal px-4 py-2 font-mono text-sm font-medium text-background focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
         >
           Skip to content
         </a>
