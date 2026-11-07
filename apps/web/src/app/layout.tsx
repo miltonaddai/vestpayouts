@@ -59,7 +59,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className={`${grotesk.variable} ${mono.variable} antialiased flex min-h-dvh flex-col overflow-x-clip bg-background text-ink`}>
         <a
           href="#main"
-          className="sr-only z-50 bg-signal px-4 py-2 font-mono text-sm font-medium text-background focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+          className="sr-only z-50 bg-signal-strong px-4 py-2 font-mono text-sm font-medium text-signal-fg focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
         >
           Skip to content
         </a>

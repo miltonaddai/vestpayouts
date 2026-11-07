@@ -40,6 +40,8 @@
   --color-sub: var(--sub);
   --color-line: var(--line);
   --color-signal: var(--signal);
+  --color-signal-strong: var(--signal-strong);
+  --color-signal-fg: var(--signal-fg);
   --color-green: var(--green);
   --color-green-bright: var(--green-bright);
   --color-orange: var(--orange);
@@ -106,6 +108,8 @@
   --sub: #60636a;
   --line: #d9dadd;
   --signal: #2f4cff;
+  --signal-strong: #2f4cff;
+  --signal-fg: #ffffff;
   --green: #047857;
   --green-bright: #34d399;
   --orange: #b45309;
@@ -151,6 +155,8 @@
   --sub: #9a9da3;
   --line: #2c2f35;
   --signal: #6d82ff;
+  --signal-strong: #3e4eb8;
+  --signal-fg: #ffffff;
   --green: #3dcc9a;
   --green-bright: #34d399;
   --orange: #e8a04a;
@@ -275,7 +281,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: var(--color-signal);
+    background: var(--color-signal-strong);
     transform: scaleX(0);
     transform-origin: left center;
     transition: transform 360ms ease;
@@ -298,9 +304,9 @@
     place-items: center;
     flex: 0 0 auto;
     /* Keep static so the traveling glyph positions against `.split-cta`. */
-    background: var(--color-signal);
+    background: var(--color-signal-strong);
     padding: 0.75rem var(--split-arrow-pad-x);
-    color: var(--background);
+    color: var(--color-signal-fg);
   }
   /* Reserve the rest-state arrow width after the glyph is positioned against the full button. */
   .split-cta-arrow::after {
@@ -330,7 +336,7 @@
     transition: left 360ms ease;
   }
   .split-cta:is(:hover, :focus-visible) .split-cta-label {
-    color: var(--background);
+    color: var(--color-signal-fg);
   }
   .split-cta:is(:hover, :focus-visible) .split-cta-arrow .arrow-cta-icon {
     left: calc(100% - var(--split-arrow-pad-x) - var(--split-arrow-glyph));
@@ -344,8 +350,8 @@
     color: var(--color-ink);
   }
   .header-nav-link:is(:hover, :focus-visible) {
-    background-color: var(--color-signal);
-    color: var(--background);
+    background-color: var(--color-signal-strong);
+    color: var(--color-signal-fg);
   }
 
   /* Shared hover/focus for any control whose arrow uses .arrow-cta-icon */
