@@ -241,6 +241,9 @@
 
   .split-cta {
     display: inline-flex;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     width: 100%;
     align-items: stretch;
     font-family: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
@@ -250,32 +253,67 @@
     text-transform: uppercase;
     text-decoration: none;
     color: var(--background);
+    background-color: var(--color-ink);
   }
   @media (min-width: 768px) {
     .split-cta {
       width: auto;
     }
   }
+  /* Purple sweep: grows from the left arrow slab across the whole button. */
+  .split-cta::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--color-signal);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 360ms ease;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .split-cta:is(:hover, :focus-visible)::before {
+    transform: scaleX(1);
+  }
   .split-cta-arrow {
     display: grid;
     place-items: center;
+    /* Keep static so the traveling glyph positions against `.split-cta`. */
     background: var(--color-signal);
     padding: 0.75rem 0.875rem;
     color: var(--background);
   }
+  /* Reserve the rest-state arrow width after the glyph is positioned against the full button. */
+  .split-cta-arrow::after {
+    content: "\2192";
+    visibility: hidden;
+  }
   .split-cta-label {
     display: flex;
+    position: relative;
+    z-index: 2;
     flex: 1;
     align-items: center;
     justify-content: center;
-    background: var(--color-ink);
+    background: transparent;
     padding: 0.75rem 1.125rem;
     color: var(--background);
     white-space: nowrap;
+    transition: color 360ms ease;
   }
-  .split-cta-arrow,
-  .split-cta-label {
-    transition: background-color 200ms ease, color 200ms ease, box-shadow 200ms ease;
+  .split-cta .split-cta-arrow .arrow-cta-icon {
+    position: absolute;
+    top: 50%;
+    left: 0.875rem;
+    z-index: 3;
+    transform: translateY(-50%);
+    transition: left 360ms ease;
+  }
+  .split-cta:is(:hover, :focus-visible) .split-cta-label {
+    color: var(--background);
+  }
+  .split-cta:is(:hover, :focus-visible) .split-cta-arrow .arrow-cta-icon {
+    left: calc(100% - 0.875rem - 1em);
   }
 
   /* Shared hover/focus for any control whose arrow uses .arrow-cta-icon */
@@ -296,18 +334,11 @@
   .arrow-cta:is(:hover, :focus-visible) {
     color: var(--color-ink);
   }
-  :is(.arrow-cta, .split-cta):is(:hover, :focus-visible) .arrow-cta-icon {
+  .arrow-cta:is(:hover, :focus-visible) .arrow-cta-icon {
     transform: translateX(4px);
   }
-  :is(.arrow-cta, .split-cta):is(:hover, :focus-visible) .arrow-cta-icon-prev {
+  .arrow-cta:is(:hover, :focus-visible) .arrow-cta-icon-prev {
     transform: translateX(-4px);
-  }
-
-  /* Invert the split button to a solid ink fill (dark in light mode, light in dark mode). */
-  .split-cta:is(:hover, :focus-visible) .split-cta-arrow,
-  .split-cta:is(:hover, :focus-visible) .split-cta-label {
-    background-color: var(--color-ink);
-    color: var(--background);
   }
 
   /* Outline buttons that opt into .arrow-cta (pagination, etc.) */
@@ -367,11 +398,13 @@
   .arrow-cta,
   .arrow-cta-icon,
   .split-cta-arrow,
-  .split-cta-label {
+  .split-cta-label,
+  .split-cta::before,
+  .split-cta .split-cta-arrow .arrow-cta-icon {
     transition: none;
   }
-  :is(.arrow-cta, .split-cta):is(:hover, :focus-visible) .arrow-cta-icon,
-  :is(.arrow-cta, .split-cta):is(:hover, :focus-visible) .arrow-cta-icon-prev {
+  .arrow-cta:is(:hover, :focus-visible) .arrow-cta-icon,
+  .arrow-cta:is(:hover, :focus-visible) .arrow-cta-icon-prev {
     transform: none;
   }
 }
