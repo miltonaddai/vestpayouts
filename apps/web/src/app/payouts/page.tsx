@@ -34,14 +34,17 @@ export default async function PayoutsPage() {
           dateModified: summary.syncedAt ? new Date(summary.syncedAt).toISOString() : undefined,
         })}
       />
-      <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6">
+      <div className="px-6 pt-8 md:px-14">
         <Breadcrumbs items={[{ name: "Vest payouts", path: "/payouts" }]} />
-        <h1 className="mt-5 text-3xl font-bold text-paper sm:text-4xl">Every Vest payout, with proof</h1>
-        <p className="mt-3 max-w-3xl text-paper/75">
+        <p className="meta mt-6">§ 00 — Ledger</p>
+        <h1 className="mt-3 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">
+          Every Vest payout, with proof
+        </h1>
+        <p className="mt-4 max-w-3xl text-[16px] leading-[1.6] text-sub">
           This is the full list of Vest payouts VestPayouts has recorded
           {summary.firstPaidAt ? ` since ${formatDate(summary.firstPaidAt)}` : ""}. On-chain payouts link to their
           transaction, so you can confirm each one on a block explorer. New payouts are added automatically.{" "}
-          <Link href="/methodology" className="text-mint underline underline-offset-4">
+          <Link href="/methodology" className="text-ink underline decoration-line underline-offset-4 hover:decoration-signal">
             How we collect this data
           </Link>
           .
@@ -49,8 +52,8 @@ export default async function PayoutsPage() {
 
         <StatGrid className="mt-8">
           <Stat label="All-time total" value={formatUsd(summary.windows.all.amount)} highlight />
-          <Stat label="Payouts recorded" value={formatInt(summary.windows.all.count)} />
-          <Stat label="Wallets paid" value={formatInt(summary.windows.all.wallets)} />
+          <Stat label="Payouts recorded" value={formatInt(summary.windows.all.count)} tone="green" />
+          <Stat label="Wallets paid" value={formatInt(summary.windows.all.wallets)} tone="orange" />
           <Stat label="Paid last 7 days" value={formatUsd(summary.windows["7d"].amount)} />
         </StatGrid>
 
@@ -60,7 +63,7 @@ export default async function PayoutsPage() {
           </Suspense>
         </div>
 
-        <div className="mt-16">
+        <div className="mt-16 mb-4">
           <ReferralPanel
             placement="feed"
             title="Want your own payout on this list?"

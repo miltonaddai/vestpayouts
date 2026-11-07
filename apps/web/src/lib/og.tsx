@@ -14,29 +14,29 @@ export function ogCard({ eyebrow, title, value, footer }: { eyebrow: string; tit
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "64px 72px",
-          background: "radial-gradient(ellipse at 15% 0%, #123a2b 0%, #07090a 60%)",
-          color: "#eef3f1",
+          background: "#ffffff",
+          color: "#0e1012",
           fontFamily: "sans-serif",
+          border: "16px solid #0e1012",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
           <svg width="56" height="56" viewBox="0 0 32 32">
-            <rect width="32" height="32" rx="8" fill="#0d1112" />
-            <path d="M10 7.5h8.2L23.5 13V24.5a1.5 1.5 0 0 1-1.5 1.5H10a1.5 1.5 0 0 1-1.5-1.5V9A1.5 1.5 0 0 1 10 7.5z" fill="none" stroke="#94a3a0" strokeWidth="1.6" />
-            <path d="M18.2 7.5V13H23.5" fill="none" stroke="#94a3a0" strokeWidth="1.6" />
-            <rect x="11.2" y="16.2" width="9.2" height="2" rx="1" fill="#3ee0a1" />
-            <rect x="11.2" y="20.2" width="6" height="2" rx="1" fill="#8ff0c6" />
+            <rect width="32" height="32" fill="#ffffff" />
+            <rect x="0.5" y="0.5" width="31" height="31" fill="none" stroke="#d9dadd" />
+            <path d="M10 7.5h8.2L23.5 13V24.5a1.5 1.5 0 0 1-1.5 1.5H10a1.5 1.5 0 0 1-1.5-1.5V9A1.5 1.5 0 0 1 10 7.5z" fill="none" stroke="#0e1012" strokeWidth="1.6" />
+            <path d="M18.2 7.5V13H23.5" fill="none" stroke="#0e1012" strokeWidth="1.6" />
+            <rect x="11.2" y="16.2" width="9.2" height="2" fill="#2f4cff" />
+            <rect x="11.2" y="20.2" width="6" height="2" fill="#2f4cff" />
           </svg>
-          <div style={{ display: "flex", fontSize: 36, fontWeight: 700 }}>
-            Vest<span style={{ color: "#3ee0a1" }}>Payouts</span>
-          </div>
-          <div style={{ display: "flex", marginLeft: "auto", fontSize: 22, color: "#9aaaa6" }}>{eyebrow}</div>
+          <div style={{ display: "flex", fontSize: 32, fontWeight: 500, letterSpacing: -0.5 }}>VestPayouts</div>
+          <div style={{ display: "flex", marginLeft: "auto", fontSize: 18, color: "#60636a", letterSpacing: 1, textTransform: "uppercase" }}>{eyebrow}</div>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          {value && <div style={{ display: "flex", fontSize: 112, fontWeight: 800, color: "#3ee0a1", letterSpacing: -3 }}>{value}</div>}
-          <div style={{ display: "flex", fontSize: value ? 44 : 64, fontWeight: 700, lineHeight: 1.1, maxWidth: 1000 }}>{title}</div>
+          {value && <div style={{ display: "flex", fontSize: 108, fontWeight: 500, color: "#2f4cff", letterSpacing: -4 }}>{value}</div>}
+          <div style={{ display: "flex", fontSize: value ? 40 : 60, fontWeight: 500, lineHeight: 1.05, maxWidth: 1000, letterSpacing: -1 }}>{title}</div>
         </div>
-        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 22, color: "#9aaaa6" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 20, color: "#60636a" }}>
           <span>{footer ?? "Vest payouts, verified on-chain"}</span>
           <span>Independent · not affiliated with Vest</span>
         </div>

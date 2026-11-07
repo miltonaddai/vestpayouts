@@ -43,37 +43,37 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           type: "BlogPosting",
         })}
       />
-      <div className="mx-auto max-w-3xl px-4 pt-8 sm:px-6">
+      <div className="mx-auto max-w-3xl px-6 pt-8 md:px-14">
         <Breadcrumbs
           items={[
             { name: "Guides", path: "/blog" },
             { name: post.title, path: `/blog/${post.slug}` },
           ]}
         />
-        <p className="mt-6 text-xs tracking-wide text-muted-foreground uppercase">
+        <p className="meta mt-6">
           <time dateTime={post.published}>{post.published}</time>
           {" · "}
           {post.readingMinutes} min read
           {post.updated !== post.published && ` · updated ${post.updated}`}
         </p>
-        <h1 className="mt-3 text-3xl font-bold text-paper sm:text-5xl">{post.title}</h1>
-        <p className="mt-4 text-lg text-paper/75">{post.description}</p>
+        <h1 className="mt-3 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">{post.title}</h1>
+        <p className="mt-4 text-lg text-sub">{post.description}</p>
       </div>
       <article className="prose-tape mx-auto max-w-3xl px-4 pt-2 sm:px-6">
         <Content />
       </article>
       <aside className="mx-auto max-w-3xl px-4 pt-10 sm:px-6">
-        <h2 className="text-lg font-semibold text-paper">Keep reading</h2>
+        <h2 className="text-lg font-medium text-ink">Keep reading</h2>
         <ul className="mt-3 space-y-2">
           {more.map((p) => (
             <li key={p.slug}>
-              <Link href={`/blog/${p.slug}`} className="text-mint underline underline-offset-4">
+              <Link href={`/blog/${p.slug}`} className="text-green underline underline-offset-4">
                 {p.title}
               </Link>
             </li>
           ))}
           <li>
-            <Link href="/vest-review" className="text-mint underline underline-offset-4">
+            <Link href="/vest-review" className="text-green underline underline-offset-4">
               Vest review
             </Link>
           </li>

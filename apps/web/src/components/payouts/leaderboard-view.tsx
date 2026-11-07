@@ -38,29 +38,32 @@ export async function LeaderboardView({ period }: { period: Period }) {
           })),
         }}
       />
-      <div className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
+      <div className="px-6 pt-8 md:px-14">
         <Breadcrumbs items={[{ name: "Leaderboard", path: "/leaderboard" }]} />
-        <h1 className="mt-5 text-3xl font-bold text-paper sm:text-4xl">Vest payout leaderboard</h1>
-        <p className="mt-3 max-w-2xl text-paper/75">
+        <p className="meta mt-6">§ 00 — Rankings</p>
+        <h1 className="mt-3 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">
+          Vest payout leaderboard
+        </h1>
+        <p className="mt-4 max-w-2xl text-[16px] leading-[1.6] text-sub">
           Traders ranked by USDC they received from Vest {period === "all" ? "since tracking began" : PERIOD_LABEL[period].toLowerCase()}.
           Wallets are public addresses from payout transactions. Names appear only when a trader has been identified.
         </p>
         <StatGrid className="mt-8">
           <Stat label={`Paid · ${PERIOD_LABEL[period]}`} value={formatUsd(window.amount)} highlight />
-          <Stat label="Payouts" value={formatInt(window.count)} />
-          <Stat label="Wallets" value={formatInt(window.wallets)} />
+          <Stat label="Payouts" value={formatInt(window.count)} tone="green" />
+          <Stat label="Wallets" value={formatInt(window.wallets)} tone="orange" />
           <Stat label="Largest" value={window.largest ? formatUsd(window.largest.amount) : "—"} />
         </StatGrid>
 
-        <nav aria-label="Leaderboard period" className="mt-8 flex flex-wrap gap-2">
+        <nav aria-label="Leaderboard period" className="mt-8 flex flex-wrap border border-line">
           {TABS.map((t) => (
             <Link
               key={t.period}
               href={t.href}
               aria-current={t.period === period ? "page" : undefined}
               className={cn(
-                "rounded-full border px-3 py-1.5 text-sm font-medium",
-                t.period === period ? "border-mint/40 bg-mint/15 text-mint" : "border-ink-700 text-paper/70 hover:text-paper",
+                "border-r border-line px-4 py-2.5 font-mono text-[12px] tracking-[0.04em] uppercase last:border-r-0",
+                t.period === period ? "bg-ink text-white" : "bg-white text-sub hover:text-ink",
               )}
             >
               {PERIOD_LABEL[t.period]}
@@ -69,14 +72,12 @@ export async function LeaderboardView({ period }: { period: Period }) {
         </nav>
 
         {rows.length === 0 ? (
-          <p className="mt-8 rounded-2xl border border-dashed border-ink-700 px-6 py-14 text-center text-paper/70">
-            No payouts in this window yet.
-          </p>
+          <p className="mt-8 border border-dashed border-line px-6 py-14 text-center text-sub">No payouts in this window yet.</p>
         ) : (
-          <div className="mt-4 overflow-x-auto rounded-2xl border border-ink-800 bg-ink-900/60">
+          <div className="mt-0 min-w-0 max-w-full overflow-x-auto border border-t-0 border-line bg-white">
             <table className="w-full min-w-[640px] text-left text-sm">
               <caption className="sr-only">Top Vest payout recipients, {PERIOD_LABEL[period].toLowerCase()}</caption>
-              <thead className="border-b border-ink-800 text-xs tracking-wide text-muted-foreground uppercase">
+              <thead className="border-b border-line bg-paper font-mono text-[11px] tracking-[0.04em] text-sub uppercase">
                 <tr>
                   <th className="px-4 py-3 font-medium">#</th>
                   <th className="px-4 py-3 font-medium">Trader</th>
@@ -86,24 +87,24 @@ export async function LeaderboardView({ period }: { period: Period }) {
                   <th className="px-4 py-3 text-right font-medium">Last paid</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-ink-800">
+              <tbody className="divide-y divide-line">
                 {rows.map((r, i) => (
-                  <tr key={r.key} className="hover:bg-ink-850/70">
-                    <td className="px-4 py-3 font-mono text-muted-foreground">{i + 1}</td>
+                  <tr key={r.key} className="hover:bg-paper">
+                    <td className="px-4 py-3 font-mono text-sub">{i + 1}</td>
                     <td className="px-4 py-3">
                       {r.wallet ? (
-                        <Link href={`/wallets/${r.wallet}`} className="font-mono text-paper hover:text-mint">
+                        <Link href={`/wallets/${r.wallet}`} className="font-mono text-ink hover:text-signal">
                           {r.label && <span className="mr-2 font-sans font-medium">{r.label}</span>}
                           {shortAddress(r.wallet, 6)}
                         </Link>
                       ) : (
-                        <span className="text-paper">{r.label ?? "Unknown trader"}</span>
+                        <span className="text-ink">{r.label ?? "Unknown trader"}</span>
                       )}
                     </td>
-                    <td className="px-4 py-3 text-right font-mono font-semibold text-mint">{formatUsd(r.total, true)}</td>
-                    <td className="px-4 py-3 text-right font-mono text-paper/80">{formatInt(r.count)}</td>
-                    <td className="px-4 py-3 text-right font-mono text-paper/80">{formatUsd(r.largest, true)}</td>
-                    <td className="px-4 py-3 text-right text-paper/70">{formatDate(r.lastPaidAt)}</td>
+                    <td className="px-4 py-3 text-right font-mono font-medium text-green">{formatUsd(r.total, true)}</td>
+                    <td className="px-4 py-3 text-right font-mono text-ink">{formatInt(r.count)}</td>
+                    <td className="px-4 py-3 text-right font-mono text-ink">{formatUsd(r.largest, true)}</td>
+                    <td className="px-4 py-3 text-right text-sub">{formatDate(r.lastPaidAt)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -111,7 +112,7 @@ export async function LeaderboardView({ period }: { period: Period }) {
           </div>
         )}
 
-        <div className="mt-12">
+        <div className="mt-12 mb-4">
           <ReferralPanel placement="leaderboard" title="Get on the next leaderboard" />
         </div>
       </div>

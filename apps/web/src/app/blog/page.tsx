@@ -13,21 +13,22 @@ export const metadata = pageMetadata({
 
 export default function BlogIndexPage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 pt-8 sm:px-6">
+    <div className="mx-auto max-w-3xl px-6 pt-8 md:px-14">
       <Breadcrumbs items={[{ name: "Guides", path: "/blog" }]} />
-      <h1 className="mt-5 text-3xl font-bold text-paper sm:text-5xl">Guides</h1>
-      <p className="mt-4 text-lg text-paper/75">
+      <p className="meta mt-6">§ Writing</p>
+      <h1 className="mt-3 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">Guides</h1>
+      <p className="mt-4 text-lg text-sub">
         Practical writing about getting paid on Vest. Numbers inside the articles update from the live payout database.
       </p>
-      <ul className="mt-10 space-y-4">
+      <ul className="mt-10 border border-line">
         {POST_META.map((p) => (
-          <li key={p.slug}>
-            <Link href={`/blog/${p.slug}`} className="block rounded-2xl border border-ink-800 bg-ink-900/60 p-5 hover:border-mint/40">
-              <p className="text-xs tracking-wide text-muted-foreground uppercase">
+          <li key={p.slug} className="border-b border-line last:border-b-0">
+            <Link href={`/blog/${p.slug}`} className="block p-5 hover:bg-paper">
+              <p className="meta">
                 {p.published} · {p.readingMinutes} min read
               </p>
-              <h2 className="mt-2 text-xl font-semibold text-paper">{p.title}</h2>
-              <p className="mt-2 text-paper/70">{p.description}</p>
+              <h2 className="mt-2 text-xl font-medium tracking-[-0.02em] text-ink">{p.title}</h2>
+              <p className="mt-2 text-sub">{p.description}</p>
             </Link>
           </li>
         ))}

@@ -11,9 +11,9 @@ export const metadata = pageMetadata({
 
 export default function DisclosurePage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 pt-8 sm:px-6">
+    <div className="mx-auto max-w-3xl px-6 pt-8 md:px-14">
       <Breadcrumbs items={[{ name: "Disclosure", path: "/disclosure" }]} />
-      <h1 className="mt-5 text-3xl font-bold text-paper sm:text-5xl">Affiliate disclosure</h1>
+      <h1 className="mt-5 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">Affiliate disclosure</h1>
       <article className="prose-tape">
         <p>{AFFILIATE_DISCLOSURE}</p>
         <p>

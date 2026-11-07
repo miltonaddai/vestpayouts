@@ -11,11 +11,12 @@ export const metadata = pageMetadata({
 
 export default function AboutPage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 pt-8 sm:px-6">
+    <div className="mx-auto max-w-3xl px-6 pt-8 md:px-14">
       <Breadcrumbs items={[{ name: "About", path: "/about" }]} />
-      <h1 className="mt-5 text-3xl font-bold text-paper sm:text-5xl">About VestPayouts</h1>
-      <p className="mt-6 rounded-2xl border border-amber/40 bg-amber/10 px-5 py-4 text-sm leading-relaxed text-paper/90">
-        <strong className="text-amber">Independent. Not affiliated with or endorsed by Vest.</strong> {NOT_AFFILIATED}
+      <p className="meta mt-6">§ Company</p>
+      <h1 className="mt-3 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">About VestPayouts</h1>
+      <p className="mt-6 border border-line bg-orange-soft px-5 py-4 text-sm leading-relaxed text-ink">
+        <strong className="text-orange">Independent. Not affiliated with or endorsed by Vest.</strong> {NOT_AFFILIATED}
       </p>
       <article className="prose-tape">
         <p>

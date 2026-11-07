@@ -24,15 +24,15 @@ export default function HowPayoutsWorkPage() {
   return (
     <>
       <JsonLd data={faqLd(faqs)} />
-      <div className="mx-auto max-w-3xl px-4 pt-8 sm:px-6">
+      <div className="mx-auto max-w-3xl px-6 pt-8 md:px-14">
         <Breadcrumbs items={[{ name: "How Vest payouts work", path: "/how-vest-payouts-work" }]} />
-        <p className="mt-6 text-xs font-semibold tracking-wide text-mint uppercase">Guide</p>
-        <h1 className="mt-3 text-3xl font-bold text-paper sm:text-5xl">How Vest payouts work</h1>
-        <p className="mt-4 text-lg text-paper/75">
+        <p className="meta mt-6">Guide</p>
+        <h1 className="mt-3 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">How Vest payouts work</h1>
+        <p className="mt-4 text-lg text-sub">
           Vest pays traders in USDC, in two distinct steps. Neither one is a bank transfer, and both leave a trail you can check.
         </p>
       </div>
-      <article className="prose-tape mx-auto max-w-3xl px-4 sm:px-6">
+      <article className="prose-tape mx-auto max-w-3xl px-6 md:px-14">
         <LiveStatsCallout />
         <h2>The two steps</h2>
         <p>

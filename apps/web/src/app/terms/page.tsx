@@ -11,9 +11,9 @@ export const metadata = pageMetadata({
 
 export default function TermsPage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 pt-8 sm:px-6">
+    <div className="mx-auto max-w-3xl px-6 pt-8 md:px-14">
       <Breadcrumbs items={[{ name: "Terms", path: "/terms" }]} />
-      <h1 className="mt-5 text-3xl font-bold text-paper sm:text-5xl">Terms of use</h1>
+      <h1 className="mt-5 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">Terms of use</h1>
       <p className="mt-2 text-sm text-muted-foreground">Last updated 6 November 2026.</p>
       <article className="prose-tape">
         <p>By using VestPayouts you agree to these terms. If you don&apos;t, don&apos;t use the site.</p>

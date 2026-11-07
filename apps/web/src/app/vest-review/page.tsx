@@ -35,15 +35,15 @@ export default function VestReviewPage() {
           dateModified: VEST_FACTS_CHECKED,
         })}
       />
-      <div className="mx-auto max-w-3xl px-4 pt-8 sm:px-6">
+      <div className="mx-auto max-w-3xl px-6 pt-8 md:px-14">
         <Breadcrumbs items={[{ name: "Vest review", path: "/vest-review" }]} />
-        <p className="mt-6 text-xs font-semibold tracking-wide text-mint uppercase">Review · facts checked {VEST_FACTS_CHECKED}</p>
-        <h1 className="mt-3 text-3xl font-bold text-paper sm:text-5xl">Vest review: payouts first</h1>
-        <p className="mt-4 text-lg text-paper/75">
+        <p className="meta mt-6">Review · facts checked {VEST_FACTS_CHECKED}</p>
+        <h1 className="mt-3 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">Vest review: payouts first</h1>
+        <p className="mt-4 text-lg text-sub">
           Vest Markets is a crypto derivatives exchange with a funded-trader program, Vest Capital. This review sticks to the question that matters if you are paying for a challenge: do they pay, how fast, and on what terms.
         </p>
       </div>
-      <article className="prose-tape mx-auto max-w-3xl px-4 sm:px-6">
+      <article className="prose-tape mx-auto max-w-3xl px-6 md:px-14">
         <LiveStatsCallout />
         <h2>What Vest is</h2>
         <p>

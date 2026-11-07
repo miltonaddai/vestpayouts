@@ -18,9 +18,9 @@ export const metadata = pageMetadata({
 export default async function MethodologyPage() {
   const coverage = await getCoverage();
   return (
-    <div className="mx-auto max-w-3xl px-4 pt-8 sm:px-6">
+    <div className="mx-auto max-w-3xl px-6 pt-8 md:px-14">
       <Breadcrumbs items={[{ name: "Methodology", path: "/methodology" }]} />
-      <h1 className="mt-5 text-3xl font-bold text-paper sm:text-5xl">How the numbers are made</h1>
+      <h1 className="mt-5 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">How the numbers are made</h1>
       <article className="prose-tape">
         <p>
           VestPayouts does not scrape Vest&apos;s website and does not take payout screenshots as evidence. A row marked on-chain is a USDC transfer we read from a public blockchain.

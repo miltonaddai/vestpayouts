@@ -74,7 +74,7 @@ export default async function PayoutPage({ params }: { params: Promise<{ network
   const isSample = main.source === "sample";
 
   return (
-    <div className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
+    <div className="mx-auto max-w-5xl px-6 pt-8 md:px-14">
       <Breadcrumbs
         items={[
           { name: "Vest payouts", path: "/payouts" },
@@ -82,7 +82,7 @@ export default async function PayoutPage({ params }: { params: Promise<{ network
         ]}
       />
       {isSample && (
-        <p role="status" className="mt-6 rounded-xl border border-amber/40 bg-amber/10 px-4 py-3 text-sm text-amber">
+        <p role="status" className="mt-6 border border-amber/40 bg-amber/10 px-4 py-3 text-sm text-amber">
           <strong>Sample data.</strong> This is a placeholder used before real payouts are loaded. It is not a real
           Vest payout.
         </p>
@@ -91,16 +91,16 @@ export default async function PayoutPage({ params }: { params: Promise<{ network
         <div className="flex flex-wrap items-center gap-2">
           <ChainBadge payout={main} />
           {main.source === "onchain" && (
-            <span className="inline-flex items-center gap-1 text-xs font-medium text-mint">
+            <span className="inline-flex items-center gap-1 text-xs font-medium text-green">
               <CheckCircle2 className="size-3.5" aria-hidden="true" /> Verified on-chain
             </span>
           )}
           {main.source === "manual" && <span className="text-xs text-amber">Reported payout, not yet matched on-chain</span>}
         </div>
-        <h1 className="mt-3 text-3xl font-bold text-paper sm:text-5xl">
-          <span className="tabular font-mono text-mint">{formatUsd(total, true)}</span> Vest payout
+        <h1 className="mt-3 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">
+          <span className="tabular font-mono text-green">{formatUsd(total, true)}</span> Vest payout
         </h1>
-        <p className="mt-3 text-lg text-paper/75">
+        <p className="mt-3 text-lg text-sub">
           Paid in USDC on {where} on {formatDate(main.paidAt, true)}
           {rows.length > 1 ? `, split across ${rows.length} transfers in one transaction` : ""}.
         </p>
@@ -113,8 +113,8 @@ export default async function PayoutPage({ params }: { params: Promise<{ network
         <Stat label="Wallet total" value={wallet ? formatUsd(wallet.amount) : "—"} sub={wallet ? `${wallet.count} Vest payouts` : undefined} />
       </StatGrid>
 
-      <section aria-labelledby="proof" className="mt-10 rounded-2xl border border-ink-800 bg-ink-900/60 p-6">
-        <h2 id="proof" className="text-xl font-semibold text-paper">
+      <section aria-labelledby="proof" className="mt-10 border border-line bg-white p-6">
+        <h2 id="proof" className="text-xl font-medium tracking-[-0.02em] text-ink">
           Payout proof
         </h2>
         <dl className="mt-4 grid gap-4 text-sm sm:grid-cols-[10rem_1fr]">
@@ -122,7 +122,7 @@ export default async function PayoutPage({ params }: { params: Promise<{ network
             <>
               <dt className="text-muted-foreground">Recipient wallet</dt>
               <dd className="font-mono break-all">
-                <Link href={`/wallets/${main.wallet}`} className="text-paper hover:text-mint">
+                <Link href={`/wallets/${main.wallet}`} className="text-ink hover:text-ink">
                   {main.walletLabel ? `${main.walletLabel} · ` : ""}
                   {main.wallet}
                 </Link>
@@ -132,20 +132,20 @@ export default async function PayoutPage({ params }: { params: Promise<{ network
           {main.trader && !main.wallet && (
             <>
               <dt className="text-muted-foreground">Trader</dt>
-              <dd className="text-paper">{main.trader}</dd>
+              <dd className="text-ink">{main.trader}</dd>
             </>
           )}
           {main.txHash && main.chain && (
             <>
               <dt className="text-muted-foreground">Transaction</dt>
               <dd className="font-mono break-all">
-                <a href={txUrl(main.chain, main.txHash)} target="_blank" rel="noopener nofollow" className="inline-flex items-center gap-1 text-paper hover:text-mint">
+                <a href={txUrl(main.chain, main.txHash)} target="_blank" rel="noopener nofollow" className="inline-flex items-center gap-1 text-ink hover:text-ink">
                   {main.txHash} <ExternalLink className="size-3.5 shrink-0" aria-hidden="true" />
                 </a>
               </dd>
               <dt className="text-muted-foreground">Sent from</dt>
               <dd className="font-mono break-all">
-                <a href={addressUrl(main.chain, CHAINS[main.chain].payoutContract)} target="_blank" rel="noopener nofollow" className="text-paper/80 hover:text-mint">
+                <a href={addressUrl(main.chain, CHAINS[main.chain].payoutContract)} target="_blank" rel="noopener nofollow" className="text-ink hover:text-ink">
                   Vest payout contract · {CHAINS[main.chain].payoutContract}
                 </a>
               </dd>
@@ -154,22 +154,22 @@ export default async function PayoutPage({ params }: { params: Promise<{ network
           {main.block && (
             <>
               <dt className="text-muted-foreground">Block</dt>
-              <dd className="font-mono text-paper/80">{main.block.toLocaleString()}</dd>
+              <dd className="font-mono text-ink">{main.block.toLocaleString()}</dd>
             </>
           )}
           {main.requestedAt && (
             <>
               <dt className="text-muted-foreground">Requested</dt>
-              <dd className="text-paper/80">{formatDate(main.requestedAt, true)}</dd>
+              <dd className="text-ink">{formatDate(main.requestedAt, true)}</dd>
             </>
           )}
           <dt className="text-muted-foreground">Settled</dt>
-          <dd className="text-paper/80">{formatDate(main.paidAt, true)}</dd>
+          <dd className="text-ink">{formatDate(main.paidAt, true)}</dd>
           {main.proofUrl && (
             <>
               <dt className="text-muted-foreground">Public post</dt>
               <dd>
-                <a href={main.proofUrl} target="_blank" rel="noopener nofollow" className="text-mint underline underline-offset-4">
+                <a href={main.proofUrl} target="_blank" rel="noopener nofollow" className="text-green underline underline-offset-4">
                   {main.proofUrl}
                 </a>
               </dd>
@@ -178,21 +178,21 @@ export default async function PayoutPage({ params }: { params: Promise<{ network
           {main.note && (
             <>
               <dt className="text-muted-foreground">Note</dt>
-              <dd className="text-paper/80">{main.note}</dd>
+              <dd className="text-ink">{main.note}</dd>
             </>
           )}
         </dl>
         {main.chain && main.txHash && (
-          <p className="mt-5 text-sm text-paper/65">
+          <p className="mt-5 text-sm text-sub">
             To verify: open the transaction on {CHAINS[main.chain].explorerName} and check that USDC moved from Vest&apos;s
-            payout contract to the wallet above. <Link href="/blog/vest-payout-proof" className="text-mint underline underline-offset-4">Step-by-step guide</Link>.
+            payout contract to the wallet above. <Link href="/blog/vest-payout-proof" className="text-green underline underline-offset-4">Step-by-step guide</Link>.
           </p>
         )}
       </section>
 
       {others.length > 0 && (
         <section className="mt-10">
-          <h2 className="mb-3 text-xl font-semibold text-paper">Other Vest payouts to this wallet</h2>
+          <h2 className="mb-3 text-xl font-medium tracking-[-0.02em] text-ink">Other Vest payouts to this wallet</h2>
           <PayoutTable payouts={others} caption="Other Vest payouts to the same wallet" showWallet={false} />
         </section>
       )}

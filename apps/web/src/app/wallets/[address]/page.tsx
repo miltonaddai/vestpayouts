@@ -43,18 +43,18 @@ export default async function WalletPage({ params }: { params: Promise<{ address
   const wallet = await load(params);
   const name = wallet.label || shortAddress(wallet.address, 6);
   return (
-    <div className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
+    <div className="mx-auto max-w-5xl px-6 pt-8 md:px-14">
       <Breadcrumbs
         items={[
           { name: "Leaderboard", path: "/leaderboard" },
           { name, path: `/wallets/${wallet.address}` },
         ]}
       />
-      <h1 className="mt-5 text-3xl font-bold text-paper sm:text-4xl">{name}</h1>
+      <h1 className="mt-5 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[48px]">{name}</h1>
       <p className="mt-2 font-mono text-sm break-all text-muted-foreground">{wallet.address}</p>
       {wallet.xHandle && (
         <p className="mt-2 text-sm">
-          <a className="text-mint underline underline-offset-4" href={`https://x.com/${wallet.xHandle.replace("@", "")}`} rel="noopener nofollow">
+          <a className="text-green underline underline-offset-4" href={`https://x.com/${wallet.xHandle.replace("@", "")}`} rel="noopener nofollow">
             {wallet.xHandle.startsWith("@") ? wallet.xHandle : `@${wallet.xHandle}`}
           </a>
         </p>
@@ -69,7 +69,7 @@ export default async function WalletPage({ params }: { params: Promise<{ address
         <PayoutTable payouts={wallet.payouts} caption={`Vest payouts to ${name}`} showWallet={false} />
       </div>
       <p className="mt-4 text-sm text-muted-foreground">
-        <Link href="/leaderboard" className="text-mint underline underline-offset-4">
+        <Link href="/leaderboard" className="text-green underline underline-offset-4">
           Back to the leaderboard
         </Link>
       </p>

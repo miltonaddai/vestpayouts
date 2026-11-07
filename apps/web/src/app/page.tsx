@@ -1,10 +1,9 @@
 import Link from "next/link";
-import { ArrowRight, Clock3, Link2, ShieldCheck, Wallet } from "lucide-react";
 import { DailyChart } from "@/components/payouts/daily-chart";
 import { PayoutFeed } from "@/components/payouts/payout-feed";
 import { PayoutTable } from "@/components/payouts/payout-table";
 import { SampleDataBanner } from "@/components/payouts/sample-banner";
-import { Stat, StatGrid } from "@/components/payouts/stat-grid";
+import { HeroStat, Stat, StatGrid } from "@/components/payouts/stat-grid";
 import { TapeTicker } from "@/components/payouts/tape-ticker";
 import { ReferralButton, ReferralCodeHint, ReferralPanel } from "@/components/referral/referral-cta";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -49,83 +48,98 @@ export default async function HomePage() {
       />
       {summary.isSample && <SampleDataBanner />}
 
-      <section className="relative overflow-hidden">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_20%_0%,rgba(62,224,161,0.14),transparent_70%)]"
-        />
-        <div className="relative mx-auto grid max-w-7xl gap-10 px-4 pt-12 pb-14 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:pt-20">
-          <div>
-            <p className="inline-flex items-center gap-2 rounded-full border border-mint/30 bg-mint/10 px-3 py-1 text-xs font-semibold text-mint">
-              <ShieldCheck className="size-3.5" aria-hidden="true" /> Verified on Base &amp; Arbitrum
-            </p>
-            <h1 className="mt-5 text-4xl leading-[1.05] font-bold text-paper sm:text-5xl lg:text-6xl">
-              Vest payouts, <span className="text-mint">tracked live</span> on-chain.
+      <section className="relative">
+        <div className="pointer-events-none absolute inset-0 z-0 hidden grid-cols-12 md:grid" aria-hidden="true">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <div key={i} className={i === 0 ? "" : "border-l border-dashed border-line"} />
+          ))}
+        </div>
+        <div className="relative z-10 px-6 py-10 md:px-14 md:py-20">
+          <div className="meta mb-8">§ 00 — Payout specification</div>
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(16rem,1fr)] lg:gap-16">
+            <h1 className="m-0 text-[44px] leading-[0.94] font-medium tracking-[-0.04em] text-ink md:text-[80px] lg:text-[96px]">
+              Vest payouts,
+              <br />
+              tracked live
+              <span className="mt-3 block text-[22px] tracking-[-0.03em] md:text-[40px] lg:text-[48px]">
+                on-chain, with proof
+              </span>
             </h1>
-            <p className="mt-5 max-w-xl text-lg text-paper/75">
-              Every USDC payout Vest sends to traders, read straight from its public payout contracts. Real amounts,
-              real wallets, real transaction hashes. No screenshots required.
-            </p>
-
-            <div className="mt-8 rounded-2xl border border-ink-800 bg-ink-900/70 p-5">
-              <p className="text-sm text-muted-foreground">
+            <div className="border-l border-line pl-6">
+              <div className="meta">Abstract</div>
+              <p className="mt-3 text-[14px] leading-[1.6] text-ink">
+                Every USDC payout Vest sends to traders, read straight from its public payout contracts. Real amounts,
+                real wallets, real transaction hashes. No screenshots required.
+              </p>
+              <p className="mt-4 text-[13px] text-sub">
                 {summary.isSample ? "Sample total (placeholder data)" : `Paid to traders${since ? ` since ${since}` : ""}`}
               </p>
-              <p className="tabular mt-1 font-mono text-4xl font-bold text-mint sm:text-5xl">{formatUsd(windows.all.amount)}</p>
-              <p className="mt-2 text-sm text-paper/70">
+              <p className="tabular mt-1 font-heading text-[32px] leading-none font-medium tracking-[-0.03em] text-green">
+                {formatUsd(windows.all.amount)}
+              </p>
+              <p className="mt-2 text-[13px] text-sub">
                 {formatInt(windows.all.count)} payouts to {formatInt(windows.all.wallets)} wallets ·{" "}
-                <span className="text-paper">{formatUsdCompact(windows["24h"].amount)}</span> in the last 24 hours
+                <span className="text-ink">{formatUsdCompact(windows["24h"].amount)}</span> in the last 24 hours
+              </p>
+              <div className="mt-6 flex flex-col items-stretch gap-3">
+                <ReferralButton placement="hero" label="Get funded on Vest" />
+                <Link href="/payouts" className="meta underline hover:text-ink">
+                  Browse payout proof →
+                </Link>
+              </div>
+              <ReferralCodeHint className="mt-3" />
+              <p className="mt-3 text-[12px] text-sub">
+                Instant accounts from $10 · up to {SPLITS.instant}% profit split · paid in USDC. Referral link.
               </p>
             </div>
-
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <ReferralButton placement="hero" label="Get funded on Vest" />
-              <Link
-                href="/payouts"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-ink-700 px-5 font-semibold text-paper hover:bg-ink-800"
-              >
-                Browse payout proof <ArrowRight className="size-4" aria-hidden="true" />
-              </Link>
-            </div>
-            <ReferralCodeHint className="mt-3" />
-            <p className="mt-3 text-xs text-muted-foreground">
-              Instant accounts from $10 · up to {SPLITS.instant}% profit split · paid in USDC. Referral link.
-            </p>
           </div>
-          <PayoutFeed payouts={latest} syncedAt={summary.syncedAt} />
         </div>
       </section>
 
+      <div className="border-y border-line">
+        <div className="grid min-w-0 grid-cols-2 md:grid-cols-5">
+          <HeroStat label="All time" value={formatUsdCompact(windows.all.amount)} sub="paid to traders" tone="ink" />
+          <HeroStat label="Last 24h" value={formatUsdCompact(windows["24h"].amount)} sub={`${formatInt(windows["24h"].count)} payouts`} tone="signal" />
+          <HeroStat label="Payouts" value={formatInt(windows.all.count)} sub="recorded transfers" tone="green" />
+          <HeroStat label="Wallets" value={formatInt(windows.all.wallets)} sub="unique recipients" tone="orange" />
+          <HeroStat
+            label="Median time"
+            value={summary.medianProcessingHours != null ? formatDuration(summary.medianProcessingHours) : "—"}
+            sub="request to wallet"
+            tone="ink"
+          />
+        </div>
+      </div>
+
       <TapeTicker payouts={ticker} />
 
-      <section aria-labelledby="stats-title" className="mx-auto max-w-7xl px-4 pt-16 sm:px-6">
-        <div className="flex flex-wrap items-end justify-between gap-4">
+      <section aria-labelledby="stats-title" className="border-b border-line px-6 py-12 md:px-14 md:py-16">
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h2 id="stats-title" className="text-2xl font-semibold text-paper sm:text-3xl">
-              How much has Vest paid out?
+            <div className="meta mb-3">§ 01 — Totals</div>
+            <h2 id="stats-title" className="text-[36px] leading-none font-medium tracking-[-0.03em] text-ink md:text-[56px]">
+              /paid
             </h2>
-            <p className="mt-2 max-w-2xl text-paper/70">
-              Totals update automatically from on-chain data. Every figure links back to individual transactions you can
-              check yourself.
+            <p className="mt-3 max-w-2xl text-[15px] leading-[1.6] text-sub">
+              How much has Vest paid out? Totals update automatically from on-chain data. Every figure links back to
+              individual transactions you can check yourself.
             </p>
           </div>
-          <Link href="/leaderboard" className="text-sm font-medium text-mint hover:text-mint-300">
+          <Link href="/leaderboard" className="meta underline hover:text-ink">
             View the Vest payout leaderboard →
           </Link>
         </div>
-        <StatGrid className="mt-8">
+        <StatGrid>
           <Stat label="Paid last 24h" value={formatUsd(windows["24h"].amount)} sub={`${formatInt(windows["24h"].count)} payouts`} highlight />
-          <Stat label="Paid last 7 days" value={formatUsd(windows["7d"].amount)} sub={`${formatInt(windows["7d"].wallets)} wallets paid`} />
+          <Stat label="Paid last 7 days" value={formatUsd(windows["7d"].amount)} sub={`${formatInt(windows["7d"].wallets)} wallets paid`} tone="green" />
           <Stat label="Paid last 30 days" value={formatUsd(windows["30d"].amount)} sub={`${formatInt(windows["30d"].count)} payouts`} />
           <Stat
             label="Largest payout (30d)"
             value={windows["30d"].largest ? formatUsd(windows["30d"].largest.amount) : "—"}
             sub={windows["30d"].largest ? formatDate(windows["30d"].largest.paidAt) : undefined}
+            tone="orange"
           />
-          <Stat
-            label="Median payout (30d)"
-            value={summary.medianAmount30d != null ? formatUsd(summary.medianAmount30d, true) : "—"}
-          />
+          <Stat label="Median payout (30d)" value={summary.medianAmount30d != null ? formatUsd(summary.medianAmount30d, true) : "—"} />
           <Stat
             label="Median processing time"
             value={summary.medianProcessingHours != null ? formatDuration(summary.medianProcessingHours) : "—"}
@@ -143,74 +157,86 @@ export default async function HomePage() {
         </StatGrid>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-6 px-4 pt-10 sm:px-6 lg:grid-cols-[1fr_1.2fr]">
-        <DailyChart series={series} title="Vest payouts per day, last 30 days" />
-        <div>
-          <div className="mb-3 flex items-baseline justify-between">
-            <h2 className="text-lg font-semibold text-paper">Largest Vest payouts this month</h2>
-            <Link href="/payouts?sort=largest&period=30d" className="text-sm text-mint hover:text-mint-300">
-              All →
-            </Link>
+      <section className="border-b border-line px-6 py-12 md:px-14 md:py-16">
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <div className="meta mb-3">§ 02 — Activity</div>
+            <h2 className="text-[36px] leading-none font-medium tracking-[-0.03em] text-ink md:text-[56px]">/latest</h2>
           </div>
-          <PayoutTable payouts={largest} caption="Largest Vest payouts in the last 30 days" />
+          <Link href="/payouts?sort=largest&period=30d" className="meta underline hover:text-ink">
+            Largest this month →
+          </Link>
+        </div>
+        <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
+          <DailyChart series={series} title="Vest payouts per day, last 30 days" />
+          <div>
+            <h3 className="mb-3 font-mono text-[12px] tracking-[0.04em] text-sub uppercase">Largest Vest payouts this month</h3>
+            <PayoutTable payouts={largest} caption="Largest Vest payouts in the last 30 days" />
+          </div>
+        </div>
+        <div className="mt-6">
+          <PayoutFeed payouts={latest} syncedAt={summary.syncedAt} />
         </div>
       </section>
 
-      <section aria-labelledby="how-title" className="mx-auto max-w-7xl px-4 pt-20 sm:px-6">
-        <h2 id="how-title" className="text-2xl font-semibold text-paper sm:text-3xl">
-          How Vest payouts work, in three steps
+      <section aria-labelledby="how-title" className="border-b border-line px-6 py-12 md:px-14 md:py-16">
+        <div className="meta mb-3">§ 03 — Process</div>
+        <h2 id="how-title" className="text-[36px] leading-none font-medium tracking-[-0.03em] text-ink md:text-[56px]">
+          /how
         </h2>
-        <ol className="mt-8 grid gap-4 md:grid-cols-3">
+        <p className="mt-3 max-w-2xl text-[15px] leading-[1.6] text-sub">How Vest payouts work, in three steps.</p>
+        <ol className="mt-8 grid border border-line md:grid-cols-3">
           {[
             {
-              icon: Wallet,
-              title: "1. Trade a funded account",
+              n: "01",
+              title: "Trade a funded account",
               body: `Buy an Instant Account (live immediately, ${SPLITS.instant}% split) or pass an evaluation (${SPLITS.evalBase}–${SPLITS.evalUpgrade}% split).`,
             },
             {
-              icon: Clock3,
-              title: "2. Claim profit",
+              n: "02",
+              title: "Claim profit",
               body: "Submit a Claim Profit request. Vest credits your split to your Primary Account within 24 hours. No cap on frequency or size.",
             },
             {
-              icon: Link2,
-              title: "3. Withdraw USDC",
+              n: "03",
+              title: "Withdraw USDC",
               body: "Withdraw to any wallet on Base or Arbitrum One. That transfer is the on-chain payout you see on VestPayouts.",
             },
           ].map((s) => (
-            <li key={s.title} className="rounded-2xl border border-ink-800 bg-ink-900/60 p-6">
-              <s.icon className="size-6 text-mint" aria-hidden="true" />
-              <h3 className="mt-4 text-lg font-semibold text-paper">{s.title}</h3>
-              <p className="mt-2 text-paper/70">{s.body}</p>
+            <li key={s.n} className="border-b border-line px-5 py-6 last:border-b-0 md:border-r md:border-b-0 md:last:border-r-0">
+              <p className="meta text-signal">{s.n}</p>
+              <h3 className="mt-3 text-xl font-medium tracking-[-0.02em] text-ink">{s.title}</h3>
+              <p className="mt-2 text-[15px] leading-[1.6] text-sub">{s.body}</p>
             </li>
           ))}
         </ol>
-        <Link href="/how-vest-payouts-work" className="mt-6 inline-flex items-center gap-1.5 font-medium text-mint hover:text-mint-300">
-          Read the full guide to Vest payouts <ArrowRight className="size-4" aria-hidden="true" />
+        <Link href="/how-vest-payouts-work" className="meta mt-6 inline-flex underline hover:text-ink">
+          Read the full guide to Vest payouts →
         </Link>
       </section>
 
-      <section aria-labelledby="proof-title" className="mx-auto max-w-7xl px-4 pt-20 sm:px-6">
-        <div className="grid gap-8 rounded-3xl border border-ink-800 bg-ink-900/50 p-8 lg:grid-cols-2 lg:p-10">
+      <section aria-labelledby="proof-title" className="border-b border-line px-6 py-12 md:px-14 md:py-16">
+        <div className="grid gap-10 lg:grid-cols-2">
           <div>
-            <h2 id="proof-title" className="text-2xl font-semibold text-paper sm:text-3xl">
-              Vest payout proof you can check yourself
+            <div className="meta mb-3">§ 04 — Proof</div>
+            <h2 id="proof-title" className="text-[36px] leading-none font-medium tracking-[-0.03em] text-ink md:text-[56px]">
+              /verify
             </h2>
-            <p className="mt-4 text-paper/75">
-              Screenshots can be faked. Blockchain transfers can&apos;t. Every Vest payout leaves a public USDC transfer
-              from Vest&apos;s payout contract to the trader&apos;s wallet. VestPayouts indexes those transfers and links
-              each one to its block explorer page.
+            <p className="mt-4 text-[15px] leading-[1.6] text-sub">
+              Vest payout proof you can check yourself. Screenshots can be faked. Blockchain transfers can&apos;t. Every
+              Vest payout leaves a public USDC transfer from Vest&apos;s payout contract to the trader&apos;s wallet.
+              VestPayouts indexes those transfers and links each one to its block explorer page.
             </p>
-            <Link href="/blog/vest-payout-proof" className="mt-5 inline-flex items-center gap-1.5 font-medium text-mint hover:text-mint-300">
-              How to verify a Vest payout <ArrowRight className="size-4" aria-hidden="true" />
+            <Link href="/blog/vest-payout-proof" className="meta mt-5 inline-flex underline hover:text-ink">
+              How to verify a Vest payout →
             </Link>
           </div>
-          <dl className="space-y-4 text-sm">
+          <dl className="border border-line">
             {Object.values(CHAINS).map((c) => (
-              <div key={c.id} className="rounded-xl border border-ink-800 bg-ink-950/60 p-4">
-                <dt className="font-semibold text-paper">{c.name} payout contract</dt>
-                <dd className="mt-1 font-mono break-all text-paper/70">
-                  <a href={`${c.explorer}/address/${c.payoutContract}`} target="_blank" rel="noopener nofollow" className="hover:text-mint">
+              <div key={c.id} className="border-b border-line px-5 py-4 last:border-b-0">
+                <dt className="meta text-ink">{c.name} payout contract</dt>
+                <dd className="mt-2 font-mono text-[13px] break-all text-sub">
+                  <a href={`${c.explorer}/address/${c.payoutContract}`} target="_blank" rel="noopener nofollow" className="hover:text-ink">
                     {c.payoutContract}
                   </a>
                 </dd>
@@ -220,39 +246,43 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <div className="mx-auto max-w-7xl px-4 pt-20 sm:px-6">
+      <div className="px-6 py-12 md:px-14 md:py-16">
         <ReferralPanel placement="stats" />
       </div>
 
-      <section aria-labelledby="faq-title" className="mx-auto grid max-w-7xl gap-10 px-4 pt-20 sm:px-6 lg:grid-cols-2">
-        <div>
-          <h2 id="faq-title" className="text-2xl font-semibold text-paper sm:text-3xl">
-            Vest payout questions
-          </h2>
-          <dl className="mt-6 space-y-6">
-            {PAYOUT_FAQS.slice(0, 4).map((f) => (
-              <div key={f.q}>
-                <dt className="font-semibold text-paper">{f.q}</dt>
-                <dd className="mt-1.5 text-paper/70">{f.a}</dd>
-              </div>
-            ))}
-          </dl>
-          <Link href="/faq" className="mt-6 inline-flex font-medium text-mint hover:text-mint-300">
-            All FAQs →
-          </Link>
-        </div>
-        <div>
-          <h2 className="text-2xl font-semibold text-paper sm:text-3xl">Vest guides</h2>
-          <ul className="mt-6 space-y-3">
-            {[{ slug: "", href: "/vest-review", title: "Vest review: is Vest Capital legit?", description: "Rules, pricing, payout speed and the fine print." }, ...BLOG_POSTS.map((p) => ({ ...p, href: `/blog/${p.slug}` }))].map((p) => (
-              <li key={p.href}>
-                <Link href={p.href} className="block rounded-xl border border-ink-800 bg-ink-900/60 p-4 hover:border-mint/40">
-                  <span className="font-semibold text-paper">{p.title}</span>
-                  <span className="mt-1 block text-sm text-paper/65">{p.description}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+      <section aria-labelledby="faq-title" className="border-t border-line px-6 py-12 md:px-14 md:py-16">
+        <div className="grid gap-12 lg:grid-cols-2">
+          <div>
+            <div className="meta mb-3">§ 05 — Questions</div>
+            <h2 id="faq-title" className="text-[36px] leading-none font-medium tracking-[-0.03em] text-ink md:text-[48px]">
+              /faq
+            </h2>
+            <dl className="mt-6 divide-y divide-line border border-line">
+              {PAYOUT_FAQS.slice(0, 4).map((f) => (
+                <div key={f.q} className="px-5 py-5">
+                  <dt className="font-medium text-ink">{f.q}</dt>
+                  <dd className="mt-1.5 text-[15px] leading-[1.6] text-sub">{f.a}</dd>
+                </div>
+              ))}
+            </dl>
+            <Link href="/faq" className="meta mt-6 inline-flex underline hover:text-ink">
+              All FAQs →
+            </Link>
+          </div>
+          <div>
+            <div className="meta mb-3">§ 06 — Writing</div>
+            <h2 className="text-[36px] leading-none font-medium tracking-[-0.03em] text-ink md:text-[48px]">/guides</h2>
+            <ul className="mt-6 border border-line">
+              {[{ slug: "", href: "/vest-review", title: "Vest review: is Vest Capital legit?", description: "Rules, pricing, payout speed and the fine print." }, ...BLOG_POSTS.map((p) => ({ ...p, href: `/blog/${p.slug}` }))].map((p) => (
+                <li key={p.href} className="border-b border-line last:border-b-0">
+                  <Link href={p.href} className="block px-5 py-4 hover:bg-paper">
+                    <span className="font-medium text-ink">{p.title}</span>
+                    <span className="mt-1 block text-sm text-sub">{p.description}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
     </>

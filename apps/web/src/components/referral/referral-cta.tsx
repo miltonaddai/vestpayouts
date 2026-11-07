@@ -1,5 +1,5 @@
-import { ArrowUpRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
+import { SplitInner } from "@/components/ui/split-cta";
 import { REFERRAL_CODE, type Placement } from "@/lib/referral";
 import { cn } from "@/lib/utils";
 import { ReferralLink } from "./referral-link";
@@ -17,17 +17,16 @@ export function ReferralButton({
   variant?: "default" | "outline" | "secondary";
   className?: string;
 }) {
+  if (variant === "default") {
+    return (
+      <ReferralLink placement={placement} className={cn("split-cta", className)}>
+        <SplitInner>{label}</SplitInner>
+      </ReferralLink>
+    );
+  }
   return (
-    <ReferralLink
-      placement={placement}
-      className={cn(
-        buttonVariants({ size, variant }),
-        variant === "default" && "shadow-[0_0_0_1px_rgba(62,224,161,0.3),0_8px_30px_-8px_rgba(62,224,161,0.55)]",
-        className,
-      )}
-    >
+    <ReferralLink placement={placement} className={cn(buttonVariants({ size, variant }), className)}>
       {label}
-      <ArrowUpRight aria-hidden="true" />
     </ReferralLink>
   );
 }
@@ -35,9 +34,9 @@ export function ReferralButton({
 export function ReferralCodeHint({ className }: { className?: string }) {
   if (!REFERRAL_CODE) return null;
   return (
-    <p className={cn("text-sm text-muted-foreground", className)}>
+    <p className={cn("text-sm text-sub", className)}>
       Use referral code{" "}
-      <code className="rounded-md bg-ink-800 px-1.5 py-0.5 font-mono text-mint-300">{REFERRAL_CODE}</code> at signup.
+      <code className="bg-paper px-1.5 py-0.5 font-mono text-ink">{REFERRAL_CODE}</code> at signup.
     </p>
   );
 }
@@ -55,29 +54,22 @@ export function ReferralPanel({
   className?: string;
 }) {
   return (
-    <section
-      aria-labelledby={`cta-${placement}`}
-      className={cn(
-        "relative overflow-hidden rounded-3xl border border-mint/25 bg-gradient-to-br from-ink-850 via-ink-900 to-ink-950 p-8 sm:p-10",
-        className,
-      )}
-    >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-24 -right-24 size-72 rounded-full bg-mint/15 blur-3xl"
-      />
-      <div className="relative max-w-2xl">
-        <h2 id={`cta-${placement}`} className="text-2xl font-semibold text-paper sm:text-3xl">
-          {title}
-        </h2>
-        <p className="mt-3 text-paper/75">{body}</p>
-        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
-          <ReferralButton placement={placement} />
-          <ReferralCodeHint />
+    <section aria-labelledby={`cta-${placement}`} className={cn("border border-line", className)}>
+      <div className="border-b border-line bg-paper px-5 py-2.5 font-mono text-[11px] tracking-[0.04em] text-sub uppercase">
+        Referral · Instant accounts from $10
+      </div>
+      <div className="grid gap-8 px-6 py-8 md:grid-cols-[1.4fr_auto] md:items-end md:px-8 md:py-10">
+        <div>
+          <h2 id={`cta-${placement}`} className="text-[28px] leading-[1.1] font-medium tracking-[-0.03em] text-ink sm:text-[36px]">
+            {title}
+          </h2>
+          <p className="mt-3 max-w-2xl text-[15px] leading-[1.6] text-sub">{body}</p>
+          <ReferralCodeHint className="mt-3" />
+          <p className="mt-4 text-[11px] text-sub">
+            Referral link: we may earn a commission if you sign up. Trading involves substantial risk of loss.
+          </p>
         </div>
-        <p className="mt-5 text-xs text-muted-foreground">
-          Referral link: we may earn a commission if you sign up. Trading involves substantial risk of loss.
-        </p>
+        <ReferralButton placement={placement} />
       </div>
     </section>
   );

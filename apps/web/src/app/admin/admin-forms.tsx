@@ -16,7 +16,7 @@ function Notice({ state }: { state: ActionState }) {
     );
   }
   if (state.ok) {
-    return <p className="rounded-lg border border-mint/30 bg-mint/10 px-3 py-2 text-sm text-mint">{state.ok}</p>;
+    return <p className="rounded-lg border border-line bg-green-soft px-3 py-2 text-sm text-green">{state.ok}</p>;
   }
   return null;
 }
@@ -29,7 +29,7 @@ export function LoginForm() {
   }, [state.ok, router]);
   return (
     <form action={action} className="mx-auto grid max-w-sm gap-3">
-      <label className="grid gap-1.5 text-sm text-paper/80">
+      <label className="grid gap-1.5 text-sm text-ink">
         Admin password
         <Input type="password" name="password" autoComplete="current-password" required />
       </label>
