@@ -20,7 +20,6 @@ export type Placement =
   | "header"
   | "hero"
   | "hero-secondary"
-  | "inline-logo"
   | "feed"
   | "stats"
   | "sticky-mobile"

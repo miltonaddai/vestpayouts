@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { VestInlineLogo } from "@/components/brand/vest-inline-logo";
+import { VestHeroIcon } from "@/components/brand/vest-hero-icon";
 import { Suspense } from "react";
 import { PayoutExplorer } from "@/components/payouts/payout-explorer";
 import { PayoutTable } from "@/components/payouts/payout-table";
@@ -39,10 +39,10 @@ export default async function PayoutsPage() {
         <Breadcrumbs items={[{ name: "Vest payouts", path: "/payouts" }]} />
         <p className="meta mt-6">§ 00 — Ledger</p>
         <h1 className="mt-3 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">
-          Every Vest payout, with proof
+          Every <VestHeroIcon />Vest payout, with proof
         </h1>
         <p className="mt-4 max-w-3xl text-[16px] leading-[1.6] text-sub">
-          This is the full list of <VestInlineLogo placement="inline-logo" /> payouts VestPayouts has recorded
+          This is the full list of Vest payouts VestPayouts has recorded
           {summary.firstPaidAt ? ` since ${formatDate(summary.firstPaidAt)}` : ""}. On-chain payouts link to their
           transaction, so you can confirm each one on a block explorer. New payouts are added automatically.{" "}
           <Link href="/methodology" className="text-ink underline decoration-line underline-offset-4 hover:decoration-signal">

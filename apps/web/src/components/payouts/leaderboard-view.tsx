@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { VestInlineLogo } from "@/components/brand/vest-inline-logo";
+import { VestHeroIcon } from "@/components/brand/vest-hero-icon";
 import { SampleDataBanner } from "@/components/payouts/sample-banner";
 import { Stat, StatGrid } from "@/components/payouts/stat-grid";
 import { ReferralPanel } from "@/components/referral/referral-cta";
@@ -43,10 +43,10 @@ export async function LeaderboardView({ period }: { period: Period }) {
         <Breadcrumbs items={[{ name: "Leaderboard", path: "/leaderboard" }]} />
         <p className="meta mt-6">§ 00 — Rankings</p>
         <h1 className="mt-3 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">
-          Vest payout leaderboard
+          <VestHeroIcon />Vest payout leaderboard
         </h1>
         <p className="mt-4 max-w-2xl text-[16px] leading-[1.6] text-sub">
-          Traders ranked by USDC they received from <VestInlineLogo placement="inline-logo" />{" "}
+          Traders ranked by USDC they received from Vest{" "}
           {period === "all" ? "since tracking began" : PERIOD_LABEL[period].toLowerCase()}.
           Wallets are public addresses from payout transactions. Names appear only when a trader has been identified.
         </p>
