@@ -1,6 +1,6 @@
 import "server-only";
 import { cache } from "react";
-import { getPublicClient, isSupabaseConfigured } from "@/lib/supabase/clients";
+import { getFreshPublicClient, getPublicClient, isSupabaseConfigured } from "@/lib/supabase/clients";
 import type { PayoutRow } from "@/lib/supabase/database.types";
 import type { ChainId } from "./chains";
 import * as sample from "./sample-backend";
@@ -98,6 +98,19 @@ export const getLargest = cache(async (n = 10, period: Period = "all"): Promise<
   if (s) q = q.gte("paid_at", s);
   return must(await q.order("amount_usd", { ascending: false }).limit(n), "largest").map(toPayout);
 });
+
+/** Uncached latest rows for the landing Realtime tab (polling / Supabase changes). */
+export async function getLatestLive(n = 12): Promise<Payout[]> {
+  if (!isSupabaseConfigured) return sample.getLatest(n);
+  return must(
+    await getFreshPublicClient()
+      .from("visible_payouts")
+      .select(COLUMNS)
+      .order("paid_at", { ascending: false })
+      .limit(n),
+    "latest-live",
+  ).map(toPayout);
+}
 
 export const getDailySeries = cache(async (days = 30) => {
   if (!isSupabaseConfigured) return sample.getDailySeries(days);

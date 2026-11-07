@@ -28,3 +28,11 @@ export function getPublicClient(): TypedClient {
   });
   return publicClient;
 }
+
+/** Anon client without Next's Data Cache — for live API polls and realtime refreshes. */
+export function getFreshPublicClient(): TypedClient {
+  if (!url || !anonKey) throw new Error("Supabase is not configured: set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY");
+  return createClient<Database>(url, anonKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+}

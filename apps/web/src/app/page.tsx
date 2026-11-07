@@ -1,7 +1,7 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { DailyChart } from "@/components/payouts/daily-chart";
-import { PayoutFeed } from "@/components/payouts/payout-feed";
-import { PayoutTable } from "@/components/payouts/payout-table";
+import { HomePayoutTabs } from "@/components/payouts/home-payout-tabs";
 import { SampleDataBanner } from "@/components/payouts/sample-banner";
 import { HeroStat, Stat, StatGrid } from "@/components/payouts/stat-grid";
 import { TapeTicker } from "@/components/payouts/tape-ticker";
@@ -27,14 +27,15 @@ export const metadata = pageMetadata({
 });
 
 export default async function HomePage() {
-  const [summary, ticker, series, largest] = await Promise.all([
+  const [summary, ticker, series, largest24h, largest7d, largest30d] = await Promise.all([
     getSummary(),
     getLatest(20),
     getDailySeries(30),
-    getLargest(6, "30d"),
+    getLargest(10, "24h"),
+    getLargest(10, "7d"),
+    getLargest(10, "30d"),
   ]);
   const { windows } = summary;
-  const latest = ticker.slice(0, 8);
   const since = summary.firstPaidAt ? formatDate(summary.firstPaidAt) : null;
 
   return (
@@ -164,19 +165,22 @@ export default async function HomePage() {
             <div className="meta mb-3">§ 02 — Activity</div>
             <h2 className="text-[36px] leading-none font-medium tracking-[-0.03em] text-ink md:text-[56px]">/latest</h2>
           </div>
-          <Link href="/payouts?sort=largest&period=30d" className="meta underline hover:text-ink">
-            Largest this month →
+          <Link href="/payouts" className="meta underline hover:text-ink">
+            See every Vest payout →
           </Link>
         </div>
-        <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
-          <DailyChart series={series} title="Vest payouts per day, last 30 days" />
-          <div>
-            <h3 className="mb-3 font-mono text-[12px] tracking-[0.04em] text-sub uppercase">Largest Vest payouts this month</h3>
-            <PayoutTable payouts={largest} caption="Largest Vest payouts in the last 30 days" />
-          </div>
-        </div>
+        <DailyChart series={series} title="Vest payouts per day, last 30 days" />
         <div className="mt-6">
-          <PayoutFeed payouts={latest} syncedAt={summary.syncedAt} />
+          <Suspense fallback={<div className="min-h-64 border border-line bg-background" />}>
+            <HomePayoutTabs
+              initial={{
+                realtime: ticker.slice(0, 10),
+                "24h": largest24h,
+                "7d": largest7d,
+                "30d": largest30d,
+              }}
+            />
+          </Suspense>
         </div>
       </section>
 

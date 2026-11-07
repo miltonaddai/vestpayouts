@@ -4,10 +4,21 @@ import { formatDate, formatUsd } from "@/lib/format";
 import { txUrl } from "@/lib/payouts/chains";
 import { payoutRoute } from "@/lib/payouts/routes";
 import type { Payout } from "@/lib/payouts/types";
+import { cn } from "@/lib/utils";
 import { ChainBadge } from "./chain-badge";
 import { WalletDisplay } from "./wallet-display";
 
-export function PayoutTable({ payouts, caption, showWallet = true }: { payouts: Payout[]; caption: string; showWallet?: boolean }) {
+export function PayoutTable({
+  payouts,
+  caption,
+  showWallet = true,
+  className,
+}: {
+  payouts: Payout[];
+  caption: string;
+  showWallet?: boolean;
+  className?: string;
+}) {
   if (payouts.length === 0) {
     return (
       <div className="border border-dashed border-line px-6 py-14 text-center">
@@ -17,7 +28,7 @@ export function PayoutTable({ payouts, caption, showWallet = true }: { payouts: 
     );
   }
   return (
-    <div className="min-w-0 max-w-full overflow-x-auto border border-line bg-background">
+    <div className={cn("min-w-0 max-w-full overflow-x-auto border border-line bg-background", className)}>
       <table className="w-full min-w-[640px] text-left text-sm">
         <caption className="sr-only">{caption}</caption>
         <thead className="border-b border-line bg-paper font-mono text-[11px] tracking-[0.04em] text-sub uppercase">
