@@ -5,6 +5,7 @@ import { PayoutTable } from "@/components/payouts/payout-table";
 import { SampleDataBanner } from "@/components/payouts/sample-banner";
 import { HeroStat, Stat, StatGrid } from "@/components/payouts/stat-grid";
 import { TapeTicker } from "@/components/payouts/tape-ticker";
+import { VestInlineLogo } from "@/components/brand/vest-inline-logo";
 import { ReferralButton, ReferralCodeHint, ReferralPanel } from "@/components/referral/referral-cta";
 import { JsonLd } from "@/components/seo/json-ld";
 import { POST_META as BLOG_POSTS } from "@/content/blog/posts";
@@ -68,8 +69,8 @@ export default async function HomePage() {
             <div className="border-l border-line pl-6">
               <div className="meta">Abstract</div>
               <p className="mt-3 text-[14px] leading-[1.6] text-ink">
-                Every USDC payout Vest sends to traders, read straight from its public payout contracts. Real amounts,
-                real wallets, real transaction hashes. No screenshots required.
+                Every USDC payout <VestInlineLogo placement="inline-logo" /> sends to traders, read straight from its
+                public payout contracts. Real amounts, real wallets, real transaction hashes. No screenshots required.
               </p>
               <p className="mt-4 text-[13px] text-sub">
                 {summary.isSample ? "Sample total (placeholder data)" : `Paid to traders${since ? ` since ${since}` : ""}`}

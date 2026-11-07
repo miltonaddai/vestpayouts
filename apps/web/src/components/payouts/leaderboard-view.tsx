@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { VestInlineLogo } from "@/components/brand/vest-inline-logo";
 import { SampleDataBanner } from "@/components/payouts/sample-banner";
 import { Stat, StatGrid } from "@/components/payouts/stat-grid";
 import { ReferralPanel } from "@/components/referral/referral-cta";
@@ -45,7 +46,8 @@ export async function LeaderboardView({ period }: { period: Period }) {
           Vest payout leaderboard
         </h1>
         <p className="mt-4 max-w-2xl text-[16px] leading-[1.6] text-sub">
-          Traders ranked by USDC they received from Vest {period === "all" ? "since tracking began" : PERIOD_LABEL[period].toLowerCase()}.
+          Traders ranked by USDC they received from <VestInlineLogo placement="inline-logo" />{" "}
+          {period === "all" ? "since tracking began" : PERIOD_LABEL[period].toLowerCase()}.
           Wallets are public addresses from payout transactions. Names appear only when a trader has been identified.
         </p>
         <StatGrid className="mt-8">
