@@ -273,6 +273,49 @@
     color: var(--background);
     white-space: nowrap;
   }
+  .split-cta-arrow,
+  .split-cta-label {
+    transition: background-color 200ms ease, color 200ms ease, box-shadow 200ms ease;
+  }
+
+  /* Shared hover/focus for any control whose arrow uses .arrow-cta-icon */
+  .arrow-cta-icon {
+    display: inline-block;
+    transition: transform 200ms ease;
+  }
+  .arrow-cta > .arrow-cta-icon {
+    margin-left: 0.35em;
+  }
+  .arrow-cta > .arrow-cta-icon-prev {
+    margin-left: 0;
+    margin-right: 0.35em;
+  }
+  .arrow-cta {
+    transition: color 200ms ease, background-color 200ms ease, border-color 200ms ease;
+  }
+  .arrow-cta:is(:hover, :focus-visible) {
+    color: var(--color-ink);
+  }
+  :is(.arrow-cta, .split-cta):is(:hover, :focus-visible) .arrow-cta-icon {
+    transform: translateX(4px);
+  }
+  :is(.arrow-cta, .split-cta):is(:hover, :focus-visible) .arrow-cta-icon-prev {
+    transform: translateX(-4px);
+  }
+
+  /* Invert the split button to a solid ink fill (dark in light mode, light in dark mode). */
+  .split-cta:is(:hover, :focus-visible) .split-cta-arrow,
+  .split-cta:is(:hover, :focus-visible) .split-cta-label {
+    background-color: var(--color-ink);
+    color: var(--background);
+  }
+
+  /* Outline buttons that opt into .arrow-cta (pagination, etc.) */
+  .arrow-cta[data-variant="outline"]:is(:hover, :focus-visible):not(:disabled) {
+    background-color: var(--color-ink);
+    color: var(--background);
+    border-color: var(--color-ink);
+  }
 
   .prose-tape {
     @apply max-w-none text-[17px] leading-[1.65] text-ink;
@@ -320,5 +363,15 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
+  }
+  .arrow-cta,
+  .arrow-cta-icon,
+  .split-cta-arrow,
+  .split-cta-label {
+    transition: none;
+  }
+  :is(.arrow-cta, .split-cta):is(:hover, :focus-visible) .arrow-cta-icon,
+  :is(.arrow-cta, .split-cta):is(:hover, :focus-visible) .arrow-cta-icon-prev {
+    transform: none;
   }
 }

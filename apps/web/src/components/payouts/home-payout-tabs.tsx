@@ -8,6 +8,7 @@ import { PayoutTable } from "@/components/payouts/payout-table";
 import { LiveDot } from "@/components/payouts/payout-feed";
 import type { Payout } from "@/lib/payouts/types";
 import { cn } from "@/lib/utils";
+import { ArrowLink } from "@/components/ui/split-cta";
 
 export const HOME_TABS = [
   { id: "realtime", label: "Realtime", caption: "Latest Vest payouts, newest first" },
@@ -167,9 +168,7 @@ export function HomePayoutTabs({
         )}
       </div>
       <div className="border-t border-line bg-paper px-5 py-3">
-        <Link href="/payouts" className="meta underline hover:text-ink">
-          See every Vest payout →
-        </Link>
+        <ArrowLink href="/payouts">See every Vest payout</ArrowLink>
       </div>
     </div>
   );

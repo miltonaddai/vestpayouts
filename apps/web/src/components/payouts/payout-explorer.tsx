@@ -4,6 +4,7 @@ import { Loader2, Search } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
+import { ArrowIcon } from "@/components/ui/split-cta";
 import { Input } from "@/components/ui/input";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { formatInt, formatUsd } from "@/lib/format";
@@ -165,11 +166,23 @@ export function PayoutExplorer({ initial, isSample }: { initial: PayoutPage; isS
 
       {data.pages > 1 && (
         <nav aria-label="Pagination" className="mt-6 flex items-center justify-center gap-3">
-          <Button variant="outline" disabled={data.page <= 1 || pending} onClick={() => setFilters((f) => ({ ...f, page: data.page - 1 }))}>
-            ← Newer
+          <Button
+            variant="outline"
+            className="arrow-cta hover:border-ink hover:bg-ink hover:text-background focus-visible:border-ink focus-visible:bg-ink focus-visible:text-background"
+            disabled={data.page <= 1 || pending}
+            onClick={() => setFilters((f) => ({ ...f, page: data.page - 1 }))}
+          >
+            <ArrowIcon className="arrow-cta-icon-prev">←</ArrowIcon>
+            Newer
           </Button>
-          <Button variant="outline" disabled={data.page >= data.pages || pending} onClick={() => setFilters((f) => ({ ...f, page: data.page + 1 }))}>
-            Older →
+          <Button
+            variant="outline"
+            className="arrow-cta hover:border-ink hover:bg-ink hover:text-background focus-visible:border-ink focus-visible:bg-ink focus-visible:text-background"
+            disabled={data.page >= data.pages || pending}
+            onClick={() => setFilters((f) => ({ ...f, page: data.page + 1 }))}
+          >
+            Older
+            <ArrowIcon />
           </Button>
         </nav>
       )}

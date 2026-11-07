@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { ArrowLink } from "@/components/ui/split-cta";
 import { formatDuration, formatInt, formatUsd } from "@/lib/format";
 import { getSummary } from "@/lib/payouts/repository";
 
@@ -15,9 +15,7 @@ export async function LiveStatsCallout() {
         {formatInt(s.windows["30d"].count)} payouts in the last 30 days
         {s.medianProcessingHours != null && <>, with a median of {formatDuration(s.medianProcessingHours)} from request to wallet</>}.
       </p>
-      <Link href="/payouts" className="meta mt-3 inline-block underline hover:text-ink">
-        See every payout →
-      </Link>
+      <ArrowLink href="/payouts" className="mt-3">See every payout</ArrowLink>
     </aside>
   );
 }

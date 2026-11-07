@@ -7,6 +7,7 @@ import { HeroStat, Stat, StatGrid } from "@/components/payouts/stat-grid";
 import { TapeTicker } from "@/components/payouts/tape-ticker";
 import { VestHeroHeading } from "@/components/brand/vest-hero-icon";
 import { ReferralButton, ReferralCodeHint, ReferralPanel } from "@/components/referral/referral-cta";
+import { ArrowLink } from "@/components/ui/split-cta";
 import { JsonLd } from "@/components/seo/json-ld";
 import { POST_META as BLOG_POSTS } from "@/content/blog/posts";
 import { PAYOUT_FAQS } from "@/lib/content/faqs";
@@ -85,9 +86,7 @@ export default async function HomePage() {
               </p>
               <div className="mt-6 flex flex-col items-stretch gap-3">
                 <ReferralButton placement="hero" label="Get funded on Vest" />
-                <Link href="/payouts" className="meta underline hover:text-ink">
-                  Browse payout proof →
-                </Link>
+                <ArrowLink href="/payouts">Browse payout proof</ArrowLink>
               </div>
               <ReferralCodeHint className="mt-3" />
               <p className="mt-3 text-[12px] text-sub">
@@ -127,9 +126,7 @@ export default async function HomePage() {
               individual transactions you can check yourself.
             </p>
           </div>
-          <Link href="/leaderboard" className="meta underline hover:text-ink">
-            View the Vest payout leaderboard →
-          </Link>
+          <ArrowLink href="/leaderboard">View the Vest payout leaderboard</ArrowLink>
         </div>
         <StatGrid>
           <Stat label="Paid last 24h" value={formatUsd(windows["24h"].amount)} sub={`${formatInt(windows["24h"].count)} payouts`} highlight />
@@ -165,9 +162,7 @@ export default async function HomePage() {
             <div className="meta mb-3">§ 02 — Activity</div>
             <h2 className="text-[36px] leading-none font-medium tracking-[-0.03em] text-ink md:text-[56px]">/latest</h2>
           </div>
-          <Link href="/payouts" className="meta underline hover:text-ink">
-            See every Vest payout →
-          </Link>
+          <ArrowLink href="/payouts">See every Vest payout</ArrowLink>
         </div>
         <DailyChart series={series} title="Vest payouts per day, last 30 days" />
         <div className="mt-6">
@@ -215,9 +210,7 @@ export default async function HomePage() {
             </li>
           ))}
         </ol>
-        <Link href="/how-vest-payouts-work" className="meta mt-6 inline-flex underline hover:text-ink">
-          Read the full guide to Vest payouts →
-        </Link>
+        <ArrowLink href="/how-vest-payouts-work" className="mt-6">Read the full guide to Vest payouts</ArrowLink>
       </section>
 
       <section aria-labelledby="proof-title" className="border-b border-line px-6 py-12 md:px-14 md:py-16">
@@ -232,9 +225,7 @@ export default async function HomePage() {
               Vest payout leaves a public USDC transfer from Vest&apos;s payout contract to the trader&apos;s wallet.
               VestPayouts indexes those transfers and links each one to its block explorer page.
             </p>
-            <Link href="/blog/vest-payout-proof" className="meta mt-5 inline-flex underline hover:text-ink">
-              How to verify a Vest payout →
-            </Link>
+            <ArrowLink href="/blog/vest-payout-proof" className="mt-5">How to verify a Vest payout</ArrowLink>
           </div>
           <dl className="border border-line">
             {Object.values(CHAINS).map((c) => (
@@ -270,9 +261,7 @@ export default async function HomePage() {
                 </div>
               ))}
             </dl>
-            <Link href="/faq" className="meta mt-6 inline-flex underline hover:text-ink">
-              All FAQs →
-            </Link>
+            <ArrowLink href="/faq" className="mt-6">All FAQs</ArrowLink>
           </div>
           <div>
             <div className="meta mb-3">§ 06 — Writing</div>

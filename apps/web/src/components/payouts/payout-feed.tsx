@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { ChainBadge } from "./chain-badge";
 import { TimeAgo } from "./time-ago";
 import { WalletDisplay } from "./wallet-display";
+import { ArrowLink } from "@/components/ui/split-cta";
 
 export function LiveDot({ className }: { className?: string }) {
   return <span className={cn("inline-block size-2 bg-green", className)} aria-hidden="true" />;
@@ -54,9 +55,7 @@ export function PayoutFeed({ payouts, title = "Live Vest payout feed", syncedAt 
         </ol>
       )}
       <div className="border-t border-line bg-paper px-5 py-3">
-        <Link href="/payouts" className="meta underline hover:text-ink">
-          See every Vest payout →
-        </Link>
+        <ArrowLink href="/payouts">See every Vest payout</ArrowLink>
       </div>
     </section>
   );
