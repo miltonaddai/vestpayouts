@@ -40,3 +40,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local on-chain ingest output (used when Supabase is not configured)
+/data/onchain-store.json
+/data/onchain-store.json.tmp

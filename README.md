@@ -53,9 +53,9 @@ yarn dev
 - Website: [http://127.0.0.1:4317](http://127.0.0.1:4317)
 - API health: [http://127.0.0.1:4318/health](http://127.0.0.1:4318/health)
 
-`yarn dev:web` and `yarn dev:api` start one of them. With no Supabase keys on the website, pages still render and every figure is an in-memory **sample**.
+`yarn dev:web` and `yarn dev:api` start one of them. With no Supabase keys on the website, pages read real on-chain rows from `data/onchain-store.json` after you run `yarn ingest`. If that file is missing, every figure is an in-memory **sample**. The website never calls Alchemy; ingest runs only in `apps/api`.
 
-`CLICK_LOG_SECRET` and `REVALIDATE_SECRET` must match in the two env files. Leave `INGEST_CRON` empty locally so the API does not scan the chains on boot.
+`CLICK_LOG_SECRET` and `REVALIDATE_SECRET` must match in the two env files. Recommended ingest cadence is every 12 minutes (`INGEST_CRON=*/12 * * * *`). Leave `INGEST_CRON` empty if you do not want `yarn dev` to scan the chains on its own.
 
 ### Local Supabase
 
@@ -79,7 +79,7 @@ CLI 3's `supabase status` does not print API keys. The local demo JWTs in the en
 
 Website (`apps/web/.env.example`): `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `BACKEND_URL`, `CLICK_LOG_SECRET`, `REVALIDATE_SECRET`, the referral vars, contact email.
 
-API (`apps/api/.env.example`): `PORT`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_PASSWORD`, `CLICK_LOG_SECRET`, `REVALIDATE_URL`, `REVALIDATE_SECRET`, `INGEST_CRON`, `CRON_SECRET`, `REFERRAL_WEBHOOK_URL`, `BASE_RPC_URL`, `ARBITRUM_RPC_URL`.
+API (`apps/api/.env.example`): `PORT`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_PASSWORD`, `CLICK_LOG_SECRET`, `REVALIDATE_URL`, `REVALIDATE_SECRET`, `INGEST_CRON`, `CRON_SECRET`, `REFERRAL_WEBHOOK_URL`, `ALCHEMY_API_KEY`, `BASE_RPC_URL`, `ARBITRUM_RPC_URL`, `INGEST_METHOD`, `INGEST_MAX_REQUESTS`, `INGEST_STORE`. Never put `ALCHEMY_API_KEY` on the website or prefix it with `NEXT_PUBLIC_`.
 
 `NEXT_PUBLIC_SITE_URL` defaults to `https://vestpayouts.com` when unset. No trailing slash.
 
@@ -87,19 +87,27 @@ API (`apps/api/.env.example`): `PORT`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KE
 
 ### 1. Ingest from the chain
 
-Vest sends withdrawals as USDC from a payout contract on Base (`0x55133c825603e6a5b9e911abab23e75dc3bb07af`) and Arbitrum One (`0xb2f86eae1197032fa85389cc6c0f3b06b58dd1ea`). The API reads those events, upserts on `(chain, tx hash, log index)`, and stores its cursor in `ingest_state`.
+Vest sends withdrawals as USDC from a payout contract on Base (`0x55133c825603e6a5b9e911abab23e75dc3bb07af`) and Arbitrum One (`0xb2f86eae1197032fa85389cc6c0f3b06b58dd1ea`). The API reads those transfers, upserts on `(chain, tx hash, log index)`, and stores a per-chain cursor (`ingest_state` in Supabase, or inside `data/onchain-store.json` when `INGEST_STORE=local`).
+
+Set `ALCHEMY_API_KEY` on the API (never on the website). Ingest then uses `https://base-mainnet.g.alchemy.com/v2/<key>` and `https://arb-mainnet.g.alchemy.com/v2/<key>`, unless `BASE_RPC_URL` / `ARBITRUM_RPC_URL` override them.
+
+On Alchemy's free tier, `eth_getLogs` is limited to a 10-block range on Base and Arbitrum, so a getLogs backfill would cost tens of millions of compute units. The default method is therefore `alchemy_getAssetTransfers` (120 CU per page, up to 1000 USDC transfers plus timestamps). `eth_getLogs` remains available as `--method logs` with a 10-block starting chunk, adaptive halving, 429 retries, and a hard per-run request cap (`INGEST_MAX_REQUESTS`, default 300). Each run logs request counts and estimated CU. After the first sync, later runs only request blocks newer than the cursor.
+
+The transfers path records `requested_at` as null (that field lives on Vest's custom withdrawal event, which would take extra receipts or a getLogs scan to decode). Amounts and recipients come from the USDC transfer itself.
 
 ```bash
 yarn ingest
 yarn ingest -- --chain base
 yarn ingest -- --since 2026-07-01
+yarn ingest -- --max-blocks 4000
+yarn ingest -- --method logs
 ```
 
-The extra `--` lets Yarn forward the flags. On a long-running API, set `INGEST_CRON` (for example `17 * * * *`) or call `POST /internal/ingest` with `Authorization: Bearer $CRON_SECRET`. `.github/workflows/ingest.yml` runs the CLI hourly when the repository secrets are set.
+The extra `--` lets Yarn forward the flags. On a long-running API, set `INGEST_CRON` to `*/12 * * * *` (every 12 minutes, UTC) or call `POST /internal/ingest` with `Authorization: Bearer $CRON_SECRET`. `.github/workflows/ingest.yml` runs the CLI hourly when the repository secrets are set. Incremental Alchemy runs are typically one request per chain.
 
 A row proves Vest's contract sent that much USDC to that wallet. It does not, by itself, prove the money was funded-account profit, because ordinary exchange withdrawals leave through the same contract. That limit is written up at `/methodology`.
 
-Free Base RPCs refuse archive history. A full backfill needs `BASE_RPC_URL`.
+Without Supabase, `yarn ingest` writes `data/onchain-store.json` (gitignored) and the website reads that file. With Supabase keys, ingest writes to Postgres as before.
 
 ### 2. Admin
 

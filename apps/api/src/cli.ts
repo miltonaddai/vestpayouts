@@ -8,8 +8,21 @@ import { writeSeedSql } from "./seed-sql";
 
 const [command, ...rest] = process.argv.slice(2);
 
+function num(value: string | undefined) {
+  if (value == null || value === "") return undefined;
+  const n = Number(value);
+  return Number.isFinite(n) && n > 0 ? n : undefined;
+}
+
 async function ingest() {
-  const ok = await runIngest({ chain: argValue(rest, "--chain"), since: argValue(rest, "--since") });
+  const ok = await runIngest({
+    chain: argValue(rest, "--chain"),
+    since: argValue(rest, "--since"),
+    maxBlocks: num(argValue(rest, "--max-blocks")),
+    method: argValue(rest, "--method"),
+    maxRequests: num(argValue(rest, "--max-requests")),
+    saveCursor: hasFlag(rest, "--save-cursor") ? true : undefined,
+  });
   process.exit(ok ? 0 : 1);
 }
 

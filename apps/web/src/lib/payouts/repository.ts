@@ -3,6 +3,7 @@ import { cache } from "react";
 import { getFreshPublicClient, getPublicClient, isSupabaseConfigured } from "@/lib/supabase/clients";
 import type { PayoutRow } from "@/lib/supabase/database.types";
 import type { ChainId } from "./chains";
+import * as local from "./local-backend";
 import * as sample from "./sample-backend";
 import type {
   ChainCoverage,
@@ -20,7 +21,14 @@ export const PAGE_SIZE = 50;
 const COLUMNS =
   "id, source, chain, tx_hash, log_index, block_number, wallet, amount_usd, paid_at, requested_at, trader_name, proof_url, note, wallet_label";
 
-export const dataMode = isSupabaseConfigured ? "supabase" : "sample-local";
+function fileBackend() {
+  return local.hasLocalOnchainStore() ? local : sample;
+}
+
+export function dataMode() {
+  if (isSupabaseConfigured) return "supabase";
+  return local.hasLocalOnchainStore() ? "local-onchain" : "sample-local";
+}
 
 export { payoutRoute } from "./routes";
 
@@ -59,7 +67,7 @@ const view = () => db().from("visible_payouts").select(COLUMNS);
 type RawWindow = { amount: number; count: number; wallets: number; largest: PayoutRow | null };
 
 export const getSummary = cache(async (): Promise<Summary> => {
-  if (!isSupabaseConfigured) return sample.getSummary();
+  if (!isSupabaseConfigured) return fileBackend().getSummary();
   const raw = must(await db().rpc("payout_summary"), "payout_summary") as unknown as {
     windows: Record<Period, RawWindow>;
     median_amount_30d: number | null;
@@ -87,21 +95,21 @@ export const getSummary = cache(async (): Promise<Summary> => {
 });
 
 export const getLatest = cache(async (n = 12): Promise<Payout[]> => {
-  if (!isSupabaseConfigured) return sample.getLatest(n);
+  if (!isSupabaseConfigured) return fileBackend().getLatest(n);
   return must(await view().order("paid_at", { ascending: false }).limit(n), "latest").map(toPayout);
 });
 
 export const getLargest = cache(async (n = 10, period: Period = "all"): Promise<Payout[]> => {
-  if (!isSupabaseConfigured) return sample.getLargest(n, period);
+  if (!isSupabaseConfigured) return fileBackend().getLargest(n, period);
   let q = view();
   const s = since(period);
   if (s) q = q.gte("paid_at", s);
   return must(await q.order("amount_usd", { ascending: false }).limit(n), "largest").map(toPayout);
 });
 
-/** Uncached latest rows for the landing Realtime tab (polling / Supabase changes). */
+/** Uncached latest rows for the landing Realtime tab (polling the local store or Supabase — never Alchemy). */
 export async function getLatestLive(n = 12): Promise<Payout[]> {
-  if (!isSupabaseConfigured) return sample.getLatest(n);
+  if (!isSupabaseConfigured) return fileBackend().getLatest(n);
   return must(
     await getFreshPublicClient()
       .from("visible_payouts")
@@ -113,13 +121,13 @@ export async function getLatestLive(n = 12): Promise<Payout[]> {
 }
 
 export const getDailySeries = cache(async (days = 30) => {
-  if (!isSupabaseConfigured) return sample.getDailySeries(days);
+  if (!isSupabaseConfigured) return fileBackend().getDailySeries(days);
   const rows = must(await db().rpc("payout_daily", { days }), "payout_daily");
   return rows.map((r) => ({ date: Date.parse(`${r.day}T00:00:00Z`), amount: Number(r.amount), count: Number(r.payouts) }));
 });
 
 export const getLeaderboard = cache(async (period: Period, limit = 50): Promise<LeaderboardRow[]> => {
-  if (!isSupabaseConfigured) return sample.getLeaderboard(period, limit);
+  if (!isSupabaseConfigured) return fileBackend().getLeaderboard(period, limit);
   const rows = must(await db().rpc("payout_leaderboard", { period, max_rows: limit }), "payout_leaderboard");
   return rows.map((r, i) => ({
     key: r.wallet ?? r.label ?? String(i),
@@ -136,7 +144,7 @@ export const getLeaderboard = cache(async (period: Period, limit = 50): Promise<
 const sanitizeSearch = (q: string) => q.replace(/[^a-zA-Z0-9@_.\- ]/g, "").slice(0, 66);
 
 export async function queryPayouts(query: PayoutQuery): Promise<PayoutPage> {
-  if (!isSupabaseConfigured) return sample.queryPayouts(query, PAGE_SIZE);
+  if (!isSupabaseConfigured) return fileBackend().queryPayouts(query, PAGE_SIZE);
   const q = query.q ? sanitizeSearch(query.q.trim().toLowerCase()) : "";
   const period = query.period ?? "all";
   const totals = must(
@@ -168,7 +176,7 @@ export async function queryPayouts(query: PayoutQuery): Promise<PayoutPage> {
 }
 
 export const getPayoutsAtRoute = cache(async (network: string, ref: string): Promise<Payout[] | null> => {
-  if (!isSupabaseConfigured) return sample.getPayoutsAtRoute(network, ref);
+  if (!isSupabaseConfigured) return fileBackend().getPayoutsAtRoute(network, ref);
   if (network === "base" || network === "arbitrum") {
     if (!/^0x[0-9a-fA-F]{64}$/.test(ref)) return null;
     const rows = must(
@@ -185,7 +193,9 @@ export const getPayoutsAtRoute = cache(async (network: string, ref: string): Pro
 });
 
 export const getWallet = cache(async (address: string): Promise<WalletProfile | null> => {
-  if (!isSupabaseConfigured) return null;
+  if (!isSupabaseConfigured) {
+    return local.hasLocalOnchainStore() ? local.getWallet(address) : null;
+  }
   const a = address.toLowerCase();
   if (!/^0x[0-9a-f]{40}$/.test(a)) return null;
   const [rows, alias] = await Promise.all([
@@ -207,12 +217,12 @@ export const getWallet = cache(async (address: string): Promise<WalletProfile | 
 });
 
 export const getPercentile = cache(async (amount: number) => {
-  if (!isSupabaseConfigured) return sample.getPercentile(amount);
+  if (!isSupabaseConfigured) return fileBackend().getPercentile(amount);
   return Number(must(await db().rpc("payout_percentile", { amount }), "payout_percentile"));
 });
 
 export const getCoverage = cache(async (): Promise<ChainCoverage[]> => {
-  if (!isSupabaseConfigured) return [];
+  if (!isSupabaseConfigured) return local.hasLocalOnchainStore() ? local.getCoverage() : [];
   const rows = must(await db().from("ingest_state").select("*").order("chain"), "ingest_state");
   return rows.map((r) => ({
     chain: r.chain,
@@ -227,7 +237,9 @@ export const getCoverage = cache(async (): Promise<ChainCoverage[]> => {
 export const INDEXABLE_MIN_USD = 500;
 
 export const getIndexablePayouts = cache(async (limit = 5000): Promise<Payout[]> => {
-  if (!isSupabaseConfigured) return [];
+  if (!isSupabaseConfigured) {
+    return local.hasLocalOnchainStore() ? local.getIndexablePayouts(limit, INDEXABLE_MIN_USD) : [];
+  }
   return must(
     await view().gte("amount_usd", INDEXABLE_MIN_USD).order("amount_usd", { ascending: false }).limit(limit),
     "indexable payouts",
