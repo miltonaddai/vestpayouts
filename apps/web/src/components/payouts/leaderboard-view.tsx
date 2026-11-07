@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { VestHeroIcon } from "@/components/brand/vest-hero-icon";
+import { VestHeroHeading } from "@/components/brand/vest-hero-icon";
 import { SampleDataBanner } from "@/components/payouts/sample-banner";
 import { Stat, StatGrid } from "@/components/payouts/stat-grid";
 import { ReferralPanel } from "@/components/referral/referral-cta";
@@ -43,7 +43,7 @@ export async function LeaderboardView({ period }: { period: Period }) {
         <Breadcrumbs items={[{ name: "Leaderboard", path: "/leaderboard" }]} />
         <p className="meta mt-6">§ 00 — Rankings</p>
         <h1 className="mt-3 text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">
-          <VestHeroIcon />Vest payout leaderboard
+          <VestHeroHeading>Vest payout leaderboard</VestHeroHeading>
         </h1>
         <p className="mt-4 max-w-2xl text-[16px] leading-[1.6] text-sub">
           Traders ranked by USDC they received from Vest{" "}

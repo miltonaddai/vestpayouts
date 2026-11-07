@@ -5,7 +5,7 @@ import { PayoutTable } from "@/components/payouts/payout-table";
 import { SampleDataBanner } from "@/components/payouts/sample-banner";
 import { HeroStat, Stat, StatGrid } from "@/components/payouts/stat-grid";
 import { TapeTicker } from "@/components/payouts/tape-ticker";
-import { VestHeroIcon } from "@/components/brand/vest-hero-icon";
+import { VestHeroHeading } from "@/components/brand/vest-hero-icon";
 import { ReferralButton, ReferralCodeHint, ReferralPanel } from "@/components/referral/referral-cta";
 import { JsonLd } from "@/components/seo/json-ld";
 import { POST_META as BLOG_POSTS } from "@/content/blog/posts";
@@ -59,7 +59,7 @@ export default async function HomePage() {
           <div className="meta mb-8">§ 00 — Payout specification</div>
           <div className="grid gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(16rem,1fr)] lg:gap-16">
             <h1 className="m-0 text-[44px] leading-[0.94] font-medium tracking-[-0.04em] text-ink md:text-[80px] lg:text-[96px]">
-              <VestHeroIcon />Vest payouts,
+              <VestHeroHeading>Vest payouts,</VestHeroHeading>
               <br />
               tracked live
               <span className="mt-3 block text-[22px] tracking-[-0.03em] md:text-[40px] lg:text-[48px]">

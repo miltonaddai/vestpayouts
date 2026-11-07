@@ -38,9 +38,8 @@ export function ThemeToggle({ className }: { className?: string }) {
       type="button"
       role="switch"
       aria-checked={dark}
-      aria-label="Dark theme"
       className={cn(
-        "flex shrink-0 items-center justify-center border-l border-line px-3 hover:bg-paper focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-signal lg:px-5",
+        "flex shrink-0 items-center gap-2.5 border-l border-line px-4 py-3 text-sub uppercase hover:bg-paper hover:text-ink focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-signal lg:px-5 lg:py-4",
         className,
       )}
       onClick={() => {
@@ -49,6 +48,7 @@ export function ThemeToggle({ className }: { className?: string }) {
         setDark(next);
       }}
     >
+      <span>Theme</span>
       <span
         aria-hidden="true"
         className="relative inline-flex h-6 w-11 items-center rounded-full border border-line bg-paper"

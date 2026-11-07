@@ -1,19 +1,21 @@
+import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
+/** Tight crop of the official Vest V-mark (header / favicon paths from vestmarkets.com). */
+const VIEWBOX = "0.72 0.83 547.22 338";
+
 /**
- * Official Vest V-mark (header / favicon paths from vestmarkets.com).
- * Sized to the surrounding headline's cap-height; inherits text color so it follows the theme.
+ * Official Vest V-mark, sized to the surrounding headline's cap-height.
+ * Pair with adjacent text via VestHeroHeading so it sits on the baseline.
  */
 export function VestHeroIcon({ className }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 550 339"
+      viewBox={VIEWBOX}
       aria-hidden="true"
       focusable="false"
-      className={cn(
-        "mr-[0.18em] inline-block h-[1cap] w-auto shrink-0 align-middle text-current",
-        className,
-      )}
+      overflow="visible"
+      className={cn("block h-[1cap] w-auto shrink-0 text-current", className)}
     >
       <path
         fill="currentColor"
@@ -28,5 +30,21 @@ export function VestHeroIcon({ className }: { className?: string }) {
         d="M272.038 325.934L136.429 217.482V335.143C136.429 337.165 138.06 338.827 140.112 338.827H408.597C410.62 338.827 412.281 337.195 412.281 335.143V217.482L276.672 325.934C275.331 327.005 273.439 327.005 272.068 325.934H272.038Z"
       />
     </svg>
+  );
+}
+
+/** V-mark + headline text, cap-aligned: icon sits on the baseline and matches the cap height of nearby letters. */
+export function VestHeroHeading({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <span className={cn("inline-flex items-baseline gap-[0.16em]", className)}>
+      <VestHeroIcon />
+      {children}
+    </span>
   );
 }
