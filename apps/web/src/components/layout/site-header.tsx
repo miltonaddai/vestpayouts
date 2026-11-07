@@ -25,13 +25,12 @@ export function SiteHeader() {
         </Link>
         <div className="order-3 flex w-full min-w-0 border-t border-line lg:order-2 lg:w-auto lg:flex-1 lg:border-t-0">
           <nav id="nav-scroll" aria-label="Main" className="nav-scroll flex min-w-0 flex-1 overflow-x-auto lg:overflow-x-visible">
-            {NAV.map((n, i) => (
+            {NAV.map((n) => (
               <Link
                 key={n.href}
                 href={n.href}
                 className="border-r border-line px-4 py-3 whitespace-nowrap text-sub uppercase hover:text-ink lg:px-5 lg:py-4"
               >
-                <span className="hidden lg:inline">[ {String(i).padStart(2, "0")} ] </span>
                 {n.label}
               </Link>
             ))}
