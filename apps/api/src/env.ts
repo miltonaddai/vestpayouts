@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import type { ChainId, Database } from "@vestpayouts/shared";
+import { getSupabaseSecretKey, getSupabaseUrl, type ChainId, type Database } from "@vestpayouts/shared";
 
 export const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 
@@ -20,18 +20,24 @@ loadEnvFile(path.join(here, "../.env"));
 loadEnvFile(path.join(here, "../.env.local"));
 
 export function supabaseUrl() {
-  return process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+  return getSupabaseUrl();
+}
+
+export function supabaseSecretKey() {
+  return getSupabaseSecretKey();
 }
 
 export function serviceClient(): SupabaseClient<Database> {
   const url = supabaseUrl();
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) throw new Error("Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY on the API.");
+  const key = supabaseSecretKey();
+  if (!url || !key) {
+    throw new Error("Set SUPABASE_URL and SUPABASE_SECRET_KEY (or SUPABASE_SERVICE_ROLE_KEY) on the API.");
+  }
   return createClient<Database>(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
 }
 
 export function hasSupabaseWrite() {
-  return Boolean(supabaseUrl() && process.env.SUPABASE_SERVICE_ROLE_KEY?.trim());
+  return Boolean(supabaseUrl() && supabaseSecretKey());
 }
 
 /** Prefer the local JSON store when Supabase is unset, or when INGEST_STORE=local. */

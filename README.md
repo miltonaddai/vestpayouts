@@ -6,16 +6,16 @@ VestPayouts is independent. It is not affiliated with or endorsed by Vest. See [
 
 ## Architecture
 
-Yarn workspaces. The website never holds the Supabase service-role key.
+Yarn workspaces. The website never holds the Supabase secret key.
 
 ```
-apps/web            Next.js. Pages, UI, SEO, public reads (anon key + RLS).
+apps/web            Next.js. Pages, UI, SEO, public reads (publishable key + RLS).
 apps/api            Hono service. Ingest, CSV import, admin writes, click log, cron.
 packages/shared     Chain constants, payout types, CSV schema, Supabase types, sample rows.
 supabase/           Migrations and the sample seed. Used by both apps.
 ```
 
-Public pages read Postgres through the anon key. Row level security allows that read and refuses every write. The API uses the service role for inserts and updates, then calls `POST /api/revalidate` on the website so cached pages refresh.
+Public pages read Postgres through the publishable key (or the legacy anon key). Row level security allows that read and refuses every write. The API uses the secret key (or the legacy service-role key) for inserts and updates, then calls `POST /api/revalidate` on the website so cached pages refresh.
 
 `/go` stays on the website. A referral link should be a same-origin 302, so the route builds the Vest URL and redirects immediately. After the response, it POSTs the click to the API with `CLICK_LOG_SECRET`. That secret can only insert a click. It is not the database key.
 
@@ -66,20 +66,20 @@ yarn db:reset
 
 `supabase/config.toml` turns off auth, storage, realtime and studio. You need Postgres, PostgREST and Kong.
 
-CLI 3's `supabase status` does not print API keys. The local demo JWTs in the env examples work against that stack. On a hosted project, copy the anon key into `apps/web` and the service-role key into `apps/api` from **Project Settings → API**.
+CLI 3's `supabase status` does not print API keys. The local demo JWTs in the env examples still work against that stack as `NEXT_PUBLIC_SUPABASE_ANON_KEY` / `SUPABASE_SERVICE_ROLE_KEY`. On a hosted project, copy the publishable key (`sb_publishable_...`) into `apps/web` and the secret key (`sb_secret_...`) into `apps/api` from **Project Settings → API Keys**. The legacy anon and service-role names are accepted as fallbacks.
 
 ### Hosted Supabase
 
 1. Create a project at [supabase.com](https://supabase.com).
 2. Run `supabase/migrations/` (SQL editor, or `supabase link` then `supabase db push`).
 3. Optionally run `supabase/seed.sql`. Every seed row is `source = 'sample'` and is hidden once a real payout exists.
-4. Put the project URL and anon key in `apps/web/.env.local`, and the URL plus service-role key in `apps/api/.env.local`.
+4. Put the project URL and publishable key in `apps/web/.env.local` (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`), and the URL plus secret key in `apps/api/.env.local` (`SUPABASE_URL`, `SUPABASE_SECRET_KEY`). `NEXT_PUBLIC_SUPABASE_ANON_KEY` and `SUPABASE_SERVICE_ROLE_KEY` still work if you already use them.
 
 ## Environment
 
-Website (`apps/web/.env.example`): `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `BACKEND_URL`, `CLICK_LOG_SECRET`, `REVALIDATE_SECRET`, the referral vars, contact email.
+Website (`apps/web/.env.example`): `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (legacy fallback: `NEXT_PUBLIC_SUPABASE_ANON_KEY`), `BACKEND_URL`, `CLICK_LOG_SECRET`, `REVALIDATE_SECRET`, the referral vars, contact email.
 
-API (`apps/api/.env.example`): `PORT`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_PASSWORD`, `CLICK_LOG_SECRET`, `REVALIDATE_URL`, `REVALIDATE_SECRET`, `INGEST_CRON`, `CRON_SECRET`, `REFERRAL_WEBHOOK_URL`, `ALCHEMY_API_KEY`, `BASE_RPC_URL`, `ARBITRUM_RPC_URL`, `INGEST_METHOD`, `INGEST_MAX_REQUESTS`, `INGEST_STORE`. Never put `ALCHEMY_API_KEY` on the website or prefix it with `NEXT_PUBLIC_`.
+API (`apps/api/.env.example`): `PORT`, `SUPABASE_URL`, `SUPABASE_SECRET_KEY` (legacy fallback: `SUPABASE_SERVICE_ROLE_KEY`), `ADMIN_PASSWORD`, `CLICK_LOG_SECRET`, `REVALIDATE_URL`, `REVALIDATE_SECRET`, `INGEST_CRON`, `CRON_SECRET`, `REFERRAL_WEBHOOK_URL`, `ALCHEMY_API_KEY`, `BASE_RPC_URL`, `ARBITRUM_RPC_URL`, `INGEST_METHOD`, `INGEST_MAX_REQUESTS`, `INGEST_STORE`. Never put `ALCHEMY_API_KEY` or `SUPABASE_SECRET_KEY` on the website or prefix them with `NEXT_PUBLIC_`.
 
 `NEXT_PUBLIC_SITE_URL` defaults to `https://vestpayouts.com` when unset. No trailing slash.
 
@@ -128,8 +128,8 @@ Columns: `paid_at,amount_usd,chain,tx_hash,wallet,trader,proof_url,note`. Only `
 
 - `payouts`, `wallets` (display names), `ingest_state`, `referral_clicks`.
 - RLS is on for every table. `anon` may select published payouts, wallet names and ingest status. There are no write policies.
-- `anon` and `authenticated` are also revoked from insert, update and delete. Writes go through the API's service role.
-- `referral_clicks` has no policies at all, so only the service role can read or write it.
+- `anon` and `authenticated` are also revoked from insert, update and delete. Writes go through the API's secret key (`service_role` role).
+- `referral_clicks` has no policies at all, so only the secret key (`service_role`) can read or write it.
 - The `visible_payouts` view hides `source = 'sample'` rows as soon as any real published payout exists. Sample rows are labelled in the UI either way.
 
 Aggregates (`payout_summary`, `payout_daily`, `payout_leaderboard`, `payout_search_totals`) run in Postgres so pages don't pull the whole table.
@@ -149,7 +149,7 @@ yarn db:types
 ## Deploy the website (Vercel)
 
 1. Import the repository. Framework preset is Next.js. Set the root directory to `apps/web`. Vercel installs the Yarn workspace from the repository root, which is what `@vestpayouts/shared` needs.
-2. Add the website env vars. `NEXT_PUBLIC_SITE_URL` is `https://vestpayouts.com`. `BACKEND_URL` is the public API origin. Do not add `SUPABASE_SERVICE_ROLE_KEY` or `ADMIN_PASSWORD`.
+2. Add the website env vars. `NEXT_PUBLIC_SITE_URL` is `https://vestpayouts.com`. `BACKEND_URL` is the public API origin. Do not add `SUPABASE_SECRET_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, or `ADMIN_PASSWORD`.
 3. Deploy. Lists revalidate about hourly. Individual payout pages revalidate about daily. `POST /api/revalidate` with `Authorization: Bearer $REVALIDATE_SECRET` expires the cache immediately.
 4. In Search Console, submit `https://vestpayouts.com/sitemap.xml`.
 

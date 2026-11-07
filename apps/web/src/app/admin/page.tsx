@@ -39,7 +39,7 @@ export default async function AdminPage() {
       <div className="mx-auto max-w-xl px-6 py-16 md:px-14">
         <h1 className="text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink">Admin is locked</h1>
         <p className="mt-3 text-sub">
-          Set <code className="text-green">ADMIN_PASSWORD</code> on the API (<code className="text-green">apps/api/.env.local</code>), restart it, and reload. The website does not store that password or the Supabase service-role key.
+          Set <code className="text-green">ADMIN_PASSWORD</code> on the API (<code className="text-green">apps/api/.env.local</code>), restart it, and reload. The website does not store that password or the Supabase secret key.
         </p>
       </div>
     );

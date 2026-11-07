@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useId, useState, type KeyboardEvent } from "react";
 import { createClient } from "@supabase/supabase-js";
+import { getSupabasePublishableKey, getSupabaseUrl } from "@vestpayouts/shared";
 import { PayoutTable } from "@/components/payouts/payout-table";
 import { LiveDot } from "@/components/payouts/payout-feed";
 import type { Payout } from "@/lib/payouts/types";
@@ -86,8 +87,8 @@ export function HomePayoutTabs({
       void refreshLatest();
     }, 15_000);
 
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const url = getSupabaseUrl();
+    const key = getSupabasePublishableKey();
     let teardown: (() => void) | undefined;
     if (url && key) {
       const sb = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });

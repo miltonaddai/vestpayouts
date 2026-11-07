@@ -3,7 +3,7 @@ import { Hono } from "hono";
 import cron from "node-cron";
 import { manualPayoutSchema, type ManualPayoutInput } from "@vestpayouts/shared";
 import { adminConfigured, bearer, issueAdminToken, passwordOk, secretOk, tokenOk } from "./auth";
-import { serviceClient, supabaseUrl, triggerRevalidate } from "./env";
+import { hasSupabaseWrite, serviceClient, triggerRevalidate } from "./env";
 import { importManualPayouts, validateCsv } from "./import-payouts";
 import { runIngest } from "./ingest";
 
@@ -20,7 +20,7 @@ app.get("/health", (c) =>
     ok: true,
     service: "vestpayouts-api",
     admin: adminConfigured(),
-    supabase: Boolean(supabaseUrl() && process.env.SUPABASE_SERVICE_ROLE_KEY),
+    supabase: hasSupabaseWrite(),
   }),
 );
 
