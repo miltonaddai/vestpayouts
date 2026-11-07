@@ -1,0 +1,12 @@
+node_modules
+**/node_modules
+**/.next
+.git
+.env
+.env.*
+**/.env
+**/.env.*
+supabase/.temp
+supabase/.branches
+coverage
+*.md
