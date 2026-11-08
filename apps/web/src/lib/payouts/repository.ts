@@ -334,6 +334,37 @@ export const getWallet = cache(async (address: string): Promise<WalletProfile | 
   }
 });
 
+export interface WalletRank {
+  rank: number | null;
+  /** How many wallets are ranked; null when only the top 500 could be checked. */
+  wallets: number | null;
+}
+
+/**
+ * All-time rank for a wallet. Uses the wallet_rank RPC (ranks every wallet);
+ * if that isn't available yet, falls back to the precomputed top 500.
+ */
+export async function getWalletRank(address: string): Promise<WalletRank> {
+  const a = address.toLowerCase();
+  if (isSupabaseConfigured) {
+    try {
+      const res = (await getFreshPublicClient().rpc("wallet_rank", { addr: a })) as {
+        data: { rank: number; wallets: number } | null;
+        error: { message: string } | null;
+      };
+      if (!res.error) {
+        return res.data ? { rank: Number(res.data.rank), wallets: Number(res.data.wallets) } : { rank: null, wallets: null };
+      }
+      logSupabaseFailure("wallet_rank", new Error(res.error.message));
+    } catch (err) {
+      logSupabaseFailure("wallet_rank", err);
+    }
+  }
+  const top = await getLeaderboard("all", 500);
+  const i = top.findIndex((r) => r.wallet?.toLowerCase() === a);
+  return { rank: i >= 0 ? i + 1 : null, wallets: null };
+}
+
 export const getPercentile = cache(async (amount: number) => {
   if (!isSupabaseConfigured) return fileBackend().getPercentile(amount);
   try {

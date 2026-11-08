@@ -13,6 +13,7 @@ export const SITE = {
 export const NAV = [
   { href: "/payouts", label: "Payouts" },
   { href: "/leaderboard", label: "Leaderboard" },
+  { href: "/rank", label: "See your rank" },
   { href: "/how-vest-payouts-work", label: "How payouts work" },
   { href: "/vest-review", label: "Vest review" },
   { href: "/blog", label: "Guides" },

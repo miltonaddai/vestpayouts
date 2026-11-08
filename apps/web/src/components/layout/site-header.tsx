@@ -26,8 +26,9 @@ export function SiteHeader() {
             ●
           </span>
           <span className="ml-2 font-bold tracking-[0.04em] text-green uppercase">
-            <span className="sm:hidden">Live</span>
-            <span className="hidden sm:inline">Tracking payouts</span>
+            {/* Short label on phones and on 1280-1535px desktops, where the nav needs the room. */}
+            <span className="sm:max-xl:hidden 2xl:hidden">Live</span>
+            <span className="hidden sm:max-xl:inline 2xl:inline">Tracking payouts</span>
           </span>
         </div>
         <MobileNav />

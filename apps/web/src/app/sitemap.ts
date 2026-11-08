@@ -12,6 +12,7 @@ const STATIC: { path: string; changeFrequency: MetadataRoute.Sitemap[number]["ch
   { path: "/leaderboard/30d", changeFrequency: "hourly", priority: 0.5 },
   { path: "/leaderboard/7d", changeFrequency: "hourly", priority: 0.5 },
   { path: "/leaderboard/24h", changeFrequency: "hourly", priority: 0.4 },
+  { path: "/rank", changeFrequency: "weekly", priority: 0.6 },
   { path: "/how-vest-payouts-work", changeFrequency: "monthly", priority: 0.8 },
   { path: "/vest-review", changeFrequency: "monthly", priority: 0.8 },
   { path: "/faq", changeFrequency: "monthly", priority: 0.6 },

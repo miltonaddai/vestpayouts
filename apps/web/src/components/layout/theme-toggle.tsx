@@ -62,7 +62,8 @@ export function ThemeToggle({ className }: { className?: string }) {
         applyTheme(next ? "dark" : "light");
       }}
     >
-      <span>Theme</span>
+      {/* Visually hidden on 1280-1535px desktops to make room for the nav; always shown in the mobile menu. */}
+      <span className="xl:max-2xl:sr-only">Theme</span>
       <span
         aria-hidden="true"
         className="relative inline-flex h-6 w-11 items-center rounded-full border border-line bg-paper"

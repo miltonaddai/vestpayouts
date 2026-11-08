@@ -173,6 +173,7 @@ export interface Database {
         Returns: { payouts: number; amount: number }[];
       };
       payout_percentile: { Args: { amount: number }; Returns: number };
+      wallet_rank: { Args: { addr: string }; Returns: Json };
       period_start: { Args: { period: string }; Returns: string };
     };
     Enums: { payout_source: PayoutSource; payout_chain: PayoutChain };

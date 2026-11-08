@@ -186,7 +186,7 @@ const FILL: Record<string, { fill: string; opacity?: number }> = {
   C: { fill: "var(--coral)", opacity: 0.85 },
 };
 
-function Critter({ seed, crowned, className }: { seed: string; crowned: boolean; className?: string }) {
+export function Critter({ seed, crowned, className }: { seed: string; crowned: boolean; className?: string }) {
   const hex = (seed.replace(/^0x/i, "").toLowerCase().replace(/[^0-9a-f]/g, "") + "0123456789abcdef").slice(0, 40);
   const pick = <T,>(list: T[], i: number) => list[parseInt(hex.slice(i * 2, i * 2 + 2), 16) % list.length];
 
