@@ -15,7 +15,7 @@ export function ChainBadge({ payout, className }: { payout: Payout; className?: 
   return (
     <span
       className={cn(
-        "inline-flex items-center border px-1.5 py-0.5 font-mono text-[10px] font-medium tracking-[0.04em] uppercase",
+        "inline-flex items-center border px-1.5 py-0.5 font-mono text-[11px] font-medium tracking-[0.04em] uppercase",
         STYLES[key],
         className,
       )}

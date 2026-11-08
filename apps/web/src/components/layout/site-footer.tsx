@@ -65,7 +65,7 @@ export function SiteFooter() {
           </div>
         ))}
       </div>
-      <div className="space-y-3 border-b border-line px-6 py-5 text-[11px] leading-relaxed text-sub md:px-14">
+      <div className="space-y-3 border-b border-line px-6 py-5 text-[12px] leading-relaxed text-sub md:px-14">
         <p>
           <strong className="text-ink">Affiliate disclosure.</strong> {AFFILIATE_DISCLOSURE}{" "}
           <Link href="/disclosure" className="underline underline-offset-2 hover:text-ink">
@@ -77,7 +77,7 @@ export function SiteFooter() {
           <strong className="text-ink">Risk warning.</strong> {RISK_WARNING}
         </p>
       </div>
-      <div className="font-mono text-[11px] sm:text-[12px]">
+      <div className="font-mono text-[12px] sm:text-[13px]">
         <div className="border-b border-line px-6 py-4 text-sub md:px-14">
           © {new Date().getFullYear()} {SITE.name.toUpperCase()}. ALL RIGHTS RESERVED
         </div>

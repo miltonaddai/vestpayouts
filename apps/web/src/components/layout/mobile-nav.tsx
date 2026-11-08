@@ -46,7 +46,7 @@ export function MobileNav() {
   return (
     <details
       ref={detailsRef}
-      className="group/nav lg:hidden"
+      className="group/nav xl:hidden"
       onToggle={(event) => {
         setOpen(event.currentTarget.open);
       }}
@@ -83,7 +83,7 @@ export function MobileNav() {
                 <Link
                   href={item.href}
                   onClick={close}
-                  className="flex min-h-11 items-center border-b border-line px-5 font-mono text-[13px] tracking-[0.04em] text-sub uppercase hover:bg-paper hover:text-ink"
+                  className="flex min-h-11 items-center border-b border-line px-5 font-mono text-[14px] tracking-[0.04em] text-sub uppercase hover:bg-paper hover:text-ink"
                 >
                   {item.label}
                 </Link>

@@ -43,6 +43,10 @@ const FLUSH_EVERY_CHUNKS = 20;
 const MONTHLY_FREE_CU = 30_000_000;
 const GETLOGS_CHUNK_ALCHEMY = 10;
 const TRANSFERS_PAGE = "0x3e8"; // 1000
+/** Rebuild stats at least this often even with no new payouts, so rolling
+ *  windows (24h, 7d, 30d) keep sliding forward during quiet periods. */
+const MAX_STATS_AGE_MS = 10 * 60 * 1000;
+let lastStatsRefreshAt = 0;
 
 export interface IngestOpts {
   chain?: string;
@@ -301,7 +305,7 @@ async function ingestChain(
   store: PayoutStore,
   meter: RequestMeter,
   opts: IngestOpts,
-) {
+): Promise<number> {
   const chain = CHAINS[id];
   const url = rpcUrlFor(id);
   const method = resolveMethod(opts.method, url);
@@ -432,6 +436,7 @@ async function ingestChain(
       });
     }
     console.log(`[${id}] done through block ${Math.max(progressLast, tip)} (${inserted} rows written this run)`);
+    return inserted;
   } catch (err) {
     if (err instanceof RequestCapError) {
       console.warn(`[${id}] ${err.message}`);
@@ -443,7 +448,7 @@ async function ingestChain(
           last_block: progressLast,
         });
       }
-      return;
+      return inserted;
     }
     throw err;
   }
@@ -460,16 +465,25 @@ export async function runIngest(opts: IngestOpts = {}) {
   console.log(`ingest start store=${store.kind} chains=${targets.join(",")} ${meter.summary()}`);
 
   let failed = false;
+  let inserted = 0;
   for (const id of targets) {
     try {
-      await ingestChain(id, store, meter, opts);
+      inserted += await ingestChain(id, store, meter, opts);
     } catch (err) {
       failed = true;
       console.error(`[${id}] failed:`, err);
     }
   }
-  console.log(`ingest finish ${meter.summary()}`);
-  await refreshPayoutStats();
-  await triggerRevalidate();
+  console.log(`ingest finish ${meter.summary()} rows=${inserted}`);
+
+  // Rebuilding stats and expiring the site cache is the expensive part of a run.
+  // Skip both when nothing new arrived, unless the stats are getting old.
+  const statsAge = Date.now() - lastStatsRefreshAt;
+  if (inserted > 0 || statsAge >= MAX_STATS_AGE_MS) {
+    if (await refreshPayoutStats()) lastStatsRefreshAt = Date.now();
+    await triggerRevalidate();
+  } else {
+    console.log(`no new payouts; stats refreshed ${Math.round(statsAge / 1000)}s ago, skipping refresh and revalidate`);
+  }
   return !failed;
 }

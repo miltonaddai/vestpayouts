@@ -147,6 +147,23 @@ export const getSummary = cache(async (): Promise<Summary> => {
   }
 });
 
+/** Uncached summary for the live counters (/api/summary). Falls back like getSummary. */
+export async function getSummaryLive(): Promise<Summary> {
+  if (!isSupabaseConfigured) return fileBackend().getSummary();
+  try {
+    const raw = unwrap(await getFreshPublicClient().rpc("payout_summary"), "payout_summary live") as unknown as Parameters<
+      typeof mapSummary
+    >[0];
+    const summary = mapSummary(raw);
+    lastSummary = summary;
+    return summary;
+  } catch (err) {
+    logSupabaseFailure("payout_summary live", err);
+    if (lastSummary) return lastSummary;
+    return fromLocalOr(() => local.getSummary(), emptySummary());
+  }
+}
+
 export const getLatest = cache(async (n = 12): Promise<Payout[]> => {
   if (!isSupabaseConfigured) return fileBackend().getLatest(n);
   try {

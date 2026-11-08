@@ -92,7 +92,7 @@ export function PayoutExplorer({ initial, isSample }: { initial: PayoutPage; isS
         }}
         className="grid gap-3 border border-line bg-paper p-4 sm:grid-cols-2 lg:grid-cols-[repeat(4,minmax(0,1fr))_1.6fr]"
       >
-        <label className="grid gap-1.5 font-mono text-[11px] tracking-[0.04em] text-sub uppercase">
+        <label className="grid gap-1.5 font-mono text-[12px] tracking-[0.04em] text-sub uppercase">
           Chain
           <NativeSelect className="w-full" value={filters.chain} onChange={(e) => update({ chain: e.target.value })}>
             <NativeSelectOption value="all">All chains</NativeSelectOption>
@@ -100,7 +100,7 @@ export function PayoutExplorer({ initial, isSample }: { initial: PayoutPage; isS
             <NativeSelectOption value="arbitrum">Arbitrum One</NativeSelectOption>
           </NativeSelect>
         </label>
-        <label className="grid gap-1.5 font-mono text-[11px] tracking-[0.04em] text-sub uppercase">
+        <label className="grid gap-1.5 font-mono text-[12px] tracking-[0.04em] text-sub uppercase">
           Period
           <NativeSelect className="w-full" value={filters.period} onChange={(e) => update({ period: e.target.value })}>
             <NativeSelectOption value="all">All time</NativeSelectOption>
@@ -109,7 +109,7 @@ export function PayoutExplorer({ initial, isSample }: { initial: PayoutPage; isS
             <NativeSelectOption value="30d">Last 30 days</NativeSelectOption>
           </NativeSelect>
         </label>
-        <label className="grid gap-1.5 font-mono text-[11px] tracking-[0.04em] text-sub uppercase">
+        <label className="grid gap-1.5 font-mono text-[12px] tracking-[0.04em] text-sub uppercase">
           Minimum amount
           <NativeSelect className="w-full" value={filters.min} onChange={(e) => update({ min: e.target.value })}>
             <NativeSelectOption value="">Any amount</NativeSelectOption>
@@ -119,14 +119,14 @@ export function PayoutExplorer({ initial, isSample }: { initial: PayoutPage; isS
             <NativeSelectOption value="50000">$50,000+</NativeSelectOption>
           </NativeSelect>
         </label>
-        <label className="grid gap-1.5 font-mono text-[11px] tracking-[0.04em] text-sub uppercase">
+        <label className="grid gap-1.5 font-mono text-[12px] tracking-[0.04em] text-sub uppercase">
           Sort
           <NativeSelect className="w-full" value={filters.sort} onChange={(e) => update({ sort: e.target.value })}>
             <NativeSelectOption value="latest">Latest first</NativeSelectOption>
             <NativeSelectOption value="largest">Largest first</NativeSelectOption>
           </NativeSelect>
         </label>
-        <label className="grid gap-1.5 font-mono text-[11px] tracking-[0.04em] text-sub uppercase">
+        <label className="grid gap-1.5 font-mono text-[12px] tracking-[0.04em] text-sub uppercase">
           Wallet, tx hash or trader
           <span className="flex gap-2">
             <Input
@@ -149,7 +149,7 @@ export function PayoutExplorer({ initial, isSample }: { initial: PayoutPage; isS
           <span className="text-ink">{formatInt(data.total)}</span> {isSample ? "sample " : ""}payouts totalling{" "}
           <span className="font-mono text-green">{formatUsd(data.sum)}</span>
         </p>
-        <p className="font-mono text-[12px]">
+        <p className="font-mono text-[13px]">
           Page {data.page} of {formatInt(data.pages)}
         </p>
       </div>

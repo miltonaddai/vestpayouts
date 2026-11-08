@@ -7,7 +7,7 @@ export function Breadcrumbs({ items }: { items: { name: string; path: string }[]
   return (
     <>
       <JsonLd data={breadcrumbLd(all)} />
-      <nav aria-label="Breadcrumb" className="font-mono text-[11px] tracking-[0.04em] text-sub uppercase">
+      <nav aria-label="Breadcrumb" className="font-mono text-[12px] tracking-[0.04em] text-sub uppercase">
         <ol className="flex flex-wrap items-center gap-1.5">
           {all.map((it, i) => (
             <li key={it.path} className="flex items-center gap-1.5">

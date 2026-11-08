@@ -19,7 +19,7 @@ export function HeaderNav() {
             key={item.href}
             href={item.href}
             aria-current={current ? "page" : undefined}
-            className="header-nav-link flex h-full items-center justify-center border-r border-line px-4 py-3 leading-none whitespace-nowrap uppercase lg:px-5 lg:py-4"
+            className="header-nav-link flex h-full items-center justify-center border-r border-line px-4 py-3 leading-none whitespace-nowrap uppercase xl:px-5 xl:py-4"
           >
             {item.label}
           </Link>

@@ -17,11 +17,11 @@
     "@supabase/supabase-js": "^2.119.0",
     "@vestpayouts/shared": "0.1.0",
     "hono": "^4.10.4",
-    "node-cron": "^4.2.1"
+    "node-cron": "^4.2.1",
+    "tsx": "^4.23.15"
   },
   "devDependencies": {
     "@types/node": "^20",
-    "tsx": "^4.23.15",
     "typescript": "^5"
   }
 }

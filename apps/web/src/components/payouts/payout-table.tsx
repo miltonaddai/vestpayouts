@@ -1,12 +1,16 @@
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
-import { formatDate, formatUsd } from "@/lib/format";
+import { formatUsd } from "@/lib/format";
 import { txUrl } from "@/lib/payouts/chains";
 import { payoutRoute } from "@/lib/payouts/routes";
 import type { Payout } from "@/lib/payouts/types";
 import { cn } from "@/lib/utils";
 import { ChainBadge } from "./chain-badge";
+import { PaidTime, PaidTimeHeader } from "./paid-time";
 import { WalletDisplay } from "./wallet-display";
+
+/** Tighter padding on phones so the table fits without sideways scrolling. */
+const CELL = "px-2 py-3 first:pl-3 last:pr-3 sm:px-4 sm:first:pl-4 sm:last:pr-4";
 
 export function PayoutTable({
   payouts,
@@ -29,47 +33,60 @@ export function PayoutTable({
   }
   return (
     <div className={cn("min-w-0 max-w-full overflow-x-auto border border-line bg-background", className)}>
-      <table className="w-full min-w-[640px] text-left text-sm">
+      <table className="w-full text-left text-sm sm:min-w-[640px]">
         <caption className="sr-only">{caption}</caption>
-        <thead className="border-b border-line bg-paper font-mono text-[11px] tracking-[0.04em] text-sub uppercase">
+        <thead className="border-b border-line bg-paper font-mono text-[12px] tracking-[0.04em] text-sub uppercase">
           <tr>
-            <th scope="col" className="px-4 py-3 font-medium">Amount</th>
-            {showWallet && <th scope="col" className="px-4 py-3 font-medium">Trader wallet</th>}
-            <th scope="col" className="px-4 py-3 font-medium">Chain</th>
-            <th scope="col" className="px-4 py-3 font-medium">Paid (UTC)</th>
-            <th scope="col" className="px-4 py-3 text-right font-medium">Proof</th>
+            <th scope="col" className={cn(CELL, "font-medium")}>Amount</th>
+            {showWallet && (
+              <th scope="col" className={cn(CELL, "font-medium")}>
+                <span className="sm:hidden">Wallet</span>
+                <span className="hidden sm:inline">Trader wallet</span>
+              </th>
+            )}
+            <th scope="col" className={cn(CELL, "font-medium")}>
+              <PaidTimeHeader />
+            </th>
+            <th scope="col" className={cn(CELL, "hidden font-medium sm:table-cell")}>Chain</th>
+            <th scope="col" className={cn(CELL, "text-right font-medium")}>
+              <span className="sr-only sm:not-sr-only">Proof</span>
+            </th>
           </tr>
         </thead>
         <tbody className="divide-y divide-line">
-          {payouts.map((p) => (
-            <tr key={p.id} className="hover:bg-paper">
-              <td className="px-4 py-3">
-                <Link href={payoutRoute(p)} className="tabular font-mono font-medium text-green hover:text-ink">
+          {payouts.map((p, i) => (
+            <tr key={p.id} className="reveal-row hover:bg-paper" style={{ "--i": i } as React.CSSProperties}>
+              <td className={CELL}>
+                <Link href={payoutRoute(p)} className="tabular font-mono text-[13px] font-medium whitespace-nowrap text-green hover:text-ink sm:text-sm">
                   {formatUsd(p.amount, true)}
                 </Link>
+                {/* On phones the chain column is folded in here. */}
+                <ChainBadge payout={p} className="mt-1 flex w-fit sm:hidden" />
               </td>
               {showWallet && (
-                <td className="px-4 py-3">
-                  <WalletDisplay payout={p} label={p.walletLabel} />
+                <td className={CELL}>
+                  <WalletDisplay payout={p} label={p.walletLabel} className="text-[13px] sm:text-sm" />
                 </td>
               )}
-              <td className="px-4 py-3">
+              <td className={cn(CELL, "tabular text-[13px] text-sub sm:text-sm sm:whitespace-nowrap")}>
+                <PaidTime ms={p.paidAt} />
+              </td>
+              <td className={cn(CELL, "hidden sm:table-cell")}>
                 <ChainBadge payout={p} />
               </td>
-              <td className="px-4 py-3 whitespace-nowrap text-sub">{formatDate(p.paidAt, true)}</td>
-              <td className="px-4 py-3 text-right">
+              <td className={cn(CELL, "text-right")}>
                 {p.txHash && p.chain ? (
                   <a
                     href={txUrl(p.chain, p.txHash)}
                     target="_blank"
                     rel="noopener nofollow"
-                    className="inline-flex items-center gap-1 font-mono text-[12px] text-sub hover:text-ink"
+                    className="inline-flex items-center gap-1 font-mono text-[13px] text-sub hover:text-ink"
                     aria-label={`View transaction for ${formatUsd(p.amount, true)} payout on explorer`}
                   >
-                    Tx <ExternalLink className="size-3.5" aria-hidden="true" />
+                    <span className="hidden sm:inline">Tx</span> <ExternalLink className="size-3.5" aria-hidden="true" />
                   </a>
                 ) : p.proofUrl ? (
-                  <a href={p.proofUrl} target="_blank" rel="noopener nofollow" className="font-mono text-[12px] text-sub hover:text-ink">
+                  <a href={p.proofUrl} target="_blank" rel="noopener nofollow" className="font-mono text-[13px] text-sub hover:text-ink">
                     Post
                   </a>
                 ) : (

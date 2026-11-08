@@ -10,6 +10,7 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { organizationLd, websiteLd } from "@/lib/seo";
 import { SITE } from "@/lib/site";
 import "./globals.css";
+import { ScrollReveal } from "@/components/layout/scroll-reveal";
 
 const grotesk = Space_Grotesk({
   variable: "--font-grotesk",
@@ -71,6 +72,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </main>
         <SiteFooter />
         <StickyMobileCta />
+        <ScrollReveal />
       </body>
     </html>
   );

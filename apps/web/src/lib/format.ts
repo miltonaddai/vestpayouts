@@ -21,15 +21,17 @@ export function formatDate(ms: number, withTime = false) {
   });
 }
 
+/** Compact relative time: 5s, 1m, 2h, 3d, 2mo ago. Rounds down, like a clock. */
 export function timeAgo(ms: number, now = Date.now()) {
-  const s = Math.max(0, Math.round((now - ms) / 1000));
+  const s = Math.max(0, Math.floor((now - ms) / 1000));
   if (s < 60) return `${s}s ago`;
-  const m = Math.round(s / 60);
+  const m = Math.floor(s / 60);
   if (m < 60) return `${m}m ago`;
-  const h = Math.round(m / 60);
-  if (h < 48) return `${h}h ago`;
-  const d = Math.round(h / 24);
-  return `${d}d ago`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h ago`;
+  const d = Math.floor(h / 24);
+  if (d < 60) return `${d}d ago`;
+  return `${Math.floor(d / 30)}mo ago`;
 }
 
 export function formatDuration(hours: number) {

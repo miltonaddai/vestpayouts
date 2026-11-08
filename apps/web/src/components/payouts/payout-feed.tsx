@@ -18,12 +18,12 @@ export function PayoutFeed({ payouts, title = "Live Vest payout feed", syncedAt 
       <div className="flex items-center justify-between gap-3 border-b border-line bg-paper px-5 py-3">
         <div className="flex items-center gap-2.5">
           <LiveDot />
-          <h2 id="feed-title" className="font-mono text-[12px] font-medium tracking-[0.04em] text-ink uppercase">
+          <h2 id="feed-title" className="font-mono text-[13px] font-medium tracking-[0.04em] text-ink uppercase">
             {title}
           </h2>
         </div>
         {syncedAt && (
-          <p className="font-mono text-[11px] text-sub">
+          <p className="font-mono text-[12px] text-sub">
             Synced <TimeAgo ms={syncedAt} initial={formatDate(syncedAt, true)} />
           </p>
         )}
@@ -47,7 +47,7 @@ export function PayoutFeed({ payouts, title = "Live Vest payout feed", syncedAt 
               <Link href={payoutRoute(p)} className="tabular text-right font-mono text-base font-medium text-green hover:text-ink">
                 +{formatUsd(p.amount, true)}
               </Link>
-              <p className="col-span-2 font-mono text-[11px] text-sub sm:col-span-1 sm:w-20 sm:text-right">
+              <p className="col-span-2 font-mono text-[12px] text-sub sm:col-span-1 sm:w-20 sm:text-right">
                 <TimeAgo ms={p.paidAt} initial={formatDate(p.paidAt, true)} />
               </p>
             </li>

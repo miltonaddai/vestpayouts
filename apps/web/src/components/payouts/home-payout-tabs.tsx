@@ -12,10 +12,10 @@ import { cn } from "@/lib/utils";
 import { ArrowLink } from "@/components/ui/split-cta";
 
 export const HOME_TABS = [
-  { id: "realtime", label: "Realtime", caption: "Latest Vest payouts, newest first" },
-  { id: "24h", label: "Last 24 hours", caption: "Largest Vest payouts in the last 24 hours" },
-  { id: "7d", label: "Last 7 days", caption: "Largest Vest payouts in the last 7 days" },
-  { id: "30d", label: "Last 30 days", caption: "Largest Vest payouts in the last 30 days" },
+  { id: "realtime", label: "Realtime", short: "Live", caption: "Latest Vest payouts, newest first" },
+  { id: "24h", label: "Last 24 hours", short: "24h", caption: "Largest Vest payouts in the last 24 hours" },
+  { id: "7d", label: "Last 7 days", short: "7d", caption: "Largest Vest payouts in the last 7 days" },
+  { id: "30d", label: "Last 30 days", short: "30d", caption: "Largest Vest payouts in the last 30 days" },
 ] as const;
 
 export type HomeTabId = (typeof HOME_TABS)[number]["id"];
@@ -136,7 +136,7 @@ export function HomePayoutTabs({
       <div
         role="tablist"
         aria-label="Payout period"
-        className="flex flex-wrap border-b border-line"
+        className="grid grid-cols-4 border-b border-line sm:flex"
         onKeyDown={onTabListKeyDown}
       >
         {HOME_TABS.map((t) => {
@@ -149,15 +149,17 @@ export function HomePayoutTabs({
               scroll={false}
               role="tab"
               aria-selected={selected}
+              aria-label={t.label}
               aria-controls={panelId}
               tabIndex={selected ? 0 : -1}
               className={cn(
-                "inline-flex min-h-11 items-center gap-2 border-r border-line px-4 py-2.5 font-mono text-[12px] tracking-[0.02em] last:border-r-0",
+                "inline-flex min-h-11 items-center justify-center gap-2 border-r border-line px-2 py-2.5 font-mono text-[13px] tracking-[0.02em] whitespace-nowrap last:border-r-0 sm:justify-start sm:px-4",
                 selected ? "bg-ink text-background" : "bg-background text-sub hover:text-ink",
               )}
             >
               {t.id === "realtime" && <LiveDot className={selected ? "bg-green-bright" : undefined} />}
-              {t.label}
+              <span className="sm:hidden">{t.short}</span>
+              <span className="hidden sm:inline">{t.label}</span>
             </Link>
           );
         })}

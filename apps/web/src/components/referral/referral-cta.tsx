@@ -55,7 +55,7 @@ export function ReferralPanel({
 }) {
   return (
     <section aria-labelledby={`cta-${placement}`} className={cn("border border-line", className)}>
-      <div className="border-b border-line bg-paper px-5 py-2.5 font-mono text-[11px] tracking-[0.04em] text-sub uppercase">
+      <div className="border-b border-line bg-paper px-5 py-2.5 font-mono text-[12px] tracking-[0.04em] text-sub uppercase">
         Referral · Instant accounts from $10
       </div>
       <div className="grid gap-8 px-6 py-8 md:grid-cols-[1.4fr_auto] md:items-end md:px-8 md:py-10">
@@ -65,7 +65,7 @@ export function ReferralPanel({
           </h2>
           <p className="mt-3 max-w-2xl text-[15px] leading-[1.6] text-sub">{body}</p>
           <ReferralCodeHint className="mt-3" />
-          <p className="mt-4 text-[11px] text-sub">
+          <p className="mt-4 text-[12px] text-sub">
             Referral link: we may earn a commission if you sign up. Trading involves substantial risk of loss.
           </p>
         </div>

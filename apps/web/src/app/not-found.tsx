@@ -9,7 +9,7 @@ export default function NotFound() {
       <p className="mt-3 text-sub">The payout may not be in the database yet, or the address was typed wrong.</p>
       <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
         <SplitCta href="/">Home</SplitCta>
-        <Link href="/payouts" className="border border-line px-5 py-3 font-mono text-[12px] tracking-[0.04em] text-ink uppercase hover:bg-paper">
+        <Link href="/payouts" className="border border-line px-5 py-3 font-mono text-[13px] tracking-[0.04em] text-ink uppercase hover:bg-paper">
           All payouts
         </Link>
       </div>

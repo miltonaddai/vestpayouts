@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Trophy } from "lucide-react";
 import { VestHeroHeading } from "@/components/brand/vest-hero-icon";
 import { SampleDataBanner } from "@/components/payouts/sample-banner";
 import { Stat, StatGrid } from "@/components/payouts/stat-grid";
@@ -10,6 +11,28 @@ import { getLeaderboard, getSummary } from "@/lib/payouts/repository";
 import { absoluteUrl } from "@/lib/site";
 import { PERIOD_LABEL, type Period } from "@/lib/payouts/types";
 import { cn } from "@/lib/utils";
+
+/** Ranks 1-3: trophy color, row tint and left accent. Ranks 4-10 share a lighter highlight. */
+const MEDALS = [
+  { label: "1st place", text: "text-gold", row: "bg-gold/[0.07] shadow-[inset_3px_0_0_var(--gold)]" },
+  { label: "2nd place", text: "text-silver", row: "bg-silver/[0.07] shadow-[inset_3px_0_0_var(--silver)]" },
+  { label: "3rd place", text: "text-bronze", row: "bg-bronze/[0.07] shadow-[inset_3px_0_0_var(--bronze)]" },
+] as const;
+const TOP = 10;
+
+function Rank({ rank }: { rank: number }) {
+  const medal = MEDALS[rank - 1];
+  if (medal) {
+    return (
+      <span className={cn("inline-flex items-center gap-1.5 font-mono font-semibold", medal.text)}>
+        <Trophy className="size-4" strokeWidth={2.25} aria-hidden="true" />
+        <span aria-hidden="true">{rank}</span>
+        <span className="sr-only">{medal.label}</span>
+      </span>
+    );
+  }
+  return <span className={cn("font-mono", rank <= TOP ? "font-medium text-ink" : "text-sub")}>{rank}</span>;
+}
 
 const TABS: { period: Period; href: string }[] = [
   { period: "all", href: "/leaderboard" },
@@ -64,7 +87,7 @@ export async function LeaderboardView({ period }: { period: Period }) {
               href={t.href}
               aria-current={t.period === period ? "page" : undefined}
               className={cn(
-                "inline-flex min-h-11 items-center border-r border-line px-4 py-2.5 font-mono text-[12px] tracking-[0.04em] uppercase last:border-r-0",
+                "inline-flex min-h-11 items-center border-r border-line px-4 py-2.5 font-mono text-[13px] tracking-[0.04em] uppercase last:border-r-0",
                 t.period === period ? "bg-ink text-background" : "bg-background text-sub hover:text-ink",
               )}
             >
@@ -79,7 +102,7 @@ export async function LeaderboardView({ period }: { period: Period }) {
           <div className="mt-0 min-w-0 max-w-full overflow-x-auto border border-t-0 border-line bg-background">
             <table className="w-full min-w-[640px] text-left text-sm">
               <caption className="sr-only">Top Vest payout recipients, {PERIOD_LABEL[period].toLowerCase()}</caption>
-              <thead className="border-b border-line bg-paper font-mono text-[11px] tracking-[0.04em] text-sub uppercase">
+              <thead className="border-b border-line bg-paper font-mono text-[12px] tracking-[0.04em] text-sub uppercase">
                 <tr>
                   <th className="px-4 py-3 font-medium">#</th>
                   <th className="px-4 py-3 font-medium">Trader</th>
@@ -91,8 +114,20 @@ export async function LeaderboardView({ period }: { period: Period }) {
               </thead>
               <tbody className="divide-y divide-line">
                 {rows.map((r, i) => (
-                  <tr key={r.key} className="hover:bg-paper">
-                    <td className="px-4 py-3 font-mono text-sub">{i + 1}</td>
+                  <tr
+                    key={r.key}
+                    className={cn(
+                      "reveal-row hover:bg-paper",
+                      MEDALS[i]?.row,
+                      i >= MEDALS.length && i < TOP && "bg-paper/50",
+                      // Heavier rule under the top 10.
+                      i === TOP - 1 && rows.length > TOP && "border-b-2 border-b-line",
+                    )}
+                    style={{ "--i": i } as React.CSSProperties}
+                  >
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      <Rank rank={i + 1} />
+                    </td>
                     <td className="px-4 py-3">
                       {r.wallet ? (
                         <Link href={`/wallets/${r.wallet}`} className="font-mono text-ink hover:text-signal">

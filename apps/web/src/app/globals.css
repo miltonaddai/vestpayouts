@@ -10,6 +10,12 @@
   --font-sans: var(--font-grotesk), "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-mono: var(--font-jetbrains), "JetBrains Mono", ui-monospace, monospace;
   --font-heading: var(--font-grotesk), "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* Small end of the type scale, one step up from Tailwind defaults for readability. */
+  --text-xs: 0.8125rem; /* 13px */
+  --text-xs--line-height: 1.5;
+  --text-sm: 0.9375rem; /* 15px */
+  --text-sm--line-height: 1.6;
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -45,6 +51,10 @@
   --color-green: var(--green);
   --color-green-bright: var(--green-bright);
   --color-orange: var(--orange);
+  /* Leaderboard medals (rank 1-3). Always paired with the rank number. */
+  --color-gold: var(--gold);
+  --color-silver: var(--silver);
+  --color-bronze: var(--bronze);
   --color-magenta: var(--magenta);
   --color-blue-soft: var(--blue-soft);
   --color-green-soft: var(--green-soft);
@@ -68,7 +78,7 @@
   --radius-3xl: 0;
   --radius-4xl: 0;
 
-  --animate-tape: tape 60s linear infinite;
+  --animate-tape: tape 75s linear infinite;
   --animate-feed-in: feed-in 0.45s ease-out both;
   @keyframes tape {
     from { transform: translateX(0); }
@@ -113,6 +123,9 @@
   --green: #047857;
   --green-bright: #34d399;
   --orange: #b45309;
+  --gold: #b7791f;
+  --silver: #6b7280;
+  --bronze: #b8621b;
   --magenta: #a21caf;
   --blue-soft: #eef1ff;
   --green-soft: #e6f7f1;
@@ -160,6 +173,9 @@
   --green: #3dcc9a;
   --green-bright: #34d399;
   --orange: #e8a04a;
+  --gold: #f2c14e;
+  --silver: #c3c8d0;
+  --bronze: #d98a4e;
   --magenta: #e879f9;
   --blue-soft: #1a2040;
   --green-soft: #10291f;
@@ -232,7 +248,7 @@
     font-family: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
     letter-spacing: 0.04em;
     color: var(--color-sub);
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 400;
     text-transform: uppercase;
   }
@@ -259,7 +275,7 @@
     min-height: 44px;
     align-items: stretch;
     font-family: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -416,7 +432,7 @@
     overflow-x: auto;
   }
   .prose-tape th {
-    @apply border-b border-line bg-paper py-2.5 px-3 font-mono text-[11px] font-medium tracking-[0.04em] text-sub uppercase;
+    @apply border-b border-line bg-paper py-2.5 px-3 font-mono text-[12px] font-medium tracking-[0.04em] text-sub uppercase;
   }
   .prose-tape td {
     @apply border-b border-line px-3 py-2.5 align-top;
@@ -447,5 +463,81 @@
   .arrow-cta:is(:hover, :focus-visible) .arrow-cta-icon,
   .arrow-cta:is(:hover, :focus-visible) .arrow-cta-icon-prev {
     transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Entrance motion
+ *
+ * Blocks = grandchildren of <main> (breadcrumbs, headings, stat grids, charts,
+ * tables, articles). A container marked data-reveal-children has its children
+ * come in one by one instead. Elements with their own animate-* class, or
+ * data-no-reveal, are left alone.
+ *
+ * Page load is CSS only, so above-the-fold content never waits on JavaScript.
+ * After hydration, ScrollReveal adds .reveal-wait to blocks still below the
+ * fold and removes it as each one scrolls into view, which replays the same
+ * animation there. Fill mode is `backwards`, so once a block has finished it
+ * keeps its own transform and opacity.
+ * ------------------------------------------------------------------------- */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+@keyframes reveal-fade {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+@keyframes bar-grow {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+:where(
+    main > * > :not([data-reveal-children]),
+    main [data-reveal-children] > :not([data-reveal-children])
+  ):not([class*="animate-"], [data-no-reveal], script, style) {
+  animation: reveal-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+/* Siblings arrive a beat apart. */
+:where(main > * > *, main [data-reveal-children] > *):nth-child(2) { animation-delay: 70ms; }
+:where(main > * > *, main [data-reveal-children] > *):nth-child(3) { animation-delay: 140ms; }
+:where(main > * > *, main [data-reveal-children] > *):nth-child(4) { animation-delay: 210ms; }
+:where(main > * > *, main [data-reveal-children] > *):nth-child(5) { animation-delay: 280ms; }
+:where(main > * > *, main [data-reveal-children] > *):nth-child(6) { animation-delay: 330ms; }
+:where(main > * > *, main [data-reveal-children] > *):nth-child(7) { animation-delay: 380ms; }
+:where(main > * > *, main [data-reveal-children] > *):nth-child(n + 8) { animation-delay: 420ms; }
+
+/* Chart bars grow from the baseline, left to right. */
+.reveal-bar {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: bar-grow 0.8s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(150ms + min(var(--i, 0), 90) * 12ms);
+}
+
+/* Table rows fade in top to bottom. Rows added later (live updates) fade in too. */
+.reveal-row {
+  animation: reveal-fade 0.45s ease-out backwards;
+  animation-delay: calc(120ms + min(var(--i, 0), 12) * 35ms);
+}
+
+/* Held below the fold until ScrollReveal sees it. */
+.reveal-wait,
+.reveal-wait :is(.reveal-bar, .reveal-row) {
+  animation: none !important;
+}
+.reveal-wait {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-wait {
+    opacity: 1;
   }
 }
