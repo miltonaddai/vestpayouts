@@ -159,9 +159,9 @@ yarn db:types
 
 ## Deploy the website (Netlify)
 
-`apps/web/netlify.toml` holds the build settings: command `yarn build`, publish `.next` (both relative to `apps/web`), Node 22. Netlify applies its Next.js runtime automatically, and Yarn installs the whole workspace from the repository root, which is what `@vestpayouts/shared` needs. Commits that touch only the API or migrations skip the build.
+`apps/web/netlify.toml` holds the build settings: command `yarn workspace @vestpayouts/web build`, publish `apps/web/.next` (Netlify resolves both from the repository root), Node 22. Netlify applies its Next.js runtime automatically, and Yarn installs the whole workspace from the repository root, which is what `@vestpayouts/shared` needs. Commits that touch only the API or migrations skip the build.
 
-1. **Add new project → Import an existing project** and pick this repository. Under **Project to deploy** choose `apps/web` and leave the base directory at the repository root. Build command `yarn build`, publish directory `.next`.
+1. **Add new project → Import an existing project** and pick this repository. Under **Project to deploy** choose `apps/web` and leave the base directory at the repository root. The build command and publish directory come from `netlify.toml`, which overrides the UI.
 2. Under **Site configuration → Environment variables**, add the website variables from `apps/web/.env.example`:
    - `NEXT_PUBLIC_SITE_URL`: the production origin, e.g. `https://vestpayouts.com` (no trailing slash).
    - `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`: the hosted Supabase project. Without them the site shows sample data.

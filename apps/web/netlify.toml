@@ -3,12 +3,13 @@
 #
 # Monorepo setup in the Netlify UI: base directory = repository root,
 # project (package directory) = apps/web. Netlify reads this file from the
-# package directory; command and publish below are relative to apps/web.
+# package directory, but runs the command and resolves publish from the base
+# directory (the repository root), so both name apps/web explicitly.
 # Yarn 1 installs the whole workspace from the root, so @vestpayouts/shared resolves.
 
 [build]
-  command = "yarn build"
-  publish = ".next"
+  command = "yarn workspace @vestpayouts/web build"
+  publish = "apps/web/.next"
   # Skip the build when a commit touches only the API, migrations or docs.
   # Exit 0 cancels the build; anything else builds. Until a deploy succeeds,
   # CACHED_COMMIT_REF equals COMMIT_REF, so the first check forces a build.
