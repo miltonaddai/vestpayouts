@@ -19,7 +19,7 @@ export default function PrivacyPage() {
         <h2>What we collect</h2>
         <ul>
           <li>
-            <strong>Referral clicks.</strong> When you follow a Vest link, we store the time, the button (for example &ldquo;hero&rdquo;), the page you were on, the referrer, a truncated user agent, and the country header the host provides (Vercel&apos;s <code>x-vercel-ip-country</code>). We do not store your IP address in that table.
+            <strong>Referral clicks.</strong> When you follow a Vest link, we store the time, the button (for example &ldquo;hero&rdquo;), the page you were on, the referrer, a truncated user agent, and the country code our host (Netlify) provides. We do not store your IP address in that table.
           </li>
           <li>
             <strong>Admin cookie.</strong> The <code>/admin</code> page sets one httpOnly cookie after a correct password. It identifies a session, not a person, and it is not set for ordinary visitors.

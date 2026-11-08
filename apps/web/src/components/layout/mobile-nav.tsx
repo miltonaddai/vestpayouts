@@ -16,9 +16,10 @@ export function MobileNav() {
   const pathname = usePathname();
   const menuId = useId();
 
+  // Close on navigation. Clearing `open` on the element fires its toggle event,
+  // and onToggle below syncs the state.
   useEffect(() => {
     if (detailsRef.current) detailsRef.current.open = false;
-    setOpen(false);
   }, [pathname]);
 
   useEffect(() => {

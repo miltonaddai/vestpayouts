@@ -1,5 +1,6 @@
 import { after, type NextRequest } from "next/server";
 import { backendUrl } from "@/lib/backend";
+import { requestCountry } from "@/lib/geo";
 import { buildReferralUrl } from "@/lib/referral";
 
 export const dynamic = "force-dynamic";
@@ -21,7 +22,7 @@ export async function GET(req: NextRequest) {
     from_path: from || null,
     referer: (req.headers.get("referer") ?? "").slice(0, 500) || null,
     user_agent: req.headers.get("user-agent")?.slice(0, 300) || null,
-    country: req.headers.get("x-vercel-ip-country") || null,
+    country: requestCountry(req.headers),
   };
 
   after(async () => {

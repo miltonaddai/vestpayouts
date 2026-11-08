@@ -38,8 +38,9 @@ yarn-error.log*
 .env*
 !.env.example
 
-# vercel
+# hosting
 .vercel
+.netlify
 
 # typescript
 *.tsbuildinfo

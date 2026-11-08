@@ -77,9 +77,13 @@ export function HomePayoutTabs({
     if (rows) setRealtime(rows);
   }, [limit]);
 
-  useEffect(() => {
+  // When the server sends fresh rows (revalidation, navigation), adopt them.
+  // Adjusting state during render avoids an extra effect pass.
+  const [prevInitial, setPrevInitial] = useState(initial.realtime);
+  if (prevInitial !== initial.realtime) {
+    setPrevInitial(initial.realtime);
     setRealtime(initial.realtime);
-  }, [initial.realtime]);
+  }
 
   useEffect(() => {
     if (tab !== "realtime") return;

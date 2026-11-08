@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { applyTheme, readStoredTheme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
@@ -34,12 +34,19 @@ export function ThemeInit() {
   return null;
 }
 
-export function ThemeToggle({ className }: { className?: string }) {
-  const [dark, setDark] = useState(true);
+// The theme lives on <html class="dark">. Subscribe to that class directly so
+// every toggle on the page (header and mobile menu) stays in sync.
+function subscribeToTheme(onChange: () => void) {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+  return () => observer.disconnect();
+}
 
-  useEffect(() => {
-    setDark(document.documentElement.classList.contains("dark"));
-  }, []);
+const isDark = () => document.documentElement.classList.contains("dark");
+const isDarkOnServer = () => true;
+
+export function ThemeToggle({ className }: { className?: string }) {
+  const dark = useSyncExternalStore(subscribeToTheme, isDark, isDarkOnServer);
 
   return (
     <button
@@ -53,7 +60,6 @@ export function ThemeToggle({ className }: { className?: string }) {
       onClick={() => {
         const next = !document.documentElement.classList.contains("dark");
         applyTheme(next ? "dark" : "light");
-        setDark(next);
       }}
     >
       <span>Theme</span>

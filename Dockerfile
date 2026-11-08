@@ -1,6 +1,6 @@
 # API image. Build from the repository root:
 #   docker build -t vestpayouts-api .
-# The Next.js app deploys to Vercel and is not part of this image.
+# The Next.js app deploys to Netlify (see netlify.toml) and is not part of this image.
 FROM node:22-bookworm-slim
 WORKDIR /app
 COPY package.json yarn.lock ./

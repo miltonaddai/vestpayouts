@@ -77,7 +77,8 @@ function logSupabaseFailure(what: string, err: unknown) {
 }
 
 function unwrap<T>(res: { data: T | null; error: { message: string } | null }, what: string): T {
-  if (res.error) throw new Error(res.error.message);
+  // Label the query so a try block with several calls says which one failed.
+  if (res.error) throw new Error(`${what}: ${res.error.message}`);
   return res.data as T;
 }
 

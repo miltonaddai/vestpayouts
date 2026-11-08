@@ -157,12 +157,23 @@ Regenerate TypeScript types after a migration, against a running local stack:
 yarn db:types
 ```
 
-## Deploy the website (Vercel)
+## Deploy the website (Netlify)
 
-1. Import the repository. Framework preset is Next.js. Set the root directory to `apps/web`. Vercel installs the Yarn workspace from the repository root, which is what `@vestpayouts/shared` needs.
-2. Add the website env vars. `NEXT_PUBLIC_SITE_URL` is `https://vestpayouts.com`. `BACKEND_URL` is the public API origin. Do not add `SUPABASE_SECRET_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, or `ADMIN_PASSWORD`.
-3. Deploy. Lists revalidate about hourly. Individual payout pages revalidate about daily. `POST /api/revalidate` with `Authorization: Bearer $REVALIDATE_SECRET` expires the cache immediately.
-4. In Search Console, submit `https://vestpayouts.com/sitemap.xml`.
+The root `netlify.toml` holds the build settings: base directory `apps/web`, command `yarn build`, publish `.next`, Node 22. Netlify applies its Next.js runtime automatically, and Yarn installs the whole workspace from the repository root, which is what `@vestpayouts/shared` needs. Commits that touch only the API or migrations skip the build.
+
+1. **Add new site → Import an existing project** and pick this repository. Leave the build settings as Netlify reads them from `netlify.toml`.
+2. Under **Site configuration → Environment variables**, add the website variables from `apps/web/.env.example`:
+   - `NEXT_PUBLIC_SITE_URL`: the production origin, e.g. `https://vestpayouts.com` (no trailing slash).
+   - `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`: the hosted Supabase project. Without them the site shows sample data.
+   - `BACKEND_URL`: the Railway API's public origin, e.g. `https://vestpayouts-api.up.railway.app`.
+   - `CLICK_LOG_SECRET` and `REVALIDATE_SECRET`: the same values as on the API.
+   - Optional: the `NEXT_PUBLIC_VEST_REFERRAL_*`, `NEXT_PUBLIC_CONTACT_EMAIL`, `NEXT_PUBLIC_TWITTER_HANDLE` and `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` values.
+
+   Do not add `SUPABASE_SECRET_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_PASSWORD` or `ALCHEMY_API_KEY`. `NEXT_PUBLIC_*` values are inlined at build time, so trigger a new deploy after changing them.
+3. Deploy, then add the custom domain under **Domain management**.
+4. On the Railway API, set `REVALIDATE_URL` to the Netlify site origin so ingest can expire cached pages.
+
+Lists revalidate about hourly. Individual payout pages revalidate about daily. `POST /api/revalidate` with `Authorization: Bearer $REVALIDATE_SECRET` expires the cache immediately. In Search Console, submit `https://vestpayouts.com/sitemap.xml`.
 
 ## Deploy the API (Railway, Fly, Render)
 
@@ -173,7 +184,7 @@ docker build -t vestpayouts-api .
 docker run --env-file apps/api/.env.local -p 4318:4318 vestpayouts-api
 ```
 
-- **Railway.** New service from this repo, builder Dockerfile, Dockerfile path `Dockerfile`. Set the API env vars. Health check path `/health`. Either set `INGEST_CRON` or add a cron service that POSTs `/internal/ingest`.
+- **Railway.** New service from this repo, builder Dockerfile, Dockerfile path `Dockerfile`. Set the API env vars, with `REVALIDATE_URL` pointing at the Netlify site. Health check path `/health`. Either set `INGEST_CRON` or add a cron service that POSTs `/internal/ingest`.
 - **Fly.** `fly launch` with the root Dockerfile, internal port 4318, HTTP health check `GET /health`. Set the same secrets with `fly secrets set`.
 - **Render.** Web service, environment Docker, Dockerfile `./Dockerfile`. Health check path `/health`. A Render cron job can `curl -X POST -H "Authorization: Bearer $CRON_SECRET" https://<api>/internal/ingest` instead of `INGEST_CRON`.
 
