@@ -1,0 +1,21 @@
+# Netlify builds only the website. The API (apps/api) deploys to Railway from
+# the root Dockerfile.
+#
+# Monorepo setup in the Netlify UI: base directory = repository root,
+# project (package directory) = apps/web. Netlify reads this file from the
+# package directory; command and publish below are relative to apps/web.
+# Yarn 1 installs the whole workspace from the root, so @vestpayouts/shared resolves.
+
+[build]
+  command = "yarn build"
+  publish = ".next"
+  # Skip the build when a commit touches only the API, migrations or docs.
+  # `:/` pathspecs are relative to the repository root, whatever the cwd.
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- :/apps/web :/packages/shared :/package.json :/yarn.lock"
+
+[build.environment]
+  NODE_VERSION = "22"
+  NEXT_TELEMETRY_DISABLED = "1"
+  # Public by design: inlined into the client bundle and the default in src/lib/site.ts.
+  # Real secrets (CLICK_LOG_SECRET, REVALIDATE_SECRET) stay scanned.
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_CONTACT_EMAIL"
