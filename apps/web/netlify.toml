@@ -10,8 +10,10 @@
   command = "yarn build"
   publish = ".next"
   # Skip the build when a commit touches only the API, migrations or docs.
+  # Exit 0 cancels the build; anything else builds. Until a deploy succeeds,
+  # CACHED_COMMIT_REF equals COMMIT_REF, so the first check forces a build.
   # `:/` pathspecs are relative to the repository root, whatever the cwd.
-  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- :/apps/web :/packages/shared :/package.json :/yarn.lock"
+  ignore = "[ \"$CACHED_COMMIT_REF\" != \"$COMMIT_REF\" ] && git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- :/apps/web :/packages/shared :/package.json :/yarn.lock"
 
 [build.environment]
   NODE_VERSION = "22"
