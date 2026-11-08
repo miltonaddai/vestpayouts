@@ -19,26 +19,28 @@ export default function VestPayoutProof() {
         When a Vest withdrawal is processed, a USDC transfer is sent from one of Vest&apos;s payout contracts to the
         trader&apos;s wallet. These are the addresses we track:
       </p>
-      <table>
-        <thead>
-          <tr>
-            <th>Chain</th>
-            <th>Payout contract</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Object.values(CHAINS).map((c) => (
-            <tr key={c.id}>
-              <td>{c.name}</td>
-              <td>
-                <a href={`${c.explorer}/address/${c.payoutContract}`} target="_blank" rel="noopener nofollow">
-                  <code>{c.payoutContract}</code>
-                </a>
-              </td>
+      <div className="prose-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Chain</th>
+              <th>Payout contract</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {Object.values(CHAINS).map((c) => (
+              <tr key={c.id}>
+                <td>{c.name}</td>
+                <td>
+                  <a href={`${c.explorer}/address/${c.payoutContract}`} target="_blank" rel="noopener nofollow">
+                    <code>{c.payoutContract}</code>
+                  </a>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <p>
         The transactions are submitted by the same operator address on both chains (
         <code>{VEST_PAYOUT_RELAYER}</code>). Each payout also emits an event recording the recipient, the token, the

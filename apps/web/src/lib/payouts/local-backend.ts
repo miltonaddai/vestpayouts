@@ -188,6 +188,9 @@ export function queryPayouts(query: PayoutQuery, pageSize: number): PayoutPage {
   let list = inPeriod(load(), query.period ?? "all");
   if (query.chain) list = list.filter((row) => row.chain === query.chain);
   if (query.min) list = list.filter((row) => row.amount >= query.min!);
+  if (query.max) list = list.filter((row) => row.amount <= query.max!);
+  if (query.from) list = list.filter((row) => row.paidAt >= query.from!);
+  if (query.to) list = list.filter((row) => row.paidAt < query.to!);
   if (query.q) {
     const q = query.q.toLowerCase();
     list = list.filter(

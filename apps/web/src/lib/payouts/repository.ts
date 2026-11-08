@@ -257,6 +257,10 @@ export async function queryPayouts(query: PayoutQuery): Promise<PayoutPage> {
         p_min: query.min ?? null,
         p_period: period,
         p_q: q || null,
+        // Only sent when used, so the call still works against the older function signature.
+        ...(query.max ? { p_max: query.max } : {}),
+        ...(query.from ? { p_from: new Date(query.from).toISOString() } : {}),
+        ...(query.to ? { p_to: new Date(query.to).toISOString() } : {}),
       }),
       "payout_search_totals",
     )[0] ?? { payouts: 0, amount: 0 };
@@ -267,6 +271,9 @@ export async function queryPayouts(query: PayoutQuery): Promise<PayoutPage> {
     let sel = view();
     if (query.chain) sel = sel.eq("chain", query.chain);
     if (query.min) sel = sel.gte("amount_usd", query.min);
+    if (query.max) sel = sel.lte("amount_usd", query.max);
+    if (query.from) sel = sel.gte("paid_at", new Date(query.from).toISOString());
+    if (query.to) sel = sel.lt("paid_at", new Date(query.to).toISOString());
     const s = since(period);
     if (s) sel = sel.gte("paid_at", s);
     if (q) sel = sel.or(`wallet.ilike.%${q}%,tx_hash.ilike.%${q}%,trader_name.ilike.%${q}%,wallet_label.ilike.%${q}%`);

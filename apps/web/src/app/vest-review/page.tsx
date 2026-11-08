@@ -61,53 +61,57 @@ export default function VestReviewPage() {
         <h2>What it costs</h2>
         <h3>Instant Accounts</h3>
         <p>Live immediately, {SPLITS.instant}% split, no daily loss limit. Max drawdown equals the fee, so the room to be wrong is small.</p>
-        <table>
-          <thead>
-            <tr>
-              <th>Capital</th>
-              <th>Fee</th>
-              <th>Max drawdown</th>
-            </tr>
-          </thead>
-          <tbody>
-            {INSTANT_ACCOUNTS.map((a) => (
-              <tr key={a.capital}>
-                <td>{formatUsd(a.capital)}</td>
-                <td>{formatUsd(a.fee)}</td>
-                <td>
-                  {formatUsd(a.maxDrawdown)} ({((a.maxDrawdown / a.capital) * 100).toFixed(0)}%)
-                </td>
+        <div className="prose-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Capital</th>
+                <th>Fee</th>
+                <th>Max drawdown</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {INSTANT_ACCOUNTS.map((a) => (
+                <tr key={a.capital}>
+                  <td>{formatUsd(a.capital)}</td>
+                  <td>{formatUsd(a.fee)}</td>
+                  <td>
+                    {formatUsd(a.maxDrawdown)} ({((a.maxDrawdown / a.capital) * 100).toFixed(0)}%)
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <h3>Evaluation accounts</h3>
         <p>
           Silver, Gold and Platinum. 1-Step lets you pick a 10% or 20% target, a 3%, 4% or no daily loss limit, and an {SPLITS.evalBase}% or {SPLITS.evalUpgrade}% split. 2-Step is fixed: 10% then 5%, a 3% daily loss limit, an {SPLITS.evalBase}% split, and a 6% max drawdown. Fees below are from the docs as of {VEST_FACTS_CHECKED}; confirm them on{" "}
           <a href={VEST_SOURCES.tiers} target="_blank" rel="noopener nofollow">Vest&apos;s pricing page</a>.
         </p>
-        <table>
-          <thead>
-            <tr>
-              <th>Tier</th>
-              <th>Capital</th>
-              <th>6% floor</th>
-              <th>2-Step</th>
-              <th>1-Step from</th>
-            </tr>
-          </thead>
-          <tbody>
-            {EVAL_TIERS.map((t) => (
-              <tr key={t.tier}>
-                <td>{t.tier}</td>
-                <td>{formatUsd(t.capital)}</td>
-                <td>{formatUsd(t.maxDrawdown)}</td>
-                <td>{formatUsd(t.twoStepFee)}</td>
-                <td>{formatUsd(t.oneStepFrom)}</td>
+        <div className="prose-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Tier</th>
+                <th>Capital</th>
+                <th>6% floor</th>
+                <th>2-Step</th>
+                <th>1-Step from</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {EVAL_TIERS.map((t) => (
+                <tr key={t.tier}>
+                  <td>{t.tier}</td>
+                  <td>{formatUsd(t.capital)}</td>
+                  <td>{formatUsd(t.maxDrawdown)}</td>
+                  <td>{formatUsd(t.twoStepFee)}</td>
+                  <td>{formatUsd(t.oneStepFrom)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <h2>What is good</h2>
         <ul>
           <li>Payouts are on-chain. You can audit them without trusting a screenshot.</li>
@@ -124,7 +128,7 @@ export default function VestReviewPage() {
           <li>Most people who buy evaluations do not get paid. The fee is the cost of the attempt, not a deposit you get back.</li>
         </ul>
       </article>
-      <div className="mx-auto max-w-3xl px-4 pt-4 pb-8 sm:px-6">
+      <div className="mx-auto max-w-3xl px-4 pt-4 pb-16 sm:px-6 md:pb-24">
         <ReferralPanel placement="review" title="Try Vest with a funded account from $10" />
         <p className="mt-6 text-[14px] leading-[1.6] text-sub">
           Nothing here is financial advice. Trading leveraged derivatives can wipe out the fee and more if you add your own capital.

@@ -62,7 +62,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       <article className="prose-tape mx-auto max-w-3xl px-4 pt-2 sm:px-6">
         <Content />
       </article>
-      <aside className="mx-auto max-w-3xl px-4 pt-10 sm:px-6">
+      <aside className="mx-auto max-w-3xl px-4 pt-10 pb-16 sm:px-6 md:pb-24">
         <h2 className="text-lg font-medium text-ink">Keep reading</h2>
         <ul className="mt-3 space-y-2">
           {more.map((p) => (

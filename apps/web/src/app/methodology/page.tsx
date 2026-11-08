@@ -18,7 +18,7 @@ export const metadata = pageMetadata({
 export default async function MethodologyPage() {
   const coverage = await getCoverage();
   return (
-    <div className="mx-auto max-w-3xl px-6 pt-8 md:px-14">
+    <div className="mx-auto max-w-3xl px-6 pt-8 pb-16 md:px-14 md:pb-24">
       <Breadcrumbs items={[{ name: "Methodology", path: "/methodology" }]} />
       <h1 className="mt-5 max-w-full text-[clamp(1.75rem,8vw,2.25rem)] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">How the numbers are made</h1>
       <article className="prose-tape">
@@ -29,56 +29,60 @@ export default async function MethodologyPage() {
         <p>
           Vest withdrawals are submitted by <code>{VEST_PAYOUT_RELAYER}</code> to a payout contract on each chain. Every payout emits one event (topic <code>{PAYOUT_EVENT_TOPIC.slice(0, 10)}…</code>) carrying the recipient, the token, the amount, and the time the withdrawal was requested inside Vest. We keep the event only when the token is native USDC.
         </p>
-        <table>
-          <thead>
-            <tr>
-              <th>Chain</th>
-              <th>Payout contract</th>
-              <th>USDC</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Object.values(CHAINS).map((c) => (
-              <tr key={c.id}>
-                <td>{c.name}</td>
-                <td>
-                  <a href={`${c.explorer}/address/${c.payoutContract}`} target="_blank" rel="noopener nofollow">
-                    <code>{c.payoutContract}</code>
-                  </a>
-                </td>
-                <td>
-                  <code>{c.usdc}</code>
-                </td>
+        <div className="prose-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Chain</th>
+                <th>Payout contract</th>
+                <th>USDC</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {Object.values(CHAINS).map((c) => (
+                <tr key={c.id}>
+                  <td>{c.name}</td>
+                  <td>
+                    <a href={`${c.explorer}/address/${c.payoutContract}`} target="_blank" rel="noopener nofollow">
+                      <code>{c.payoutContract}</code>
+                    </a>
+                  </td>
+                  <td>
+                    <code>{c.usdc}</code>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <p>
           New blocks are checked continuously. Each payout is stored once per transaction and event, so a payout is never counted twice, and a trader name attached to it is never overwritten.
         </p>
         {coverage.length > 0 && (
           <>
             <h2>Current coverage</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>Chain</th>
-                  <th>Blocks scanned</th>
-                  <th>Updated</th>
-                </tr>
-              </thead>
-              <tbody>
-                {coverage.map((c) => (
-                  <tr key={c.chain}>
-                    <td>{CHAINS[c.chain].name}</td>
-                    <td>
-                      {c.fromBlock.toLocaleString()} → {c.lastBlock.toLocaleString()}
-                    </td>
-                    <td>{formatDate(Date.parse(c.updatedAt), true)}</td>
+            <div className="prose-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Chain</th>
+                    <th>Blocks scanned</th>
+                    <th>Updated</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {coverage.map((c) => (
+                    <tr key={c.chain}>
+                      <td>{CHAINS[c.chain].name}</td>
+                      <td>
+                        {c.fromBlock.toLocaleString()} → {c.lastBlock.toLocaleString()}
+                      </td>
+                      <td>{formatDate(Date.parse(c.updatedAt), true)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </>
         )}
         <h2>What a row proves</h2>

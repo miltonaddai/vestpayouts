@@ -43,7 +43,7 @@ export default async function WalletPage({ params }: { params: Promise<{ address
   const wallet = await load(params);
   const name = wallet.label || shortAddress(wallet.address, 6);
   return (
-    <div className="mx-auto max-w-5xl px-6 pt-8 md:px-14">
+    <div className="mx-auto max-w-5xl px-6 pt-8 pb-16 md:px-14 md:pb-24">
       <Breadcrumbs
         items={[
           { name: "Leaderboard", path: "/leaderboard" },

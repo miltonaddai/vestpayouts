@@ -169,7 +169,15 @@ export interface Database {
         }[];
       };
       payout_search_totals: {
-        Args: { p_chain?: string | null; p_min?: number | null; p_period?: string; p_q?: string | null };
+        Args: {
+          p_chain?: string | null;
+          p_min?: number | null;
+          p_period?: string;
+          p_q?: string | null;
+          p_max?: number | null;
+          p_from?: string | null;
+          p_to?: string | null;
+        };
         Returns: { payouts: number; amount: number }[];
       };
       payout_percentile: { Args: { amount: number }; Returns: number };

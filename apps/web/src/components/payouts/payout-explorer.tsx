@@ -15,6 +15,10 @@ interface Filters {
   chain: string;
   period: string;
   min: string;
+  max: string;
+  /** Custom range, "YYYY-MM-DD", used when period is "custom". */
+  from: string;
+  to: string;
   sort: string;
   q: string;
   page: number;
@@ -30,6 +34,7 @@ const PERIOD_OPTIONS: FilterOption[] = [
   { value: "24h", label: "Last 24 hours" },
   { value: "7d", label: "Last 7 days" },
   { value: "30d", label: "Last 30 days" },
+  { value: "custom", label: "Custom range" },
 ];
 const MIN_OPTIONS: FilterOption[] = [
   { value: "", label: "Any amount" },
@@ -38,18 +43,35 @@ const MIN_OPTIONS: FilterOption[] = [
   { value: "10000", label: "$10,000+" },
   { value: "50000", label: "$50,000+" },
 ];
+const MAX_OPTIONS: FilterOption[] = [
+  { value: "", label: "Any amount" },
+  { value: "100", label: "Up to $100" },
+  { value: "1000", label: "Up to $1,000" },
+  { value: "10000", label: "Up to $10,000" },
+  { value: "50000", label: "Up to $50,000" },
+];
 const SORT_OPTIONS: FilterOption[] = [
   { value: "latest", label: "Latest first" },
   { value: "largest", label: "Largest first" },
 ];
 
-const DEFAULTS: Filters ={ chain: "all", period: "all", min: "", sort: "latest", q: "", page: 1 };
+const DEFAULTS: Filters = { chain: "all", period: "all", min: "", max: "", from: "", to: "", sort: "latest", q: "", page: 1 };
+const DAY_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+/** Local calendar day as "YYYY-MM-DD". */
+function isoDay(d: Date) {
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
 
 function fromParams(sp: URLSearchParams): Filters {
   return {
     chain: sp.get("chain") ?? DEFAULTS.chain,
     period: sp.get("period") ?? DEFAULTS.period,
     min: sp.get("min") ?? DEFAULTS.min,
+    max: sp.get("max") ?? DEFAULTS.max,
+    from: DAY_RE.test(sp.get("from") ?? "") ? sp.get("from")! : "",
+    to: DAY_RE.test(sp.get("to") ?? "") ? sp.get("to")! : "",
     sort: sp.get("sort") ?? DEFAULTS.sort,
     q: sp.get("q") ?? DEFAULTS.q,
     page: Number(sp.get("page")) || 1,
@@ -60,7 +82,12 @@ function toQuery(f: Filters) {
   const p = new URLSearchParams();
   if (f.chain !== "all") p.set("chain", f.chain);
   if (f.period !== "all") p.set("period", f.period);
+  if (f.period === "custom") {
+    if (f.from) p.set("from", f.from);
+    if (f.to) p.set("to", f.to);
+  }
   if (f.min) p.set("min", f.min);
+  if (f.max) p.set("max", f.max);
   if (f.sort !== "latest") p.set("sort", f.sort);
   if (f.q) p.set("q", f.q);
   if (f.page > 1) p.set("page", String(f.page));
@@ -104,6 +131,22 @@ export function PayoutExplorer({ initial, isSample }: { initial: PayoutPage; isS
 
   const update = (patch: Partial<Filters>) => setFilters((f) => ({ ...f, page: 1, ...patch }));
 
+  const choosePeriod = (period: string) => {
+    if (period !== "custom") return update({ period });
+    // Start a new custom range on the last 30 days so results show straight away.
+    const today = new Date();
+    update({
+      period,
+      from: filters.from || isoDay(new Date(today.getTime() - 29 * 86_400_000)),
+      to: filters.to || isoDay(today),
+    });
+  };
+  // A min above the max (or the reverse) would return nothing, so the other bound gives way.
+  const chooseMin = (min: string) => update({ min, ...(min && filters.max && Number(filters.max) <= Number(min) ? { max: "" } : {}) });
+  const chooseMax = (max: string) => update({ max, ...(max && filters.min && Number(filters.min) >= Number(max) ? { min: "" } : {}) });
+  const maxOptions = MAX_OPTIONS.filter((o) => !o.value || !filters.min || Number(o.value) > Number(filters.min));
+  const minOptions = MIN_OPTIONS.filter((o) => !o.value || !filters.max || Number(o.value) < Number(filters.max));
+
   return (
     <div>
       <form
@@ -113,11 +156,12 @@ export function PayoutExplorer({ initial, isSample }: { initial: PayoutPage; isS
           e.preventDefault();
           update({ q: qDraft.trim() });
         }}
-        className="grid gap-3 border border-line bg-paper p-4 sm:grid-cols-2 lg:grid-cols-[repeat(4,minmax(0,1fr))_1.6fr]"
+        className="grid gap-3 border border-line bg-paper p-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[repeat(5,minmax(0,1fr))_1.6fr]"
       >
         <FilterSelect label="Chain" value={filters.chain} options={CHAIN_OPTIONS} onChange={(chain) => update({ chain })} />
-        <FilterSelect label="Period" value={filters.period} options={PERIOD_OPTIONS} onChange={(period) => update({ period })} />
-        <FilterSelect label="Minimum amount" value={filters.min} options={MIN_OPTIONS} onChange={(min) => update({ min })} />
+        <FilterSelect label="Period" value={filters.period} options={PERIOD_OPTIONS} onChange={choosePeriod} />
+        <FilterSelect label="Minimum amount" value={filters.min} options={minOptions} onChange={chooseMin} />
+        <FilterSelect label="Maximum amount" value={filters.max} options={maxOptions} onChange={chooseMax} />
         <FilterSelect label="Sort" value={filters.sort} options={SORT_OPTIONS} onChange={(sort) => update({ sort })} />
         <label className="grid gap-1.5 font-mono text-[12px] tracking-[0.04em] text-sub uppercase">
           Wallet, tx hash or trader
@@ -134,6 +178,25 @@ export function PayoutExplorer({ initial, isSample }: { initial: PayoutPage; isS
             </Button>
           </span>
         </label>
+
+        {filters.period === "custom" && (
+          <fieldset className="col-span-full grid grid-cols-2 items-end gap-3 border-t border-line pt-3 sm:flex sm:flex-wrap">
+            <legend className="sr-only">Custom date range</legend>
+            <DateField label="From" value={filters.from} max={filters.to || undefined} onChange={(from) => update({ from })} />
+            <span className="hidden pb-3 font-mono text-sub sm:inline" aria-hidden="true">
+              →
+            </span>
+            <DateField label="To" value={filters.to} min={filters.from || undefined} onChange={(to) => update({ to })} />
+            <p className="text-[13px] text-sub sm:pb-3">Both days included · UTC</p>
+            <button
+              type="button"
+              onClick={() => update({ period: "all", from: "", to: "" })}
+              className="h-11 border border-line bg-background px-4 sm:ml-auto font-mono text-[12px] tracking-[0.06em] text-sub uppercase transition-colors hover:border-ink hover:text-ink"
+            >
+              Clear range
+            </button>
+          </fieldset>
+        )}
       </form>
 
       <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-sm text-sub" aria-live="polite">
@@ -180,5 +243,22 @@ export function PayoutExplorer({ initial, isSample }: { initial: PayoutPage; isS
         </nav>
       )}
     </div>
+  );
+}
+
+function DateField({ label, value, min, max, onChange }: { label: string; value: string; min?: string; max?: string; onChange: (v: string) => void }) {
+  return (
+    <label className="grid min-w-0 gap-1.5 font-mono text-[12px] tracking-[0.04em] text-sub uppercase sm:w-44">
+      {label}
+      <input
+        type="date"
+        value={value}
+        min={min}
+        max={max}
+        // Only apply complete dates; the browser reports "" while a field is half typed.
+        onChange={(e) => DAY_RE.test(e.target.value) && onChange(e.target.value)}
+        className="h-11 w-full min-w-0 border border-line bg-background px-2.5 font-sans sm:px-3 text-[15px] tracking-normal text-ink normal-case transition-colors outline-none hover:border-sub focus-visible:border-signal focus-visible:ring-3 focus-visible:ring-signal/25"
+      />
+    </label>
   );
 }

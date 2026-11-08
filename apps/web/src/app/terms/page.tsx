@@ -11,7 +11,7 @@ export const metadata = pageMetadata({
 
 export default function TermsPage() {
   return (
-    <div className="mx-auto max-w-3xl px-6 pt-8 md:px-14">
+    <div className="mx-auto max-w-3xl px-6 pt-8 pb-16 md:px-14 md:pb-24">
       <Breadcrumbs items={[{ name: "Terms", path: "/terms" }]} />
       <h1 className="mt-5 max-w-full text-[clamp(1.75rem,8vw,2.25rem)] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">Terms of use</h1>
       <p className="mt-2 text-sm text-muted-foreground">Last updated 6 November 2026.</p>

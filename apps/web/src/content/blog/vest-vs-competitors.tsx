@@ -16,62 +16,64 @@ export default function VestVsCompetitors() {
       </blockquote>
 
       <h2>At a glance</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Feature</th>
-            <th>Vest Capital</th>
-            <th>Typical futures / forex prop firm</th>
-            <th>Typical crypto prop firm</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Payout rail</td>
-            <td>USDC on Base or Arbitrum, publicly verifiable</td>
-            <td>Bank transfer, payment processor or crypto, usually private</td>
-            <td>Crypto (often USDC/USDT), sometimes on-chain</td>
-          </tr>
-          <tr>
-            <td>Payout frequency</td>
-            <td>Claim any time, no cap on frequency or size</td>
-            <td>Often bi-weekly or after a minimum number of trading days</td>
-            <td>Varies, from on-demand to weekly cycles</td>
-          </tr>
-          <tr>
-            <td>Processing time</td>
-            <td>Up to 24 h to claim and up to 24 h to withdraw</td>
-            <td>Often 1–5 business days after approval</td>
-            <td>Hours to days</td>
-          </tr>
-          <tr>
-            <td>Profit split</td>
-            <td>
-              {SPLITS.instant}% Instant; {SPLITS.evalBase}% / {SPLITS.evalUpgrade}% evaluation
-            </td>
-            <td>Commonly 80–90%, sometimes scaling up</td>
-            <td>Commonly 70–90%</td>
-          </tr>
-          <tr>
-            <td>Skip the evaluation?</td>
-            <td>Yes, Instant Accounts from ${INSTANT_ACCOUNTS[0].fee}</td>
-            <td>Sometimes, at a premium</td>
-            <td>Sometimes</td>
-          </tr>
-          <tr>
-            <td>Markets</td>
-            <td>Crypto, equities, indices, commodities and FX perps, 24/7</td>
-            <td>Futures or CFDs, market hours</td>
-            <td>Mostly crypto perps</td>
-          </tr>
-          <tr>
-            <td>Payout transparency</td>
-            <td>Every payout traceable on-chain</td>
-            <td>Relies on firm-published stats or screenshots</td>
-            <td>Mixed</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="prose-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Vest Capital</th>
+              <th>Typical futures / forex prop firm</th>
+              <th>Typical crypto prop firm</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Payout rail</td>
+              <td>USDC on Base or Arbitrum, publicly verifiable</td>
+              <td>Bank transfer, payment processor or crypto, usually private</td>
+              <td>Crypto (often USDC/USDT), sometimes on-chain</td>
+            </tr>
+            <tr>
+              <td>Payout frequency</td>
+              <td>Claim any time, no cap on frequency or size</td>
+              <td>Often bi-weekly or after a minimum number of trading days</td>
+              <td>Varies, from on-demand to weekly cycles</td>
+            </tr>
+            <tr>
+              <td>Processing time</td>
+              <td>Up to 24 h to claim and up to 24 h to withdraw</td>
+              <td>Often 1–5 business days after approval</td>
+              <td>Hours to days</td>
+            </tr>
+            <tr>
+              <td>Profit split</td>
+              <td>
+                {SPLITS.instant}% Instant; {SPLITS.evalBase}% / {SPLITS.evalUpgrade}% evaluation
+              </td>
+              <td>Commonly 80–90%, sometimes scaling up</td>
+              <td>Commonly 70–90%</td>
+            </tr>
+            <tr>
+              <td>Skip the evaluation?</td>
+              <td>Yes, Instant Accounts from ${INSTANT_ACCOUNTS[0].fee}</td>
+              <td>Sometimes, at a premium</td>
+              <td>Sometimes</td>
+            </tr>
+            <tr>
+              <td>Markets</td>
+              <td>Crypto, equities, indices, commodities and FX perps, 24/7</td>
+              <td>Futures or CFDs, market hours</td>
+              <td>Mostly crypto perps</td>
+            </tr>
+            <tr>
+              <td>Payout transparency</td>
+              <td>Every payout traceable on-chain</td>
+              <td>Relies on firm-published stats or screenshots</td>
+              <td>Mixed</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <h2>Where Vest stands out</h2>
       <h3>1. Payouts you can audit</h3>

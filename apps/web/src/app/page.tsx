@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { Trophy } from "lucide-react";
+import { ExploreCards } from "@/components/home/explore-cards";
+import { HeroTotal } from "@/components/payouts/hero-total";
 import { DailyChart } from "@/components/payouts/daily-chart";
 import { HomePayoutTabs } from "@/components/payouts/home-payout-tabs";
 import { SampleDataBanner } from "@/components/payouts/sample-banner";
-import { HeroStat, Stat, StatGrid } from "@/components/payouts/stat-grid";
-import { Live, LiveSummaryProvider } from "@/components/payouts/live-summary";
+import { LiveSummaryProvider } from "@/components/payouts/live-summary";
 import { TapeTicker } from "@/components/payouts/tape-ticker";
 import { VestHeroHeading } from "@/components/brand/vest-hero-icon";
 import { ReferralButton, ReferralCodeHint, ReferralPanel } from "@/components/referral/referral-cta";
@@ -16,7 +16,7 @@ import { PAYOUT_FAQS } from "@/lib/content/faqs";
 import { SPLITS } from "@/lib/content/vest-facts";
 import { formatDate } from "@/lib/format";
 import { CHAINS } from "@/lib/payouts/chains";
-import { getDailySeries, getLargest, getLatest, getSummary } from "@/lib/payouts/repository";
+import { getDailySeries, getLargest, getLatest, getLeaderboard, getSummary } from "@/lib/payouts/repository";
 import { datasetLd, pageMetadata } from "@/lib/seo";
 
 export const revalidate = 3600;
@@ -30,13 +30,14 @@ export const metadata = pageMetadata({
 });
 
 export default async function HomePage() {
-  const [summary, ticker, series, largest24h, largest7d, largest30d] = await Promise.all([
+  const [summary, ticker, series, largest24h, largest7d, largest30d, top3] = await Promise.all([
     getSummary(),
     getLatest(20),
     getDailySeries(90),
     getLargest(10, "24h"),
     getLargest(10, "7d"),
     getLargest(10, "30d"),
+    getLeaderboard("all", 3),
   ]);
   const since = summary.firstPaidAt ? formatDate(summary.firstPaidAt) : null;
 
@@ -77,19 +78,6 @@ export default async function HomePage() {
                 Every USDC payout Vest sends to traders, read straight from its
                 public payout contracts. Real amounts, real wallets, real transaction hashes. No screenshots required.
               </p>
-              <p className="mt-4 text-[14px] text-sub">
-                {summary.isSample ? "Sample total (placeholder data)" : `Paid to traders${since ? ` since ${since}` : ""}`}
-              </p>
-              <p className="tabular mt-1 font-heading text-[32px] leading-none font-medium tracking-[-0.03em] text-green">
-                <Live k="all.amount" f="usd" />
-              </p>
-              <p className="mt-2 text-[14px] text-sub">
-                <Live k="all.count" f="int" /> payouts to <Live k="all.wallets" f="int" /> wallets ·{" "}
-                <span className="text-ink">
-                  <Live k="24h.amount" f="compact" />
-                </span>{" "}
-                in the last 24 hours
-              </p>
               <div className="mt-6 flex flex-col items-stretch gap-3">
                 <ReferralButton placement="hero" label="Get funded on Vest" />
                 <ArrowLink href="/payouts">Browse payout proof</ArrowLink>
@@ -100,82 +88,29 @@ export default async function HomePage() {
               </p>
             </div>
           </div>
+          <HeroTotal
+            since={summary.isSample ? null : since}
+            chains={summary.byChain.map((c) => ({ id: c.chain, name: CHAINS[c.chain].name }))}
+          />
         </div>
       </section>
 
-      <div className="border-y border-line">
-        <div className="grid min-w-0 grid-cols-2 md:grid-cols-5" data-reveal-children>
-          <HeroStat label="All time" value={<Live k="all.amount" f="compact" />} sub="paid to traders" tone="ink" />
-          <HeroStat
-            label="Last 24h"
-            value={<Live k="24h.amount" f="compact" />}
-            sub={<><Live k="24h.count" f="int" /> payouts</>}
-            tone="signal"
-          />
-          <HeroStat label="Payouts" value={<Live k="all.count" f="int" />} sub="recorded transfers" tone="green" />
-          <HeroStat label="Wallets" value={<Live k="all.wallets" f="int" />} sub="unique recipients" tone="orange" />
-          <HeroStat
-            label="Largest payout"
-            value={<Live k="all.largest.amount" f="compact" />}
-            sub={<Live k="all.largest.paidAt" f="date" prefix="paid " fallback="single transfer" />}
-            tone="ink"
-          />
-        </div>
+      <div className="border-t border-line">
+        <TapeTicker payouts={ticker} />
       </div>
 
-      <TapeTicker payouts={ticker} />
-
-      <section aria-labelledby="stats-title" className="border-b border-line px-6 py-12 md:px-14 md:py-16">
-        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <div className="meta mb-3">§ 01 — Totals</div>
-            <h2 id="stats-title" className="text-[36px] leading-none font-medium tracking-[-0.03em] text-ink md:text-[56px]">
-              /paid
-            </h2>
-            <p className="mt-3 max-w-2xl text-[15px] leading-[1.6] text-sub">
-              How much has Vest paid out? Totals update automatically from on-chain data. Every figure links back to
-              individual transactions you can check yourself.
-            </p>
-          </div>
-          <ArrowLink href="/leaderboard">View the Vest payout leaderboard</ArrowLink>
+      <section aria-labelledby="explore-title" className="border-b border-line px-6 py-12 md:px-14 md:py-16">
+        <div className="mb-8">
+          <div className="meta mb-3">§ 01 — Explore</div>
+          <h2 id="explore-title" className="text-[36px] leading-none font-medium tracking-[-0.03em] text-ink md:text-[56px]">
+            /explore
+          </h2>
         </div>
-        <StatGrid>
-          <Stat label="Paid last 24h" value={<Live k="24h.amount" f="usd" />} sub={<><Live k="24h.count" f="int" /> payouts</>} highlight />
-          <Stat
-            label="Paid last 7 days"
-            value={<Live k="7d.amount" f="usd" />}
-            sub={<><Live k="7d.wallets" f="int" /> wallets paid</>}
-            tone="green"
-          />
-          <Stat label="Paid last 30 days" value={<Live k="30d.amount" f="usd" />} sub={<><Live k="30d.count" f="int" /> payouts</>} />
-          <Stat
-            label="Largest payout (30d)"
-            icon={<Trophy className="size-3.5" strokeWidth={2} />}
-            value={<Live k="30d.largest.amount" f="usd" />}
-            sub={<Live k="30d.largest.paidAt" f="date" fallback="" />}
-            tone="orange"
-          />
-          <Stat label="Median payout (30d)" value={<Live k="median30d" f="usd2" />} />
-          <Stat
-            label="Average payout (30d)"
-            value={<Live k="avg30d" f="usd2" />}
-            sub={<><Live k="30d.wallets" f="int" /> wallets paid</>}
-          />
-          {summary.byChain.slice(0, 2).map((c) => (
-            <Stat
-              key={c.chain}
-              label={`Paid on ${CHAINS[c.chain].name}`}
-              value={<Live k={`chain.${c.chain}.amount`} f="compact" />}
-              sub={<><Live k={`chain.${c.chain}.count`} f="int" /> payouts</>}
-            />
-          ))}
-          {summary.byChain.length === 0 && (
-            <>
-              <Stat label="Wallets paid (all time)" value={<Live k="all.wallets" f="int" />} />
-              <Stat label="Payouts (all time)" value={<Live k="all.count" f="int" />} />
-            </>
-          )}
-        </StatGrid>
+        <ExploreCards
+          top={top3}
+          wallets={summary.windows.all.wallets}
+          proof={[...largest24h, ...ticker].find((p) => p.source === "onchain" && p.chain && p.txHash) ?? null}
+        />
       </section>
       </LiveSummaryProvider>
 

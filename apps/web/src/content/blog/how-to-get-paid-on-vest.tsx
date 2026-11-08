@@ -56,32 +56,34 @@ export default function HowToGetPaidOnVest() {
         <li>Confirm. Withdrawals can&apos;t be reversed, so double-check the address and the chain.</li>
       </ol>
       <h3>Withdrawal limits and timing</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Rule</th>
-            <th>Detail</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Minimum withdrawal</td>
-            <td>1 USDC</td>
-          </tr>
-          <tr>
-            <td>Rolling limit</td>
-            <td>Anything that takes you above $50,000 in 24 hours gets an extra 24-hour processing period</td>
-          </tr>
-          <tr>
-            <td>Processing</td>
-            <td>Vest currently lists a 24-hour processing period for all withdrawals, with an email when it completes</td>
-          </tr>
-          <tr>
-            <td>Tracking</td>
-            <td>The Withdrawals tab shows status, amount, time and the on-chain transaction ID</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="prose-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Rule</th>
+              <th>Detail</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Minimum withdrawal</td>
+              <td>1 USDC</td>
+            </tr>
+            <tr>
+              <td>Rolling limit</td>
+              <td>Anything that takes you above $50,000 in 24 hours gets an extra 24-hour processing period</td>
+            </tr>
+            <tr>
+              <td>Processing</td>
+              <td>Vest currently lists a 24-hour processing period for all withdrawals, with an email when it completes</td>
+            </tr>
+            <tr>
+              <td>Tracking</td>
+              <td>The Withdrawals tab shows status, amount, time and the on-chain transaction ID</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <p>
         Source: <a href={VEST_SOURCES.withdrawals} rel="noopener nofollow" target="_blank">Vest docs, Withdrawals</a>.
         On-chain, VestPayouts measures the time between the withdrawal request and the USDC arriving. The{" "}

@@ -17,7 +17,7 @@ export default function FaqPage() {
   return (
     <>
       <JsonLd data={faqLd(PAYOUT_FAQS)} />
-      <div className="mx-auto max-w-3xl px-6 pt-8 md:px-14">
+      <div className="mx-auto max-w-3xl px-6 pt-8 pb-16 md:px-14 md:pb-24">
         <Breadcrumbs items={[{ name: "FAQ", path: "/faq" }]} />
         <p className="meta mt-6">§ Questions</p>
         <h1 className="mt-3 max-w-full text-[clamp(1.75rem,8vw,2.25rem)] leading-[0.96] font-medium tracking-[-0.035em] text-ink md:text-[56px]">Vest payout FAQ</h1>

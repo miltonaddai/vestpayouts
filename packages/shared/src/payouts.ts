@@ -61,6 +61,10 @@ export interface LeaderboardRow {
 export interface PayoutQuery {
   chain?: ChainId;
   min?: number;
+  max?: number;
+  /** Custom range, unix ms. `from` is inclusive, `to` is exclusive. Applied on top of `period`. */
+  from?: number;
+  to?: number;
   period?: Period;
   sort?: "latest" | "largest";
   q?: string;

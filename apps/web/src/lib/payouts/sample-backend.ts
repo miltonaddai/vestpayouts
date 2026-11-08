@@ -87,6 +87,9 @@ export function queryPayouts(q: PayoutQuery, pageSize: number): PayoutPage {
   let list = inPeriod(rows(), q.period ?? "all");
   if (q.chain) list = [];
   if (q.min) list = list.filter((p) => p.amount >= q.min!);
+  if (q.max) list = list.filter((p) => p.amount <= q.max!);
+  if (q.from) list = list.filter((p) => p.paidAt >= q.from!);
+  if (q.to) list = list.filter((p) => p.paidAt < q.to!);
   if (q.q) list = list.filter((p) => p.trader?.toLowerCase().includes(q.q!.toLowerCase()));
   if (q.sort === "largest") list.sort((a, b) => b.amount - a.amount);
   const pages = Math.max(1, Math.ceil(list.length / pageSize));

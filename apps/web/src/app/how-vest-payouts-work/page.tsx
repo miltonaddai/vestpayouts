@@ -54,33 +54,35 @@ export default function HowPayoutsWorkPage() {
         </p>
         <h2>What you keep</h2>
         <p>The split is chosen when you buy the account and does not change later.</p>
-        <table>
-          <thead>
-            <tr>
-              <th>Account</th>
-              <th>You keep</th>
-              <th>Entry price</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Instant</td>
-              <td>{SPLITS.instant}% flat</td>
-              <td>
-                {formatUsd(INSTANT_ACCOUNTS[0].fee)} for {formatUsd(INSTANT_ACCOUNTS[0].capital)} of capital, up to {formatUsd(INSTANT_ACCOUNTS.at(-1)!.fee)} for {formatUsd(INSTANT_ACCOUNTS.at(-1)!.capital)}
-              </td>
-            </tr>
-            <tr>
-              <td>Evaluation, 1-Step or 2-Step</td>
-              <td>
-                {SPLITS.evalBase}% or {SPLITS.evalUpgrade}%
-              </td>
-              <td>
-                2-Step from {formatUsd(EVAL_TIERS[0].twoStepFee)}; 1-Step priced by target, daily loss limit and split
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="prose-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Account</th>
+                <th>You keep</th>
+                <th>Entry price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Instant</td>
+                <td>{SPLITS.instant}% flat</td>
+                <td>
+                  {formatUsd(INSTANT_ACCOUNTS[0].fee)} for {formatUsd(INSTANT_ACCOUNTS[0].capital)} of capital, up to {formatUsd(INSTANT_ACCOUNTS.at(-1)!.fee)} for {formatUsd(INSTANT_ACCOUNTS.at(-1)!.capital)}
+                </td>
+              </tr>
+              <tr>
+                <td>Evaluation, 1-Step or 2-Step</td>
+                <td>
+                  {SPLITS.evalBase}% or {SPLITS.evalUpgrade}%
+                </td>
+                <td>
+                  2-Step from {formatUsd(EVAL_TIERS[0].twoStepFee)}; 1-Step priced by target, daily loss limit and split
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <h2>Limits and timing</h2>
         <ul>
           <li>Minimum withdrawal: 1 USDC.</li>
@@ -110,7 +112,7 @@ export default function HowPayoutsWorkPage() {
           More answers on the <Link href="/faq">FAQ</Link>, and a full look at the product in the <Link href="/vest-review">Vest review</Link>.
         </p>
       </article>
-      <div className="mx-auto max-w-3xl px-4 pt-4 pb-8 sm:px-6">
+      <div className="mx-auto max-w-3xl px-4 pt-4 pb-16 sm:px-6 md:pb-24">
         <ReferralPanel placement="guide" title="Open a Vest account and get paid in USDC" />
       </div>
     </>

@@ -431,16 +431,27 @@
   .prose-tape strong {
     @apply font-semibold text-ink;
   }
+  /* The wrapper owns the border and scrolls wide tables on phones; the table always fills it. */
+  .prose-tape .prose-table {
+    @apply my-6 max-w-full overflow-x-auto border border-line;
+  }
   .prose-tape table {
-    @apply my-6 w-full max-w-full border-collapse border border-line text-left text-sm;
-    display: block;
-    overflow-x: auto;
+    @apply w-full border-collapse text-left text-[15px];
   }
   .prose-tape th {
-    @apply border-b border-line bg-paper py-2.5 px-3 font-mono text-[12px] font-medium tracking-[0.04em] text-sub uppercase;
+    @apply border-b border-line bg-paper px-4 py-3 font-mono text-[12px] font-medium tracking-[0.06em] whitespace-nowrap text-sub uppercase;
   }
   .prose-tape td {
-    @apply border-b border-line px-3 py-2.5 align-top;
+    @apply border-b border-line px-4 py-3 align-top text-ink tabular-nums;
+  }
+  .prose-tape td:first-child {
+    @apply font-medium;
+  }
+  .prose-tape tbody tr:last-child td {
+    @apply border-b-0;
+  }
+  .prose-tape tbody tr {
+    @apply transition-colors hover:bg-paper;
   }
   .prose-tape code {
     @apply break-all bg-paper px-1.5 py-0.5 font-mono text-[0.85em] text-ink;

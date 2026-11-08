@@ -74,7 +74,7 @@ export default async function PayoutPage({ params }: { params: Promise<{ network
   const isSample = main.source === "sample";
 
   return (
-    <div className="mx-auto max-w-5xl px-6 pt-8 md:px-14">
+    <div className="mx-auto max-w-5xl px-6 pt-8 pb-16 md:px-14 md:pb-24">
       <Breadcrumbs
         items={[
           { name: "Vest payouts", path: "/payouts" },
