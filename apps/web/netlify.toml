@@ -19,6 +19,8 @@
 [build.environment]
   NODE_VERSION = "22"
   NEXT_TELEMETRY_DISABLED = "1"
-  # Public by design: inlined into the client bundle and the default in src/lib/site.ts.
-  # Real secrets (CLICK_LOG_SECRET, REVALIDATE_SECRET) stay scanned.
-  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_CONTACT_EMAIL"
+  # NEXT_PUBLIC_* values are public by design: Next.js inlines them into the
+  # browser bundle, and several (site URL, handle, email) match strings used
+  # throughout the repo. Real secrets (CLICK_LOG_SECRET, REVALIDATE_SECRET)
+  # stay scanned.
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_SITE_URL,NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,NEXT_PUBLIC_SUPABASE_ANON_KEY,NEXT_PUBLIC_CONTACT_EMAIL,NEXT_PUBLIC_TWITTER_HANDLE,NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,NEXT_PUBLIC_VEST_REFERRAL_URL,NEXT_PUBLIC_VEST_REFERRAL_CODE,NEXT_PUBLIC_VEST_REFERRAL_PARAM,NEXT_PUBLIC_REFERRAL_APPEND_UTM"
