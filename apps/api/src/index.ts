@@ -3,7 +3,7 @@ import { Hono } from "hono";
 import cron from "node-cron";
 import { manualPayoutSchema, type ManualPayoutInput } from "@vestpayouts/shared";
 import { adminConfigured, bearer, issueAdminToken, passwordOk, secretOk, tokenOk } from "./auth";
-import { hasSupabaseWrite, serviceClient, triggerRevalidate } from "./env";
+import { serviceClient, triggerRevalidate } from "./env";
 import { importManualPayouts, validateCsv } from "./import-payouts";
 import { runIngest } from "./ingest";
 import { refreshPayoutStats } from "./refresh-stats";
@@ -16,17 +16,11 @@ function requireAdmin(header: string | undefined) {
   return true;
 }
 
-app.get("/health", (c) =>
-  c.json({
-    ok: true,
-    service: "vestpayouts-api",
-    admin: adminConfigured(),
-    supabase: hasSupabaseWrite(),
-  }),
-);
+// Public and unauthenticated: reveal nothing about configuration.
+app.get("/health", (c) => c.json({ ok: true }));
 
 app.post("/admin/login", async (c) => {
-  if (!adminConfigured()) return c.json({ error: "Set ADMIN_PASSWORD on the API." }, 503);
+  if (!adminConfigured()) return c.json({ error: "Admin is unavailable." }, 503);
   const body = (await c.req.json().catch(() => null)) as { password?: string } | null;
   if (!body?.password || !passwordOk(body.password)) return c.json({ error: "Wrong password." }, 401);
   return c.json({ token: issueAdminToken(body.password) });

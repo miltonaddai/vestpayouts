@@ -123,16 +123,12 @@ export default function VestReviewPage() {
           <li>Pricing and rules move. The homepage and the docs have disagreed on details before. Check the live pages.</li>
           <li>Most people who buy evaluations do not get paid. The fee is the cost of the attempt, not a deposit you get back.</li>
         </ul>
-        <h2>Who it fits</h2>
-        <p>
-          Traders who already size small, want a public payout record, and are fine holding USDC on Base or Arbitrum. It is a poor fit if you swing wide, need fiat, or want a firm that offers discounted resets. For a side-by-side with typical prop firms, read <Link href="/blog/vest-vs-competitors">Vest vs competitors</Link>. For the Instant vs evaluation tradeoff, read <Link href="/blog/vest-instant-vs-evaluation">that comparison</Link>.
-        </p>
-        <p>
-          Nothing here is financial advice. Trading leveraged derivatives can wipe out the fee and more if you add your own capital.
-        </p>
       </article>
       <div className="mx-auto max-w-3xl px-4 pt-4 pb-8 sm:px-6">
         <ReferralPanel placement="review" title="Try Vest with a funded account from $10" />
+        <p className="mt-6 text-[14px] leading-[1.6] text-sub">
+          Nothing here is financial advice. Trading leveraged derivatives can wipe out the fee and more if you add your own capital.
+        </p>
       </div>
     </>
   );

@@ -24,8 +24,13 @@ export function MobileNav() {
 
   useEffect(() => {
     if (!open) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    // Lock scrolling on <html>, not <body>. html has overflow-x: clip, so an
+    // overflow on body would not propagate to the viewport: body would become
+    // its own scroll container and the sticky header (with this menu) would
+    // jump back to the top of the document, off-screen when scrolled down.
+    const root = document.documentElement;
+    const previousOverflow = root.style.overflow;
+    root.style.overflow = "hidden";
     const onKey = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
       if (detailsRef.current) detailsRef.current.open = false;
@@ -33,7 +38,7 @@ export function MobileNav() {
     };
     window.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = previousOverflow;
+      root.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onKey);
     };
   }, [open]);

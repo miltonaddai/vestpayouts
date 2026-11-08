@@ -4,7 +4,7 @@ import { SITE } from "@/lib/site";
 
 export const metadata = pageMetadata({
   title: "Privacy Policy",
-  description: "What VestPayouts stores: referral click logs, an admin cookie, and public blockchain data. No accounts.",
+  description: "What VestPayouts stores: referral click logs, a staff sign-in cookie, and public blockchain data. No accounts.",
   path: "/privacy",
 });
 
@@ -19,13 +19,13 @@ export default function PrivacyPage() {
         <h2>What we collect</h2>
         <ul>
           <li>
-            <strong>Referral clicks.</strong> When you follow a Vest link, we store the time, the button (for example &ldquo;hero&rdquo;), the page you were on, the referrer, a truncated user agent, and the country code our host (Netlify) provides. We do not store your IP address in that table.
+            <strong>Referral clicks.</strong> When you follow a Vest link, we store the time, the button (for example &ldquo;hero&rdquo;), the page you were on, the referrer, a truncated user agent, and and the country code our hosting provider supplies. We do not store your IP address in that table.
           </li>
           <li>
-            <strong>Admin cookie.</strong> The <code>/admin</code> page sets one httpOnly cookie after a correct password. It identifies a session, not a person, and it is not set for ordinary visitors.
+            <strong>Staff sign-in cookie.</strong> Site staff get one secure cookie when they sign in. It identifies a session, not a person, and it is never set for ordinary visitors.
           </li>
           <li>
-            <strong>Server logs.</strong> The host (typically Vercel) keeps standard request logs, which can include IP addresses, for security and debugging.
+            <strong>Server logs.</strong> Our hosting provider keeps standard request logs, which can include IP addresses, for security and debugging.
           </li>
         </ul>
         <h2>Blockchain data</h2>

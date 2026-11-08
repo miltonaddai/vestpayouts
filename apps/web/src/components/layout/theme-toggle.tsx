@@ -67,7 +67,7 @@ export function ThemeToggle({ className }: { className?: string }) {
         aria-hidden="true"
         className="relative inline-flex h-6 w-11 items-center rounded-full border border-line bg-paper"
       >
-        <span className="absolute top-[2px] left-[2px] flex h-5 w-5 items-center justify-center rounded-full bg-ink text-background transition-transform duration-200 ease-out motion-reduce:transition-none dark:translate-x-5">
+        <span className="absolute top-[2px] left-[2px] flex size-[18px] items-center justify-center rounded-full bg-ink text-background transition-transform duration-200 ease-out motion-reduce:transition-none dark:translate-x-5">
           <SunIcon className="h-3 w-3 dark:hidden" />
           <MoonIcon className="hidden h-3 w-3 dark:block" />
         </span>

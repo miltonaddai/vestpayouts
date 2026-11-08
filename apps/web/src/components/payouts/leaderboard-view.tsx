@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Trophy } from "lucide-react";
 import { VestHeroHeading } from "@/components/brand/vest-hero-icon";
 import { SampleDataBanner } from "@/components/payouts/sample-banner";
-import { Stat, StatGrid } from "@/components/payouts/stat-grid";
+import { LeaderboardPodium } from "@/components/payouts/leaderboard-podium";
 import { ReferralPanel } from "@/components/referral/referral-cta";
 import { Breadcrumbs } from "@/components/seo/breadcrumbs";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -34,11 +34,11 @@ function Rank({ rank }: { rank: number }) {
   return <span className={cn("font-mono", rank <= TOP ? "font-medium text-ink" : "text-sub")}>{rank}</span>;
 }
 
-const TABS: { period: Period; href: string }[] = [
-  { period: "all", href: "/leaderboard" },
-  { period: "30d", href: "/leaderboard/30d" },
-  { period: "7d", href: "/leaderboard/7d" },
-  { period: "24h", href: "/leaderboard/24h" },
+const TABS: { period: Period; href: string; short: string }[] = [
+  { period: "all", href: "/leaderboard", short: "All" },
+  { period: "30d", href: "/leaderboard/30d", short: "30d" },
+  { period: "7d", href: "/leaderboard/7d", short: "7d" },
+  { period: "24h", href: "/leaderboard/24h", short: "24h" },
 ];
 
 export async function LeaderboardView({ period }: { period: Period }) {
@@ -70,28 +70,39 @@ export async function LeaderboardView({ period }: { period: Period }) {
         </h1>
         <p className="mt-4 max-w-2xl text-[16px] leading-[1.6] text-sub">
           Traders ranked by USDC they received from Vest{" "}
-          {period === "all" ? "since tracking began" : PERIOD_LABEL[period].toLowerCase()}.
+          {period === "all" ? "since tracking began" : `in the ${PERIOD_LABEL[period].toLowerCase()}`}.
           Wallets are public addresses from payout transactions. Names appear only when a trader has been identified.
         </p>
-        <StatGrid className="mt-8">
-          <Stat label={`Paid · ${PERIOD_LABEL[period]}`} value={formatUsd(window.amount)} highlight />
-          <Stat label="Payouts" value={formatInt(window.count)} tone="green" />
-          <Stat label="Wallets" value={formatInt(window.wallets)} tone="orange" />
-          <Stat label="Largest" value={window.largest ? formatUsd(window.largest.amount) : "—"} />
-        </StatGrid>
+        <p className="mt-3 max-w-2xl text-[15px] text-sub">
+          <span className="tabular font-medium text-ink">{formatUsd(window.amount)}</span> paid across{" "}
+          <span className="tabular text-ink">{formatInt(window.count)}</span> payouts to{" "}
+          <span className="tabular text-ink">{formatInt(window.wallets)}</span> wallets
+          {window.largest && (
+            <>
+              {" "}
+              · largest single payout <span className="tabular text-ink">{formatUsd(window.largest.amount)}</span>
+            </>
+          )}
+          .
+        </p>
 
-        <nav aria-label="Leaderboard period" className="mt-8 flex flex-wrap border border-line">
+        <LeaderboardPodium rows={rows} period={period} />
+
+        <nav aria-label="Leaderboard period" className="mt-8 grid grid-cols-4 border border-line sm:flex">
           {TABS.map((t) => (
             <Link
               key={t.period}
               href={t.href}
               aria-current={t.period === period ? "page" : undefined}
+              aria-label={PERIOD_LABEL[t.period]}
               className={cn(
-                "inline-flex min-h-11 items-center border-r border-line px-4 py-2.5 font-mono text-[13px] tracking-[0.04em] uppercase last:border-r-0",
+                "inline-flex min-h-11 items-center justify-center border-r border-line px-2 py-2.5 font-mono text-[13px] tracking-[0.04em] whitespace-nowrap uppercase last:border-r-0 sm:justify-start sm:px-4",
                 t.period === period ? "bg-ink text-background" : "bg-background text-sub hover:text-ink",
               )}
             >
-              {PERIOD_LABEL[t.period]}
+              {/* Phones: one row of short labels. sm and up: unchanged. */}
+              <span className="sm:hidden">{t.short}</span>
+              <span className="hidden sm:inline">{PERIOD_LABEL[t.period]}</span>
             </Link>
           ))}
         </nav>

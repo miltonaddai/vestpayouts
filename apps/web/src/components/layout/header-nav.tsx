@@ -4,7 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV } from "@/lib/site";
 
+const LINKS = [{ href: "/", label: "Home" }, ...NAV] as const;
+
 function isCurrent(pathname: string, href: string) {
+  if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
@@ -12,7 +15,7 @@ export function HeaderNav() {
   const pathname = usePathname();
   return (
     <nav id="nav-scroll" aria-label="Main" className="flex min-w-0 flex-1 items-stretch">
-      {NAV.map((item) => {
+      {LINKS.map((item) => {
         const current = isCurrent(pathname, item.href);
         return (
           <Link

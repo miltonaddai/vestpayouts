@@ -17,30 +17,17 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminPage() {
-  let health: { admin?: boolean } | null = null;
+  let reachable = false;
   try {
-    const res = await backendFetch("/health");
-    if (res.ok) health = (await res.json()) as { admin?: boolean };
+    reachable = (await backendFetch("/health")).ok;
   } catch {
-    health = null;
+    reachable = false;
   }
-  if (!health) {
+  if (!reachable) {
     return (
       <div className="mx-auto max-w-xl px-6 py-16 md:px-14">
-        <h1 className="text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink">API is not running</h1>
-        <p className="mt-3 text-sub">
-          Admin writes go through the API. Start it with <code className="text-green">yarn dev:api</code> (or <code className="text-green">yarn dev</code> for both) and reload.
-        </p>
-      </div>
-    );
-  }
-  if (!health.admin) {
-    return (
-      <div className="mx-auto max-w-xl px-6 py-16 md:px-14">
-        <h1 className="text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink">Admin is locked</h1>
-        <p className="mt-3 text-sub">
-          Set <code className="text-green">ADMIN_PASSWORD</code> on the API (<code className="text-green">apps/api/.env.local</code>), restart it, and reload. The website does not store that password or the Supabase secret key.
-        </p>
+        <h1 className="text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink">Admin is unavailable</h1>
+        <p className="mt-3 text-sub">Try again later.</p>
       </div>
     );
   }
@@ -49,7 +36,7 @@ export default async function AdminPage() {
     return (
       <div className="mx-auto max-w-xl px-6 py-16 md:px-14">
         <h1 className="text-[36px] leading-[0.96] font-medium tracking-[-0.035em] text-ink">VestPayouts admin</h1>
-        <p className="mt-3 mb-6 text-sub">Add payouts, import a CSV, or name a wallet. This page is not indexed.</p>
+        <p className="mt-3 mb-6 text-sub">Sign in to continue.</p>
         <LoginForm />
       </div>
     );

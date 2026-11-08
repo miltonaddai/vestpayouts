@@ -21,7 +21,7 @@ export default function DisclosurePage() {
         </p>
         <h2>What the commission does not buy</h2>
         <ul>
-          <li>Payout totals, leaderboards and individual pages are computed from public blockchain data and from payouts entered in admin. A referral relationship does not add, remove or resize a row.</li>
+          <li>Payout totals, leaderboards and individual pages are computed from public blockchain data and from manually reported payouts. A referral relationship does not add, remove or resize a row.</li>
           <li>Sample data is labelled as sample. It is not presented as a real payout.</li>
           <li>Reviews and guides describe rules that can cost you money, including tight drawdowns and the chance of losing the fee.</li>
         </ul>

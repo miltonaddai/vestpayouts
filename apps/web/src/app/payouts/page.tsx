@@ -4,7 +4,8 @@ import { Suspense } from "react";
 import { PayoutExplorer } from "@/components/payouts/payout-explorer";
 import { PayoutTable } from "@/components/payouts/payout-table";
 import { SampleDataBanner } from "@/components/payouts/sample-banner";
-import { Stat, StatGrid } from "@/components/payouts/stat-grid";
+import { RecordPayoutCard, StackedStat } from "@/components/payouts/record-payout";
+import { cn } from "@/lib/utils";
 import { ReferralPanel } from "@/components/referral/referral-cta";
 import { Breadcrumbs } from "@/components/seo/breadcrumbs";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -24,6 +25,7 @@ export const metadata = pageMetadata({
 
 export default async function PayoutsPage() {
   const [summary, initial] = await Promise.all([getSummary(), queryPayouts({ page: 1 })]);
+  const all = summary.windows.all;
   return (
     <>
       {summary.isSample && <SampleDataBanner />}
@@ -51,12 +53,15 @@ export default async function PayoutsPage() {
           .
         </p>
 
-        <StatGrid className="mt-8">
-          <Stat label="All-time total" value={formatUsd(summary.windows.all.amount)} highlight />
-          <Stat label="Payouts recorded" value={formatInt(summary.windows.all.count)} tone="green" />
-          <Stat label="Wallets paid" value={formatInt(summary.windows.all.wallets)} tone="orange" />
-          <Stat label="Paid last 7 days" value={formatUsd(summary.windows["7d"].amount)} />
-        </StatGrid>
+        <div className="mt-8 grid gap-4 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:gap-5" data-reveal-children>
+          {all.largest && <RecordPayoutCard payout={all.largest} average={all.count ? all.amount / all.count : 0} />}
+          <dl className={cn("flex flex-col border border-line bg-background", !all.largest && "lg:col-span-2")}>
+            <StackedStat label="All-time total" value={formatUsd(all.amount)} tone="signal" />
+            <StackedStat label="Payouts recorded" value={formatInt(all.count)} tone="green" />
+            <StackedStat label="Wallets paid" value={formatInt(all.wallets)} tone="orange" />
+            <StackedStat label="Paid last 7 days" value={formatUsd(summary.windows["7d"].amount)} />
+          </dl>
+        </div>
 
         <div className="mt-10">
           <Suspense fallback={<PayoutTable payouts={initial.rows} caption="Latest Vest payouts" />}>

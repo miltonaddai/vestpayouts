@@ -123,9 +123,9 @@
   --green: #047857;
   --green-bright: #34d399;
   --orange: #b45309;
-  --gold: #b7791f;
+  --gold: #9a7300;
   --silver: #6b7280;
-  --bronze: #b8621b;
+  --bronze: #a0522d;
   --magenta: #a21caf;
   --blue-soft: #eef1ff;
   --green-soft: #e6f7f1;
@@ -199,6 +199,13 @@
     @apply font-sans;
     scroll-behavior: smooth;
     overflow-x: clip;
+    /* Keep the scrollbar's space reserved so opening a dropdown (which locks
+       scrolling) doesn't widen the page and shift the layout sideways. */
+    scrollbar-gutter: stable;
+  }
+  /* The scroll lock pads body by the scrollbar width; the gutter already covers it. */
+  body[data-scroll-locked] {
+    margin-right: 0 !important;
   }
   body {
     @apply bg-background text-foreground font-sans;
@@ -362,10 +369,8 @@
     color: var(--color-sub);
     transition: background-color 180ms ease, color 180ms ease;
   }
-  .header-nav-link[aria-current="page"] {
-    color: var(--color-ink);
-  }
-  .header-nav-link:is(:hover, :focus-visible) {
+  /* The current page keeps the hover fill, so you can see where you are. */
+  .header-nav-link:is(:hover, :focus-visible, [aria-current="page"]) {
     background-color: var(--color-signal-strong);
     color: var(--color-signal-fg);
   }

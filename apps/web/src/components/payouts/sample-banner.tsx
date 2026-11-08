@@ -5,7 +5,7 @@ export function SampleDataBanner() {
         <p>
           <strong className="font-mono text-[12px] tracking-[0.04em] text-orange uppercase">Sample data.</strong>{" "}
           No real payouts have been ingested yet, so the figures below are illustrative placeholders, not real Vest
-          payouts. Run <code className="font-mono">yarn ingest</code> to load on-chain data.
+          payouts.
         </p>
       </div>
     </div>

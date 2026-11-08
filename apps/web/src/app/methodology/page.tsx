@@ -54,7 +54,7 @@ export default async function MethodologyPage() {
           </tbody>
         </table>
         <p>
-          The ingester (<code>yarn ingest</code>) walks new blocks, upserts on <code>(chain, tx hash, log index)</code> so reruns don&apos;t duplicate or overwrite a trader name, and stores its cursor in <code>ingest_state</code>. Free public RPCs only serve recent Base history. Set <code>BASE_RPC_URL</code> and <code>ARBITRUM_RPC_URL</code> to an archive endpoint for a full backfill.
+          New blocks are checked continuously. Each payout is stored once per transaction and event, so a payout is never counted twice, and a trader name attached to it is never overwritten.
         </p>
         {coverage.length > 0 && (
           <>
@@ -91,13 +91,10 @@ export default async function MethodologyPage() {
             <strong>Manual rows</strong> are payouts someone reported, with an optional link to a public post. They are badged &ldquo;Reported&rdquo; until a transaction hash matches an on-chain row, in which case we attach the name and the link to that row instead of keeping two.
           </li>
           <li>
-            <strong>Sample rows</strong> are fake placeholders. They are badged &ldquo;Sample&rdquo;, excluded from search engines, and the database hides them as soon as any real published payout exists. They exist so the site is usable before the first ingest.
+            <strong>Sample rows</strong> are fake placeholders. They are badged &ldquo;Sample&rdquo;, excluded from search engines, and the database hides them as soon as any real published payout exists. They exist so the site is usable before real data has loaded.
           </li>
         </ul>
-        <h2>How the site stays fast</h2>
-        <p>
-          Pages are statically generated and revalidated about once an hour. Totals, the daily chart and the leaderboard are computed in Postgres, not in the browser. After an ingest or an admin import, <code>POST /api/revalidate</code> with <code>REVALIDATE_SECRET</code> refreshes every page immediately.
-        </p>
+        <h2>Spot a mistake?</h2>
         <p>
           Questions about a specific number: start at the <Link href="/payouts">payout list</Link> and open the transaction. If the explorer disagrees with us, the explorer is right and we want to know.
         </p>

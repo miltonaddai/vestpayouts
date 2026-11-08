@@ -6,7 +6,7 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowIcon } from "@/components/ui/split-cta";
 import { Input } from "@/components/ui/input";
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { FilterSelect, type FilterOption } from "@/components/ui/filter-select";
 import { formatInt, formatUsd } from "@/lib/format";
 import type { PayoutPage } from "@/lib/payouts/types";
 import { PayoutTable } from "./payout-table";
@@ -20,7 +20,30 @@ interface Filters {
   page: number;
 }
 
-const DEFAULTS: Filters = { chain: "all", period: "all", min: "", sort: "latest", q: "", page: 1 };
+const CHAIN_OPTIONS: FilterOption[] = [
+  { value: "all", label: "All chains" },
+  { value: "base", label: "Base" },
+  { value: "arbitrum", label: "Arbitrum One" },
+];
+const PERIOD_OPTIONS: FilterOption[] = [
+  { value: "all", label: "All time" },
+  { value: "24h", label: "Last 24 hours" },
+  { value: "7d", label: "Last 7 days" },
+  { value: "30d", label: "Last 30 days" },
+];
+const MIN_OPTIONS: FilterOption[] = [
+  { value: "", label: "Any amount" },
+  { value: "100", label: "$100+" },
+  { value: "1000", label: "$1,000+" },
+  { value: "10000", label: "$10,000+" },
+  { value: "50000", label: "$50,000+" },
+];
+const SORT_OPTIONS: FilterOption[] = [
+  { value: "latest", label: "Latest first" },
+  { value: "largest", label: "Largest first" },
+];
+
+const DEFAULTS: Filters ={ chain: "all", period: "all", min: "", sort: "latest", q: "", page: 1 };
 
 function fromParams(sp: URLSearchParams): Filters {
   return {
@@ -92,40 +115,10 @@ export function PayoutExplorer({ initial, isSample }: { initial: PayoutPage; isS
         }}
         className="grid gap-3 border border-line bg-paper p-4 sm:grid-cols-2 lg:grid-cols-[repeat(4,minmax(0,1fr))_1.6fr]"
       >
-        <label className="grid gap-1.5 font-mono text-[12px] tracking-[0.04em] text-sub uppercase">
-          Chain
-          <NativeSelect className="w-full" value={filters.chain} onChange={(e) => update({ chain: e.target.value })}>
-            <NativeSelectOption value="all">All chains</NativeSelectOption>
-            <NativeSelectOption value="base">Base</NativeSelectOption>
-            <NativeSelectOption value="arbitrum">Arbitrum One</NativeSelectOption>
-          </NativeSelect>
-        </label>
-        <label className="grid gap-1.5 font-mono text-[12px] tracking-[0.04em] text-sub uppercase">
-          Period
-          <NativeSelect className="w-full" value={filters.period} onChange={(e) => update({ period: e.target.value })}>
-            <NativeSelectOption value="all">All time</NativeSelectOption>
-            <NativeSelectOption value="24h">Last 24 hours</NativeSelectOption>
-            <NativeSelectOption value="7d">Last 7 days</NativeSelectOption>
-            <NativeSelectOption value="30d">Last 30 days</NativeSelectOption>
-          </NativeSelect>
-        </label>
-        <label className="grid gap-1.5 font-mono text-[12px] tracking-[0.04em] text-sub uppercase">
-          Minimum amount
-          <NativeSelect className="w-full" value={filters.min} onChange={(e) => update({ min: e.target.value })}>
-            <NativeSelectOption value="">Any amount</NativeSelectOption>
-            <NativeSelectOption value="100">$100+</NativeSelectOption>
-            <NativeSelectOption value="1000">$1,000+</NativeSelectOption>
-            <NativeSelectOption value="10000">$10,000+</NativeSelectOption>
-            <NativeSelectOption value="50000">$50,000+</NativeSelectOption>
-          </NativeSelect>
-        </label>
-        <label className="grid gap-1.5 font-mono text-[12px] tracking-[0.04em] text-sub uppercase">
-          Sort
-          <NativeSelect className="w-full" value={filters.sort} onChange={(e) => update({ sort: e.target.value })}>
-            <NativeSelectOption value="latest">Latest first</NativeSelectOption>
-            <NativeSelectOption value="largest">Largest first</NativeSelectOption>
-          </NativeSelect>
-        </label>
+        <FilterSelect label="Chain" value={filters.chain} options={CHAIN_OPTIONS} onChange={(chain) => update({ chain })} />
+        <FilterSelect label="Period" value={filters.period} options={PERIOD_OPTIONS} onChange={(period) => update({ period })} />
+        <FilterSelect label="Minimum amount" value={filters.min} options={MIN_OPTIONS} onChange={(min) => update({ min })} />
+        <FilterSelect label="Sort" value={filters.sort} options={SORT_OPTIONS} onChange={(sort) => update({ sort })} />
         <label className="grid gap-1.5 font-mono text-[12px] tracking-[0.04em] text-sub uppercase">
           Wallet, tx hash or trader
           <span className="flex gap-2">
