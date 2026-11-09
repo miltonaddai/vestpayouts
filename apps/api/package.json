@@ -10,7 +10,8 @@
     "import": "tsx src/cli.ts import",
     "seed-sql": "tsx src/cli.ts seed-sql",
     "typecheck": "tsc --noEmit",
-    "import-local": "tsx src/cli.ts import-local"
+    "import-local": "tsx src/cli.ts import-local",
+    "social": "tsx src/cli.ts social"
   },
   "dependencies": {
     "@hono/node-server": "^1.19.6",

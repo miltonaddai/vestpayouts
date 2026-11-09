@@ -203,8 +203,16 @@
        scrolling) doesn't widen the page and shift the layout sideways. */
     scrollbar-gutter: stable;
   }
-  /* The scroll lock pads body by the scrollbar width; the gutter already covers it. */
-  body[data-scroll-locked] {
+  /* Radix's scroll lock (dropdowns, sheets) sets body{overflow:hidden}. Because html
+     clips overflow-x, that would turn body into its own scroll container and the
+     sticky header would scroll out of view. Lock html instead and leave body alone.
+     The lock also pads body by the scrollbar width; the gutter already covers it. */
+  html:has(> body[data-scroll-locked]) {
+    overflow: hidden;
+  }
+  html body[data-scroll-locked] {
+    overflow: visible !important;
+    overflow-x: clip !important;
     margin-right: 0 !important;
   }
   body {

@@ -6,6 +6,8 @@ import { importManualPayouts, validateCsv } from "./import-payouts";
 import { runIngest } from "./ingest";
 import { importLocalStoreToSupabase } from "./import-local-store";
 import { writeSeedSql } from "./seed-sql";
+import { runSocial } from "./social/poster";
+import { xCredentials, xWhoAmI } from "./social/x-client";
 
 const [command, ...rest] = process.argv.slice(2);
 
@@ -48,12 +50,38 @@ async function importLocal() {
   await importLocalStoreToSupabase();
 }
 
+/**
+ * yarn social --preview           print what would be posted now (reads data, writes nothing)
+ * yarn social --preview --at <ISO> same, as if it were that time
+ * yarn social --whoami            print the @handle the X keys post as
+ * yarn social                     one real pass (respects X_POSTING_DRY_RUN)
+ */
+async function social() {
+  if (hasFlag(rest, "--whoami")) {
+    const creds = xCredentials();
+    if (!creds) {
+      console.error("Missing one or more of X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN, X_ACCESS_SECRET.");
+      process.exit(1);
+    }
+    const me = await xWhoAmI(creds);
+    console.log(`These keys post as @${me.username} (${me.name})`);
+    return;
+  }
+  const at = argValue(rest, "--at");
+  const result = await runSocial({ preview: hasFlag(rest, "--preview"), now: at ? Date.parse(at) : undefined });
+  for (const p of result.previews) console.log(`
+${p}
+${"-".repeat(40)}`);
+  if (!hasFlag(rest, "--preview")) console.log(`posted=${result.posted} failed=${result.failed} skipped=${result.skipped}`);
+}
+
 async function main() {
   if (command === "ingest") return ingest();
   if (command === "import") return importCsv();
   if (command === "import-local") return importLocal();
   if (command === "seed-sql") return writeSeedSql();
-  console.error("usage: tsx src/cli.ts <ingest|import|import-local|seed-sql>");
+  if (command === "social") return social();
+  console.error("usage: tsx src/cli.ts <ingest|import|import-local|seed-sql|social>");
   process.exit(1);
 }
 

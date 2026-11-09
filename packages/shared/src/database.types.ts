@@ -75,6 +75,33 @@ export interface Database {
         Relationships: [];
       };
 
+      social_posts: {
+        Row: {
+          id: number;
+          network: string;
+          kind: "roundup" | "big";
+          ref: string;
+          status: "pending" | "posted" | "skipped" | "failed" | "dry_run";
+          post_id: string | null;
+          body: string;
+          error: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          network?: string;
+          kind: "roundup" | "big";
+          ref: string;
+          status: "pending" | "posted" | "skipped" | "failed" | "dry_run";
+          post_id?: string | null;
+          body?: string;
+          error?: string | null;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["social_posts"]["Insert"]>;
+        Relationships: [];
+      };
+
       payout_stats: {
         Row: { id: number; summary: Json; refreshed_at: string };
         Insert: { id?: number; summary?: Json; refreshed_at?: string };

@@ -7,6 +7,8 @@ import { serviceClient, triggerRevalidate } from "./env";
 import { importManualPayouts, validateCsv } from "./import-payouts";
 import { runIngest } from "./ingest";
 import { refreshPayoutStats } from "./refresh-stats";
+import { runSocial, socialConfig } from "./social/poster";
+import { xCredentials, xWhoAmI } from "./social/x-client";
 
 const app = new Hono();
 let ingesting = false;
@@ -147,6 +149,33 @@ if (expr) {
         });
     });
     console.log(`ingest scheduled: ${expr}`);
+  }
+}
+
+// Automated X posts: 30-minute roundups and big-payout alerts. Off unless X_POSTING_ENABLED=true.
+let posting = false;
+if (socialConfig().enabled) {
+  const socialExpr = process.env.X_POSTING_CRON?.trim() || "*/5 * * * *";
+  if (!cron.validate(socialExpr)) console.error(`X_POSTING_CRON is not a valid cron expression: ${socialExpr}`);
+  else {
+    cron.schedule(socialExpr, () => {
+      if (posting) return;
+      posting = true;
+      runSocial()
+        .then((r) => (r.posted || r.failed) && console.log(`social run: posted=${r.posted} failed=${r.failed} skipped=${r.skipped}`))
+        .catch((err) => console.error("social run failed:", (err as Error).message))
+        .finally(() => {
+          posting = false;
+        });
+    });
+    console.log(`x posting scheduled: ${socialExpr}${socialConfig().dryRun ? " (dry run)" : ""}`);
+    // Log which account the keys post as, so a wrong token is obvious before the first post.
+    const creds = xCredentials();
+    if (creds) {
+      xWhoAmI(creds)
+        .then((me) => console.log(`x posting as @${me.username}`))
+        .catch((err) => console.error(`x credentials check failed: ${(err as Error).message}`));
+    } else console.error("x posting enabled but X_* credentials are missing");
   }
 }
 

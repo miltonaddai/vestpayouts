@@ -1,0 +1,267 @@
+<!doctype html>
+<!--
+  Pixel-art "heat tier" cards attached to big-payout posts on X.
+  Open with ?tier=1..10. render-fire-art.mjs screenshots each tier to
+  apps/api/assets/fire/tier-NN.png. Everything is seeded, so output is stable.
+
+  Fire is the classic "Doom fire" cellular automaton: seed the bottom row with
+  heat, let it rise and cool at random. Higher tiers cool slower (taller
+  flames), seed wider and hotter, and switch palette (red → white-hot →
+  plasma → blue).
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=block" rel="stylesheet" />
+<style>
+  html, body { margin: 0; background: #0b0c0f; }
+  canvas { display: block; image-rendering: pixelated; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1080"></canvas>
+<script>
+(async () => {
+await document.fonts.load("40px 'Press Start 2P'");
+const W = 1080, H = 1080, CELL = 12, GW = W / CELL, GH = Math.ceil(H / CELL);
+const tier = Math.min(10, Math.max(1, Number(new URLSearchParams(location.search).get("tier")) || 1));
+const t = tier - 1;
+
+const TIERS = [
+  { name: "SPARK",     band: "$10K-$15K",   joke: "IS IT WARM IN HERE?" },
+  { name: "EMBER",     band: "$15K-$20K",   joke: "GETTING TOASTY" },
+  { name: "FLAME",     band: "$20K-$30K",   joke: "SOMEONE OPEN A WINDOW" },
+  { name: "BLAZE",     band: "$30K-$40K",   joke: "TOO HOT TO HODL" },
+  { name: "BONFIRE",   band: "$40K-$50K",   joke: "BRING THE MARSHMALLOWS" },
+  { name: "WILDFIRE",  band: "$50K-$75K",   joke: "SPREADING FAST" },
+  { name: "FIRESTORM", band: "$75K-$100K",  joke: "FIRE DEPT. GAVE UP" },
+  { name: "INFERNO",   band: "$100K-$150K", joke: "WALLET IS MELTING" },
+  { name: "PLASMA",    band: "$150K-$250K", joke: "PHYSICS HAS LEFT THE CHAT" },
+  { name: "SUPERNOVA", band: "$250K+",      joke: "SOMEBODY CALL NASA" },
+];
+const T = TIERS[t];
+
+// Seeded RNG (mulberry32) so every render of a tier is identical.
+let seed = 1337 + tier * 7919;
+const rnd = () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed); x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+// Palettes, coolest to hottest. Index 0 is "no fire".
+// Tiers 1-3 burn blue, 4-6 yellow, 7-10 red (the brand's "hotter = redder" scale).
+const BLUE   = ["#0a1a5c", "#1438a8", "#1f6fff", "#3fb2ff", "#7fe3ff", "#c9f6ff", "#ffffff", "#ffffff"];
+const YELLOW = ["#5c3a0a", "#8f5e12", "#c98a1a", "#f2b632", "#ffd04a", "#ffe680", "#fff6c2", "#ffffff"];
+const RED    = ["#3a0505", "#6b0a0a", "#9e1010", "#d01c14", "#ff3b1f", "#ff6a3d", "#ffa07a", "#ffe0d0"];
+const PAL = tier <= 3 ? BLUE : tier <= 6 ? YELLOW : RED;
+const LEVELS = PAL.length;                  // 8 visible heat bands
+const MAX = 48;                             // heat units
+const hotLevel = [6, 7, 8, 6, 7, 8, 7, 8, 8, 8][t];       // hottest band this tier reaches
+const heightFrac = [0.36, 0.42, 0.48, 0.54, 0.6, 0.65, 0.71, 0.77, 0.83, 0.88][t];
+const spanFrac = [0.52, 0.58, 0.64, 0.7, 0.78, 0.86, 0.94, 1, 1, 1][t];
+
+const ctx = document.getElementById("c").getContext("2d");
+ctx.imageSmoothingEnabled = false;
+const px = (x, y, w, h, c) => { ctx.fillStyle = c; ctx.fillRect(x, y, w, h); };
+
+/* ---------- Background: night, grid paper, heat glow ---------- */
+px(0, 0, W, H, "#0b0c0f");
+ctx.strokeStyle = "rgba(255,255,255,0.045)";
+for (let x = 0; x <= W; x += 30) { ctx.beginPath(); ctx.moveTo(x + 0.5, 0); ctx.lineTo(x + 0.5, H); ctx.stroke(); }
+for (let y = 0; y <= H; y += 30) { ctx.beginPath(); ctx.moveTo(0, y + 0.5); ctx.lineTo(W, y + 0.5); ctx.stroke(); }
+const glow = ctx.createRadialGradient(W / 2, H * 0.62, 20, W / 2, H * 0.62, 260 + tier * 55);
+glow.addColorStop(0, PAL[Math.min(LEVELS - 1, 3 + Math.floor(t / 3))] + Math.round(40 + tier * 12).toString(16).padStart(2, "0"));
+glow.addColorStop(1, "#0b0c0f00");
+px(0, 0, W, H, glow);
+
+/* ---------- Doom fire ---------- */
+const heat = new Float32Array(GW * GH);
+const flameRows = GH * heightFrac;
+const meanCool = MAX / flameRows;
+const span = Math.round(GW * spanFrac), left = Math.round((GW - span) / 2);
+const seedHeat = (hotLevel / LEVELS) * MAX;
+function seedRow() {
+  for (let x = 0; x < GW; x++) {
+    const inside = x >= left && x < left + span;
+    // Ragged edges and gaps so the base isn't a flat bar.
+    const edge = Math.min(x - left, left + span - 1 - x);
+    const on = inside && (edge > 3 || rnd() < 0.5) && rnd() < 0.93;
+    heat[(GH - 1) * GW + x] = on ? seedHeat : 0;
+  }
+}
+function step() {
+  for (let y = 1; y < GH; y++) {
+    for (let x = 0; x < GW; x++) {
+      const below = heat[y * GW + x];
+      const r = (rnd() * 3) | 0;
+      const dx = Math.min(GW - 1, Math.max(0, x - r + 1));
+      const cool = Math.floor(rnd() * (2 * meanCool) + 0.5);
+      heat[(y - 1) * GW + dx] = Math.max(0, below - cool);
+    }
+  }
+}
+for (let i = 0; i < GH * 4; i++) { seedRow(); step(); }
+
+{
+  const src = heat.slice();
+  for (let y = 0; y < GH; y++) for (let x = 0; x < GW; x++) {
+    let sum = 0, n = 0;
+    for (let dy = 0; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+      const xx = x + dx, yy = y + dy;
+      if (xx < 0 || xx >= GW || yy >= GH) continue;
+      const w = dx === 0 && dy === 0 ? 2 : 1;
+      sum += src[yy * GW + xx] * w; n += w;
+    }
+    heat[y * GW + x] = sum / n;
+  }
+}
+const level = (v) => Math.min(LEVELS, Math.ceil((v / MAX) * LEVELS));
+function drawFire(fromRow = 0, alpha = 1) {
+  ctx.globalAlpha = alpha;
+  for (let y = fromRow; y < GH; y++) for (let x = 0; x < GW; x++) {
+    const l = level(heat[y * GW + x]);
+    if (l > 0) px(x * CELL, y * CELL, CELL, CELL, PAL[l - 1]);
+  }
+  ctx.globalAlpha = 1;
+}
+drawFire();
+
+/* ---------- Embers ---------- */
+const flameTop = H - flameRows * CELL;
+for (let i = 0; i < 10 + tier * 14; i++) {
+  const x = Math.floor(rnd() * GW) * CELL;
+  const y = Math.floor((Math.max(40, flameTop - 120) + rnd() * (H - Math.max(40, flameTop - 120))) / CELL) * CELL;
+  const big = rnd() < 0.18 + tier * 0.02;
+  px(x, y, big ? CELL : CELL / 2, big ? CELL : CELL / 2, PAL[Math.min(LEVELS - 1, hotLevel - 1 - ((rnd() * 2) | 0))]);
+}
+
+/* ---------- Mascot critter (12x12, drawn at 40px per pixel) ---------- */
+const S = 40, CW = 12 * S, k = S / 22; // k scales the hand-placed props
+const cx = Math.round((W - CW) / 2), cy = H - CW - 124;
+const BODY = [
+  ["#c8753a", "#8f4a1f"], ["#c8753a", "#8f4a1f"], ["#d0844a", "#9a5426"],   // bronze
+  ["#c9ced6", "#8a919c"], ["#d5d9e0", "#939aa5"], ["#e1e4ea", "#9ea5b0"],   // silver
+  ["#f2b632", "#b07a12"], ["#f6c445", "#b8841a"], ["#ffd25e", "#c48f22"],   // gold
+  ["#9fe8ff", "#4aa7cf"],                                                   // diamond
+][t];
+const INK = "#15161a", WHITE = "#ffffff";
+const sprite = [
+  "....BBBB....",
+  "..BBBBBBBB..",
+  ".BBBBBBBBBB.",
+  "BBBBBBBBBBBB",
+  "BBBBBBBBBBBB",
+  "BBBBBBBBBBBB",
+  "BBBBBBBBBBBB",
+  "BBBBBBBBBBBB",
+  "bBBBBBBBBBBb",
+  ".bBBBBBBBBb.",
+  "..bb....bb..",
+  "..bb....bb..",
+];
+const cell = (gx, gy, c) => px(cx + gx * S, cy + gy * S, S, S, c);
+const O = 9; // dark pixel outline so the sprite reads on any fire
+sprite.forEach((row, gy) => [...row].forEach((ch, gx) => ch !== "." && px(cx + gx * S - O, cy + gy * S - O, S + 2 * O, S + 2 * O, INK)));
+sprite.forEach((row, gy) => [...row].forEach((ch, gx) => ch !== "." && cell(gx, gy, ch === "B" ? BODY[0] : BODY[1])));
+cell(2, 3, WHITE + "aa");                                    // shine
+
+// Face. Shades from tier 4; laser eyes from tier 9.
+if (tier >= 4) {
+  for (let gx = 2; gx <= 9; gx++) cell(gx, 5, INK);
+  [2, 3, 4, 7, 8, 9].forEach((gx) => cell(gx, 6, INK));
+  cell(3, 5, WHITE); cell(8, 5, WHITE);
+} else {
+  const eyes = tier === 1 ? [[4, 5], [7, 5], [4, 6], [7, 6]] : [[2, 6], [3, 5], [4, 6], [7, 6], [8, 5], [9, 6]]; // dots, then ^ ^
+  eyes.forEach(([gx, gy]) => cell(gx, gy, INK));
+}
+if (tier >= 9) {
+  // Laser eyes: beams out of the shades.
+  const y = cy + 5 * S;
+  const beam = (x, w) => {
+    px(x, y - 6, w, S + 12, INK);          // outline
+    px(x, y - 2, w, S + 4, "#ff2b2b");     // beam
+    px(x, y + 6, w, S - 12, "#ffd0d0");    // hot core
+  };
+  beam(0, cx + 2 * S);
+  beam(cx + 10 * S, W - (cx + 10 * S));
+  // Eyes glow red behind the shades.
+  cell(3, 6, "#ff2b2b"); cell(8, 6, "#ff2b2b");
+}
+// Mouth: small, then a grin, then a big open "HA".
+if (tier <= 2) { cell(5, 8, INK); cell(6, 8, INK); }
+else if (tier <= 5) { cell(4, 8, INK); [5, 6].forEach((gx) => cell(gx, 9, INK)); cell(7, 8, INK); }
+else { [4, 5, 6, 7].forEach((gx) => cell(gx, 8, INK)); cell(5, 9, "#ff6b6b"); cell(6, 9, "#ff6b6b"); cell(4, 9, INK); cell(7, 9, INK); }
+// Blush.
+if (tier >= 2 && tier <= 3) { cell(2, 7, "#ff6b6b99"); cell(9, 7, "#ff6b6b99"); }
+
+// Sweat drops: more the hotter it gets, until it stops caring (shades).
+if (tier <= 3) {
+  const drops = [[11.2, 2.4], [-0.9, 3.2], [11.6, 5.4]].slice(0, tier);
+  drops.forEach(([gx, gy]) => {
+    px(cx + gx * S + 6 * k, cy + gy * S, 10 * k, 10 * k, "#7fd3ff");
+    px(cx + gx * S + 3 * k, cy + gy * S + 10 * k, 16 * k, 14 * k, "#7fd3ff");
+    px(cx + gx * S + 6 * k, cy + gy * S + 12 * k, 5 * k, 5 * k, WHITE);
+  });
+}
+
+// Marshmallow on a stick (tier 5), toasted.
+if (tier === 5) {
+  ctx.save();
+  for (let i = 0; i < 9; i++) px(cx + (11 + i) * S * 0.5 + 120 * k, cy + 7 * S - i * 11 * k, 12 * k, 12 * k, "#7a4a22");
+  px(cx + 12 * S + 100 * k, cy + 2 * S + 6 * k, 34 * k, 30 * k, "#fff2dc");
+  px(cx + 12 * S + 100 * k, cy + 2 * S + 24 * k, 34 * k, 12 * k, "#c78a3a");
+  ctx.restore();
+}
+
+// Gold chain with a $ medallion (tier 7+).
+if (tier >= 7) {
+  for (let gx = 2; gx <= 9; gx++) px(cx + gx * S + 3 * k, cy + 10 * S - 18 * k + (gx === 2 || gx === 9 ? -10 * k : 0), S - 6 * k, 8 * k, "#ffd25e");
+  px(cx + 5 * S, cy + 10 * S - 12 * k, 2 * S, 2 * S - 8 * k, "#ffd25e");
+  ctx.fillStyle = INK; ctx.font = Math.round(20 * k) + "px 'Press Start 2P'"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  ctx.fillText("$", cx + 6 * S + 1, cy + 10 * S + 6 * k);
+}
+
+// Crown (tier 8+).
+if (tier >= 8) {
+  const gold = "#ffd25e", gem = tier === 10 ? "#7fe3ff" : "#ff3d7f";
+  // Sits on the head: the bottom row overlaps the top of the sprite.
+  const crown = ["...G.GG.G...", "...GGGGGG...", "...GGRRGG..."];
+  const top = (gy) => cy + (gy - 2) * S - 8 * k;
+  crown.forEach((row, gy) => [...row].forEach((ch, gx) => ch !== "." && px(cx + gx * S - O, top(gy) - O, S + 2 * O, S + 2 * O, INK)));
+  crown.forEach((row, gy) => [...row].forEach((ch, gx) => ch !== "." && px(cx + gx * S, top(gy), S, S, ch === "R" ? gem : gold)));
+}
+
+// Front flames lick over the feet from tier 5.
+if (tier >= 5) drawFire(GH - 12, 0.92);
+
+/* ---------- Type (kept minimal: the post text carries the details) ---------- */
+function plate(x, y, w, h) {
+  px(x + 8, y + 8, w, h, "#00000099");
+  px(x, y, w, h, "#0b0c0fe6");
+  ctx.strokeStyle = "#ffffff22"; ctx.lineWidth = 3; ctx.strokeRect(x + 1.5, y + 1.5, w - 3, h - 3);
+}
+function text(s, x, y, size, color, align = "left") {
+  ctx.font = `${size}px 'Press Start 2P'`; ctx.textAlign = align; ctx.textBaseline = "top";
+  ctx.fillStyle = "#000"; ctx.fillText(s, x + size / 6, y + size / 6);
+  ctx.fillStyle = color; ctx.fillText(s, x, y);
+}
+
+// Top centre: heat meter, sized to read on a phone.
+const BLOCK = 42, GAP = 10, meterW = 10 * BLOCK + 9 * GAP, plateW = meterW + 64;
+const mx = (W - plateW) / 2;
+plate(mx, 56, plateW, 150);
+text(`HEAT ${String(tier).padStart(2, "0")}/10`, W / 2, 84, 26, "#ffffff", "center");
+// Same scale as the flames: blue, then yellow, then deep red.
+const METER = ["#3fb2ff", "#5fc4ff", "#8fd8ff", "#ffe680", "#ffd04a", "#ffb53a", "#ff7a2e", "#f2481b", "#d6231a", "#a80f0f"];
+for (let i = 0; i < 10; i++) {
+  const c = i < tier ? METER[i] : "#2a2d33";
+  px(mx + 32 + i * (BLOCK + GAP), 134, BLOCK, 46, c);
+}
+
+// Bottom centre: quiet site credit.
+plate((W - 340) / 2, H - 48 - 56, 340, 56);
+text("vestpayouts.com", W / 2, H - 48 - 37, 18, "#c9ced6", "center");
+
+window.__done = true;
+})();
+</script>
+</body>
+</html>
