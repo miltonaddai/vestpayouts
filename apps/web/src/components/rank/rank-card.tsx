@@ -6,9 +6,13 @@ import type { RankResponse } from "@/app/api/rank/route";
 import { Critter } from "@/components/payouts/leaderboard-podium";
 import { formatDate, formatInt, formatUsd, shortAddress } from "@/lib/format";
 
-/** Design size. The card is laid out at this size and scaled to fit, so the downloaded PNG never depends on screen width. */
-export const CARD_W = 720;
-export const CARD_H = 450;
+/**
+ * Design size: square, so it fills a phone feed on X, Instagram and the rest.
+ * The card is laid out at this size and scaled to fit, so the downloaded PNG
+ * (2x, 1200x1200) never depends on screen width.
+ */
+export const CARD_W = 600;
+export const CARD_H = 600;
 
 export interface Tier {
   color: string;
@@ -70,7 +74,10 @@ export const RankCard = forwardRef<HTMLDivElement, { data: RankResponse; name: s
   const rankText = data.rank === null ? "500+" : formatInt(shown ?? data.rank);
   // Size by the widest number the countdown passes through, so the text doesn't jump or hit the critter.
   const widest = data.rank === null ? 4 : formatInt(from).length;
-  const rankSize = widest <= 3 ? 112 : widest <= 5 ? 96 : 80;
+  const rankSize = widest <= 3 ? 112 : widest <= 5 ? 88 : 72;
+  // Share of paid wallets this one is ahead of, for the segmented bar.
+  const ahead = data.rank === null ? null : Math.max(0, Math.floor(((data.wallets - data.rank) / Math.max(data.wallets, 1)) * 100));
+  const lit = ahead === null ? 0 : Math.max(1, Math.round(ahead / 5));
 
   return (
     <div
@@ -84,7 +91,7 @@ export const RankCard = forwardRef<HTMLDivElement, { data: RankResponse; name: s
         className="absolute inset-0"
         style={{
           backgroundImage: [
-            "radial-gradient(circle at 78% 40%, color-mix(in oklab, var(--medal) 28%, transparent), transparent 52%)",
+            "radial-gradient(circle at 76% 30%, color-mix(in oklab, var(--medal) 30%, transparent), transparent 48%)",
             "linear-gradient(to right, color-mix(in oklab, var(--line) 65%, transparent) 1px, transparent 1px)",
             "linear-gradient(to bottom, color-mix(in oklab, var(--line) 65%, transparent) 1px, transparent 1px)",
           ].join(", "),
@@ -102,7 +109,7 @@ export const RankCard = forwardRef<HTMLDivElement, { data: RankResponse; name: s
       </div>
 
       {/* Rank */}
-      <div className="absolute top-[74px] left-8">
+      <div className="absolute top-[84px] left-8">
         <p
           className="tabular font-heading leading-[0.9] font-medium tracking-[-0.05em] whitespace-nowrap text-(--medal)"
           style={{ fontSize: rankSize }}
@@ -125,10 +132,10 @@ export const RankCard = forwardRef<HTMLDivElement, { data: RankResponse; name: s
       </div>
 
       {/* Identity */}
-      <div className="rank-rise absolute top-[262px] left-8 max-w-[400px]" style={{ "--d": 2 } as CSSProperties}>
-        <p className={`truncate text-[28px] leading-tight font-medium tracking-[-0.02em] text-ink ${custom ? "" : "font-mono"}`}>{title}</p>
+      <div className="rank-rise absolute top-[290px] right-8 left-8" style={{ "--d": 2 } as CSSProperties}>
+        <p className={`truncate text-[34px] leading-tight font-medium tracking-[-0.02em] text-ink ${custom ? "" : "font-mono"}`}>{title}</p>
         {(at || custom) && (
-          <p className="mt-1 flex items-center gap-3 font-mono text-[14px] text-sub">
+          <p className="mt-1.5 flex items-center gap-3 font-mono text-[15px] text-sub">
             {at && <span className="text-ink">@{at}</span>}
             {custom && <span>{shortAddress(data.wallet, 4)}</span>}
           </p>
@@ -136,28 +143,42 @@ export const RankCard = forwardRef<HTMLDivElement, { data: RankResponse; name: s
       </div>
 
       {/* Critter */}
-      <div className="absolute top-[78px] right-[56px] size-[210px]">
+      <div className="absolute top-[64px] right-7 size-[220px]">
         <div className="rank-pop size-full">
           <Critter seed={data.wallet} crowned={data.rank === 1} className="size-full" />
         </div>
       </div>
 
+      {/* Where this wallet stands: 20 segments, 5% each. */}
+      {ahead !== null && (
+        <div className="rank-rise absolute top-[392px] right-8 left-8" style={{ "--d": 3 } as CSSProperties}>
+          <p className="font-mono text-[12px] tracking-[0.1em] text-sub uppercase">
+            Ahead of <span className="text-(--medal)">{ahead}%</span> of paid wallets
+          </p>
+          <div className="mt-2.5 flex gap-1" aria-hidden="true">
+            {Array.from({ length: 20 }, (_, i) => (
+              <span key={i} className={`h-4 flex-1 ${i < lit ? "bg-(--medal)" : "bg-line"}`} />
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Stats */}
-      <dl className="absolute right-8 bottom-9 left-8 grid grid-cols-3 border-t border-line pt-4">
+      <dl className="absolute right-8 bottom-14 left-8 grid grid-cols-3 gap-x-4 border-t border-line pt-5">
         {[
           ["Total received", formatUsd(data.total)],
           ["Payouts", formatInt(data.count)],
           ["Largest payout", formatUsd(data.largest)],
         ].map(([label, value], i) => (
-          <div key={label} className="rank-rise" style={{ "--d": 3 + i } as CSSProperties}>
+          <div key={label} className="rank-rise" style={{ "--d": 4 + i } as CSSProperties}>
             <dt className="font-mono text-[11px] tracking-[0.1em] text-sub uppercase">{label}</dt>
-            <dd className="tabular mt-1.5 font-heading text-[26px] leading-none font-medium tracking-[-0.03em] text-ink">{value}</dd>
+            <dd className="tabular mt-2 font-heading text-[26px] leading-none font-medium tracking-[-0.03em] text-ink">{value}</dd>
           </div>
         ))}
       </dl>
 
       {/* Footer: quiet site credit above the medal bar. */}
-      <p className="absolute right-8 bottom-3 font-mono text-[10px] tracking-[0.12em] text-sub opacity-70">vestpayouts.com</p>
+      <p className="absolute right-8 bottom-4 font-mono text-[11px] tracking-[0.12em] text-sub opacity-70">vestpayouts.com</p>
       <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1 bg-(--medal)" />
 
       {/* One-off effects, left out of the downloaded image. */}
@@ -176,8 +197,8 @@ export const RankCard = forwardRef<HTMLDivElement, { data: RankResponse; name: s
             className="rank-confetti pointer-events-none absolute"
             style={
               {
-                top: 180,
-                right: 160,
+                top: 170,
+                right: 130,
                 width: c.size,
                 height: c.size,
                 background: i % 3 === 0 ? "var(--ink)" : "var(--medal)",

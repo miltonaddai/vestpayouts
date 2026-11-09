@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { ReferralPanel } from "@/components/referral/referral-cta";
 import { Breadcrumbs } from "@/components/seo/breadcrumbs";
 import { JsonLd } from "@/components/seo/json-ld";
-import { formatDate, formatInt, formatUsd } from "@/lib/format";
+import { formatInt, formatUsd } from "@/lib/format";
 import { getSummary, queryPayouts } from "@/lib/payouts/repository";
 import { datasetLd, pageMetadata } from "@/lib/seo";
 
@@ -44,9 +44,7 @@ export default async function PayoutsPage() {
           Every <VestHeroHeading>Vest</VestHeroHeading> payout, with proof
         </h1>
         <p className="mt-4 max-w-3xl text-[16px] leading-[1.6] text-sub">
-          This is the full list of Vest payouts VestPayouts has recorded
-          {summary.firstPaidAt ? ` since ${formatDate(summary.firstPaidAt)}` : ""}. On-chain payouts link to their
-          transaction, so you can confirm each one on a block explorer. New payouts are added automatically.{" "}
+          Each payout links to its on-chain transaction.{" "}
           <Link href="/methodology" className="text-ink underline decoration-line underline-offset-4 hover:decoration-signal">
             How we collect this data
           </Link>

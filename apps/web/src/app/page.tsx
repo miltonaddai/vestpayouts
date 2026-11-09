@@ -72,13 +72,8 @@ export default async function HomePage() {
                 on-chain, with proof
               </span>
             </h1>
-            <div className="border-l border-line pl-6">
-              <div className="meta">Abstract</div>
-              <p className="mt-3 text-[15px] leading-[1.6] text-ink">
-                Every USDC payout Vest sends to traders, read straight from its
-                public payout contracts. Real amounts, real wallets, real transaction hashes. No screenshots required.
-              </p>
-              <div className="mt-6 flex flex-col items-stretch gap-3">
+            <div className="border-l border-line pl-6 lg:self-end">
+              <div className="flex flex-col items-stretch gap-3">
                 <ReferralButton placement="hero" label="Get funded on Vest" />
                 <ArrowLink href="/payouts">Browse payout proof</ArrowLink>
               </div>

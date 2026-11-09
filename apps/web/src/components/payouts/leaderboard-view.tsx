@@ -69,9 +69,8 @@ export async function LeaderboardView({ period }: { period: Period }) {
           <VestHeroHeading>Vest payout leaderboard</VestHeroHeading>
         </h1>
         <p className="mt-4 max-w-2xl text-[16px] leading-[1.6] text-sub">
-          Traders ranked by USDC they received from Vest{" "}
-          {period === "all" ? "since tracking began" : `in the ${PERIOD_LABEL[period].toLowerCase()}`}.
-          Wallets are public addresses from payout transactions. Names appear only when a trader has been identified.
+          Traders ranked by USDC received from Vest
+          {period === "all" ? "" : ` in the ${PERIOD_LABEL[period].toLowerCase()}`}.
         </p>
         <p className="mt-3 max-w-2xl text-[15px] text-sub">
           <span className="tabular font-medium text-ink">{formatUsd(window.amount)}</span> paid across{" "}

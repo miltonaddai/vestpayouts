@@ -1,9 +1,12 @@
-import Link from "next/link";
 import { Suspense } from "react";
 import { VestHeroHeading } from "@/components/brand/vest-hero-icon";
+import { RankExtras } from "@/components/rank/rank-extras";
 import { RankLookup } from "@/components/rank/rank-lookup";
 import { Breadcrumbs } from "@/components/seo/breadcrumbs";
+import { getLeaderboard, getSummary } from "@/lib/payouts/repository";
 import { pageMetadata } from "@/lib/seo";
+
+export const revalidate = 3600;
 
 export const metadata = pageMetadata({
   title: "See Your Rank — Vest Payout Leaderboard Wallet Lookup",
@@ -13,7 +16,9 @@ export const metadata = pageMetadata({
   keywords: ["Vest payout rank", "Vest leaderboard wallet lookup", "Vest payout card"],
 });
 
-export default function RankPage() {
+export default async function RankPage() {
+  const [board, summary] = await Promise.all([getLeaderboard("all", 500), getSummary()]);
+  const extras = <RankExtras board={board} wallets={summary.windows.all.wallets} />;
   return (
     <div className="px-6 pt-8 pb-16 md:px-14">
       <Breadcrumbs items={[{ name: "See your rank", path: "/rank" }]} />
@@ -22,15 +27,10 @@ export default function RankPage() {
         Where does your <VestHeroHeading>Vest</VestHeroHeading> wallet rank?
       </h1>
       <p className="mt-4 mb-8 max-w-2xl text-[16px] leading-[1.6] text-sub">
-        Paste the wallet that receives your Vest payouts to see its all-time rank by total USDC received, out of every wallet Vest has paid. Add a
-        name and handle, then download your card. Ranks use the same data as the{" "}
-        <Link href="/leaderboard" className="text-ink underline decoration-line underline-offset-4 hover:decoration-signal">
-          leaderboard
-        </Link>
-        .
+        Paste your payout wallet to get your rank card.
       </p>
-      <Suspense>
-        <RankLookup />
+      <Suspense fallback={extras}>
+        <RankLookup empty={extras} />
       </Suspense>
     </div>
   );

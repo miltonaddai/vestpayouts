@@ -15,7 +15,7 @@ import { CARD_H, CARD_W, RankCard, tierFor } from "./rank-card";
 const ADDRESS = /^0x[0-9a-fA-F]{40}$/;
 const LABEL = "font-mono text-[12px] tracking-[0.04em] text-sub uppercase";
 
-export function RankLookup() {
+export function RankLookup({ empty }: { empty?: React.ReactNode }) {
   const searchParams = useSearchParams();
   const initial = searchParams.get("wallet") ?? "";
   const [draft, setDraft] = useState(initial);
@@ -105,7 +105,7 @@ export function RankLookup() {
           e.preventDefault();
           void lookup(draft);
         }}
-        className="flex flex-col gap-3 border border-line bg-paper p-4 sm:flex-row sm:items-end"
+        className="flex max-w-3xl flex-col gap-3 border border-line bg-paper p-4 sm:flex-row sm:items-end"
       >
         <label className="grid flex-1 gap-1.5">
           <span className={LABEL}>Wallet address</span>
@@ -138,7 +138,7 @@ export function RankLookup() {
       </p>
 
       {data && (
-        <div ref={resultRef} className="mt-4 grid scroll-mt-28 gap-8 lg:grid-cols-[minmax(0,720px)_minmax(280px,360px)] lg:items-start">
+        <div ref={resultRef} className="mt-4 grid scroll-mt-28 gap-8 lg:grid-cols-[minmax(0,600px)_minmax(280px,360px)] lg:items-start">
           <ScaledCard key={data.wallet}>
             <RankCard ref={cardRef} data={data} name={name} handle={handle} />
           </ScaledCard>
@@ -187,6 +187,8 @@ export function RankLookup() {
           </div>
         </div>
       )}
+
+      {!data && empty}
     </div>
   );
 }
