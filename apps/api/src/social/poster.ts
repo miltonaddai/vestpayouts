@@ -108,12 +108,12 @@ export function bigText(p: BigPayout, cfg: Pick<Config, "linkBig" | "site">) {
       ? [
           `🏆 New record: ${usd0.format(p.amount)} Vest payout`,
           "",
-          `${who} was just paid ${usd2.format(p.amount)} USDC on ${chainName(p.chain)}. That's the largest Vest payout ever recorded.`,
+          `${who} was just paid ${usd2.format(p.amount)} USDC on ${chainName(p.chain)}. That's the largest @vestexchange payout ever recorded.`,
         ]
       : [
           `🚨 ${usd0.format(p.amount)} Vest payout`,
           "",
-          `${who} was just paid ${usd2.format(p.amount)} USDC on ${chainName(p.chain)}${p.rank <= 100 ? `, the ${ordinal(p.rank)} largest Vest payout on record` : ""}.`,
+          `${who} was just paid ${usd2.format(p.amount)} USDC on ${chainName(p.chain)}${p.rank <= 100 ? `, the ${ordinal(p.rank)} largest @vestexchange payout on record` : ""}.`,
         ];
   const tier = heatTier(p.amount);
   if (tier) lines.push("", `🔥 Heat ${String(tier).padStart(2, "0")}/10 · ${TIER_LABELS[tier - 1]}`);
@@ -123,9 +123,9 @@ export function bigText(p: BigPayout, cfg: Pick<Config, "linkBig" | "site">) {
 
 /* ---------- Heat tier art ---------- */
 
-// Lower bound of each tier (USD). Art lives in apps/api/assets/fire/tier-NN.png,
-// drawn by scripts/fire-art.html: SPARK, EMBER, FLAME, BLAZE, BONFIRE,
-// WILDFIRE, FIRESTORM, INFERNO, PLASMA, SUPERNOVA.
+// Lower bound of each tier (USD). Art lives in apps/api/assets/fire/tier-NN.jpg
+// (1024x1024): SPARK, EMBER, FLAME, BLAZE, BONFIRE, WILDFIRE, FIRESTORM,
+// INFERNO, MELTDOWN, SUPERNOVA.
 const TIER_FLOORS = [10_000, 15_000, 20_000, 30_000, 40_000, 50_000, 75_000, 100_000, 150_000, 250_000];
 // Name and joke per tier, shown in the post text (the image only carries the heat meter).
 const TIER_LABELS = [
@@ -151,7 +151,7 @@ export function heatTier(amount: number) {
 export function tierArtPath(amount: number) {
   const tier = heatTier(amount);
   if (!tier) return null;
-  const file = path.join(ART_DIR, "tier-" + String(tier).padStart(2, "0") + ".png");
+  const file = path.join(ART_DIR, "tier-" + String(tier).padStart(2, "0") + ".jpg");
   return existsSync(file) ? file : null;
 }
 
