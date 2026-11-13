@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
   transpilePackages: ["@vestpayouts/shared"],
   outputFileTracingRoot: path.join(__dirname, "../.."),
   images: { formats: ["image/avif", "image/webp"] },
+  async redirects() {
+    return [{ source: "/home", destination: "/", permanent: true }];
+  },
   // Tailwind v4 is applied to CSS through this loader. Classic ISR (`revalidate`) stays on;
   // cacheComponents is intentionally off so route segment config keeps working.
   turbopack: {
