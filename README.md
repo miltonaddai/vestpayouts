@@ -210,3 +210,7 @@ The API listens on `PORT` (default 4318) and `0.0.0.0`.
 `/` live feed and totals, `/payouts` filterable list, `/payouts/[chain]/[tx]` proof pages, `/leaderboard` (and `/24h`, `/7d`, `/30d`), `/wallets/[address]`, `/how-vest-payouts-work`, `/vest-review`, `/faq`, `/blog` plus four guides, `/methodology`, `/about`, `/disclosure`, `/privacy`, `/terms`, `/admin`.
 
 `/sitemap.xml` and `/robots.txt` are generated. `/robots.txt` disallows `/admin`, `/go` and `/api/`.
+
+## License
+
+[MIT](LICENSE). Anyone can use, copy, modify and distribute this code, including commercially, as long as the copyright and license notice stay with it.
